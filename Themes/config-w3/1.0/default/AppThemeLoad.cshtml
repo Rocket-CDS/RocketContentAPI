@@ -1,0 +1,24 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketContentAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using Rocket.AppThemes.Components;
+@using RocketPortal.Components;
+
+@{
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+}
+<!-- NOTE: Load AdminDetail.cshtml with simplsity from browser, so we have the sessionParams -->
+
+<!-- create element to load settings. -->
+<span id="loadapptheme" class="w3-hide" s-cmd="rocketapptheme_getremote" s-fields='{"systemkey":"rocketapptheme","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId","appthemefolder":"@(moduleData.AppThemeAdminFolder)","appversionfolder":"@(moduleData.AppThemeAdminVersion)"}'></span>
+
+<script>
+    $(document).ready(function () {
+        simplisity_callserver($('#loadapptheme'), '/Desktopmodules/dnnrocket/api/rocket/action', '', false);
+    });
+</script>
+
+

@@ -1,0 +1,74 @@
+﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketContentAPI.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
+
+@{
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
+    var imgLP = 0;
+
+    var datalist = articleRowData.GetImageList();
+    var globalSettings = new SystemGlobalData();
+    var sessionParams = Model.SessionParamsData;
+    var portalData = new PortalLimpet(articleData.PortalId);
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+}
+
+<div class="w3-row imagelistdatasection">
+
+    <div class="w3-bar">
+        <div class="w3-button w3-bar-item w3-theme-action w3-padding" onclick="$('#articleimageselect').show();">@ButtonIcon(ButtonTypes.add)</div>
+        <div class="w3-button w3-bar-item w3-pale-yellow w3-padding simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".@articleData.ImageListName" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+    </div>
+
+    <ul id="imagelistdata" class="w3-ul">
+
+        @foreach (var imgInfo in datalist)
+        {
+            imgLP += 1;
+            var articleImage = new ArticleImage(imgInfo, "articleimage");
+
+            <li class="@articleData.ImageListName w3-row w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
+
+                @SortableListIndex(imgInfo, imgLP)
+
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
+                        <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin">
+                            @ButtonIcon(ButtonTypes.remove)
+                        </span>
+                        <div class="w3-col m2 w3-padding" style="width:100px;">
+                            @if (articleImage.RelPath != "")
+                            {
+                                <img src="@ThumbnailImageUrl(portalData.EngineUrlWithProtocol, articleImage.RelPath, 80, 80)" style="height:80px;width:80px;" class="w3-round" />
+                            }
+                            else
+                            {
+                                <img src="@ThumbnailImageUrl(portalData.EngineUrlWithProtocol, "/DesktopModules/DNNrocket/api/images/noimage2.png", 80, 80)" style="height:80px;width:80px;" class="w3-round" />
+                            }
+                        </div>
+                        <div class="w3-col m8 w3-padding">
+                            @TextBox(imgInfo, "genxml/lang/genxml/textbox/imagealtarticleimage", "class='w3-input w3-border w3-margin-top' autocomplete='off' MaxLength='200'", "", true, imgLP)
+                            @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, imgLP)
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        }
+    </ul>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#imagelistdata").sortable();
+        $("#imagelistdata").disableSelection();
+    });
+</script>

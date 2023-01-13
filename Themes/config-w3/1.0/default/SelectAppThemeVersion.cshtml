@@ -1,0 +1,48 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketContentAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using Rocket.AppThemes.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
+
+@{
+
+    // NOTE: All field xpath should be "genxml/remote/*"
+
+    var sessionParams = Model.SessionParamsData;
+    var appThemeList = (AppThemeDataList)Model.GetDataObject("appthemedatalist");
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
+    var appThemeAdmin = (AppThemeLimpet)Model.GetDataObject("appthemeadmin");
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var info = new SimplisityInfo(moduleData.Record);
+    var projectAppThemeData = new AppThemeProjectLimpet();
+    var cmd = "rocketcontentapi_selectappthemeversion" + Model.GetSetting("cmdappendix");
+}
+
+<div id="a-datasection" class="w3-container w3-margin w3-padding">
+    <div class="w3-large w3-margin-bottom">
+        @ResourceKey("RCT.selectversion")
+    </div>
+    @foreach (var appThemeV in appThemeView.VersionList)
+    {
+        <div class="w3-padding w3-col m2">
+            <div class="w3-button w3-theme w3-round-xxlarge w3-large simplisity_click" s-cmd="@cmd" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","appthemefolderversion":"@appThemeV"}'>
+                @appThemeV
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketcontentapi', debug: false });
+    });
+</script>
+
+

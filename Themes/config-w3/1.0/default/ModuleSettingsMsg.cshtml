@@ -1,0 +1,26 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketContentAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using Rocket.AppThemes.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
+
+<div style='text-align: center;'>
+    <a href='{redirecturl}' class="w3-button w3-theme w3-round-xxlarge w3-large" style="text-decoration:none;">
+        <span class="material-icons">
+            settings
+        </span>
+        &nbsp;
+        @ResourceKey("RCT.modulesettings")
+    </a>
+</div>
+
+<script>
+    $(document).ready(function () {
+    });
+</script>
+
+

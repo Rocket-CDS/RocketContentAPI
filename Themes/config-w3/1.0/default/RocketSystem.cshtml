@@ -1,0 +1,53 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using RocketContentAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components;
+
+@{
+    var sessionParams = Model.SessionParamsData;
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
+    var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
+    var appThemeAdmin = (AppThemeLimpet)Model.GetDataObject("appthemeadmin");
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
+    var portalContent = (PortalContentLimpet)Model.GetDataObject("portalcontent");
+    var info = portalContent.Info;
+
+    AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/");
+    AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/");
+    AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/");
+}
+
+<div id="a-setupbuttons" class="w3-bar" style="display:none;">
+    <button class="w3-button simplisity_click" s-cmd="portal_detail" s-fields='{"portalid":"@portalContent.PortalId","track":"false"}'>@ButtonIcon(ButtonTypes.back)</button>
+    <button class="w3-padding w3-button w3-theme-action simplisity_click"  s-return="#setupdata" s-cmd="rocketsystem_save" s-list=".sqlorderbyproduct,.settingsdata,.linklist" s-post="#servicesettings" s-fields='{"systemkey":"@systemData.SystemKey","portalid":"@portalContent.PortalId"}'>@ButtonText(ButtonTypes.save)</button>
+</div>
+
+<div id="servicesettings" class="w3-row w3-margin-top">
+    @RenderTemplate("RocketSystemGeneral.cshtml", appThemeSystem, Model, true)
+</div>
+
+
+<div>
+    @if (UserUtils.IsInRole("Administrator"))
+    {
+        <div class="w3-container">
+            <div class="w3-right">
+                @RenderXml(portalContent.Info)
+            </div>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#a-showsetupbuttons').append($('#a-setupbuttons'));
+        $('#a-portalbuttons').hide();
+        $('#a-setupbuttons').show();
+    });
+
+</script>

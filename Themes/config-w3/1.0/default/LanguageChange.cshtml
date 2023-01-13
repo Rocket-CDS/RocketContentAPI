@@ -1,0 +1,32 @@
+﻿@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+
+@{
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+}
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketEcommerce/App_LocalResources")
+
+<div class="w3-row">
+    @foreach (var l in enabledlanguages)
+    {
+        var selectedcolor = "";
+        if (DNNrocketUtils.GetEditCulture() == l)
+        {
+            selectedcolor = "w3-border";
+        }
+        <div class="w3-button w3-padding-small w3-round @(selectedcolor) changeeditlanguage" s-cmd="@Model.GetSetting("scmd")" s-fields='@(Model.GetSetting("sfields"))' language="@(l)" }><img src="/DesktopModules/DNNrocket/API/images/flags/24/@(l).png" class="w3-round" /></div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".changeeditlanguage").click(function () {
+            var l = $(this).attr('language');
+            simplisity_setSessionField('culturecodeedit', l);
+            simplisity_callserver(this);
+        });
+    });
+</script>
+

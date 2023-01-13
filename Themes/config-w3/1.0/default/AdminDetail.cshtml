@@ -1,0 +1,96 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketContentAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+@{
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
+    var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
+    var appThemeAdmin = (AppThemeLimpet)Model.GetDataObject("appthemeadmin");
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var globalSettings = new SystemGlobalData();
+    var info = articleData.Info;
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+    var sessionParams = Model.SessionParamsData;
+    var rtnUrl = DNNrocketUtils.NavigateURL(sessionParams.TabId,  new string[0]);
+}
+
+<div class="w3-row">
+    @foreach (var l in enabledlanguages)
+    {
+        var selectedcolor = "";
+        if (sessionParams.CultureCodeEdit == l)
+        {
+            selectedcolor = "w3-border";
+        }
+        <div class="w3-button w3-padding-small w3-round @(selectedcolor) changeeditlanguage" s-cmd="article_admindetail" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}' language="@(l)"><img src="/DesktopModules/DNNrocket/API/images/flags/24/@(l).png" class="w3-round" /></div>
+    }
+</div>
+
+<div id="a-articledata" class=" w3-padding">
+
+    <div class=" w3-margin-bottom w3-border-bottom">
+        <div class="w3-bar w3-padding">
+            <a href="@rtnUrl" class="w3-padding w3-button w3-black " style="text-decoration:none;" onclick="$('.simplisity_loader').show();">
+                <span class="w3-hide-small">
+                    @ButtonText(ButtonTypes.back)
+                </span>
+                <span class="w3-hide-medium w3-hide-large">
+                    @ButtonIcon(ButtonTypes.back)
+                </span>
+            </a>
+            <span class="w3-padding w3-button w3-theme-action a-savebutton simplisity_click" s-cmd="article_adminsave" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>
+                <span class="w3-hide-small">
+                    @ButtonText(ButtonTypes.save)
+                </span>
+                <span class="w3-hide-medium w3-hide-large">
+                    @ButtonIcon(ButtonTypes.save)
+                </span>
+            </span>
+            <span class="w3-padding w3-button w3-margin-left w3-red w3-right simplisity_confirmclick" s-cmd="article_admindelete" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>
+                <span class="w3-hide-small">
+                    @ButtonText(ButtonTypes.delete)
+                </span>
+                <span class="w3-hide-medium w3-hide-large">
+                    @ButtonIcon(ButtonTypes.delete)
+                </span>
+            </span>
+        </div>
+    </div>
+
+    @RenderTemplate("AdminDetail.cshtml", appThemeAdmin, Model, true)
+
+    @if (UserUtils.IsAdministrator())
+    {
+        @RenderXml(info)
+    }
+
+</div>
+
+<div class="w3-row w3-tiny w3-padding">
+    <span>Id: @articleData.ArticleId</span>
+    <span>ModuleId: @moduleData.ModuleId</span>
+    <span>TabId: @moduleData.TabId</span>
+    <span>Ref: @articleData.DataRef</span>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketcontentapi', debug: false });
+
+        $(".changeeditlanguage").click(function () {
+            var l = $(this).attr('language');
+            simplisity_setSessionField('culturecodeedit', l);
+            simplisity_callserver(this);
+        });
+
+    });
+</script>

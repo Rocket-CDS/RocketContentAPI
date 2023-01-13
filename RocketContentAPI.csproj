@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DNNrocket\API\DNNrocketAPI.csproj" />
+    <ProjectReference Include="..\..\DNNrocket\RocketAppTheme\AppThemes.csproj" />
+    <ProjectReference Include="..\..\DNNrocket\RocketPortal\RocketPortal.csproj" />
+    <ProjectReference Include="..\..\DNNrocket\Simplisity\Simplisity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Handlebars">
+      <HintPath>..\..\DNNrocket\API\_external\Handlebars.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="App_LocalResources\SideMenu.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SideMenu.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="App_LocalResources\SideMenu.resx">
+      <LastGenOutput>SideMenu.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="&#xD;&#xA;DNNpackager.exe $(ProjectDir) $(ProjectDir)$(OutDir) $(ConfigurationName)" />
+  </Target>
+
+</Project>

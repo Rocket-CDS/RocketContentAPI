@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+
+  <commands>
+   
+    <command>
+        <cmd>rocketsystem_edit</cmd>
+        <action>true</action>
+	</command>
+    <command>
+      <cmd>rocketsystem_init</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>rocketsystem_delete</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>rocketsystem_save</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>rocketsystem_login</cmd>
+      <action>false</action>
+    </command>
+
+
+    <command>
+      <cmd>article_selectapptheme</cmd>
+      <action>true</action>
+    </command>    
+    <command>
+      <cmd>article_admindetail</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>article_admincreate</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>article_adminsave</cmd>
+      <action>true</action>
+    </command>
+    <command>
+      <cmd>article_admindelete</cmd>
+      <action>true</action>
+    </command>
+	  <command>
+		  <cmd>article_addimage</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>article_adddoc</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>article_addlink</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>article_addrow</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>article_editrow</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>article_removerow</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>article_sortrows</cmd>
+		  <action>true</action>
+	  </command>
+    <command>
+      <cmd>article_addlistitem</cmd>
+      <action>true</action>
+    </command>
+
+    <command>
+      <cmd>rocketcontentapi_settings</cmd>
+      <action>true</action>
+    </command>
+	  <command>
+		  <cmd>rocketcontentapi_savesettings</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		<cmd>rocketcontentapi_selectappthemeproject</cmd>
+		<action>true</action>
+	</command>
+	  <command>
+		  <cmd>rocketcontentapi_resetapptheme</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rocketcontentapi_resetappthemeview</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rocketcontentapi_selectapptheme</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rocketcontentapi_selectappthemeview</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rocketcontentapi_selectappthemeversion</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rocketcontentapi_selectappthemeversionview</cmd>
+		  <action>true</action>
+	  </command>
+
+
+	  <command>
+      <cmd>remote_publiclist</cmd>
+      <action>false</action>
+    </command>
+    <command>
+      <cmd>remote_publicview</cmd>
+      <action>false</action>
+    </command>
+    <command>
+      <cmd>remote_publicviewheader</cmd>
+      <action>false</action>
+    </command>
+    <command>
+      <cmd>remote_publicseo</cmd>
+      <action>false</action>
+    </command>
+
+    
+
+
+  </commands>
+  
+</root>

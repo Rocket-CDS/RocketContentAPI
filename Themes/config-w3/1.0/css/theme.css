@@ -1,0 +1,14 @@
+﻿body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+}
+
+.material-icons {
+    vertical-align: middle;
+}
+
+
+@media (max-width:992px) {
+    .w3-top {
+        width: 100% !important;
+    }
+}

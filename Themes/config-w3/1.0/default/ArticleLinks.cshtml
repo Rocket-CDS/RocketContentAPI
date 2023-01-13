@@ -1,0 +1,118 @@
+﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketContentAPI.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
+
+@{
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
+    var linkLP = 0;
+
+    var datalist = articleRowData.GetLinkList();
+    var globalSettings = new SystemGlobalData();
+    var sessionParams = Model.SessionParamsData;
+    var fieldId = "articlelink";
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+}
+
+<div class="w3-row linklistdatasection">
+
+    <div class="w3-bar">
+        <div class="w3-button w3-bar-item w3-theme-action w3-padding simplisity_click" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-cmd="article_addlink" s-fields='{"moduleref":"@(moduleData.ModuleRef)"}'>@ButtonIcon(ButtonTypes.add)</div>
+        <div class="w3-button w3-bar-item w3-pale-yellow w3-padding simplisity_itemundo" s-recylebin="linklistbin" s-return="#linklistdata" s-removelist=".linklist" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+    </div>
+
+    <ul id="linklistdata" class="w3-ul">
+
+        @foreach (var linkInfo in datalist)
+        {
+            <li class="linklist w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
+                @SortableListIndex(linkInfo, linkLP)
+
+                @{
+                    var linktype = linkInfo.GetXmlPropertyInt("genxml/radio/linktype");
+                    var internaldisplay = "display:none;";
+                    var externaldisplay = "";
+                    if (linktype == 2)
+                    {
+                        internaldisplay = "display:none;";
+                        externaldisplay = "";
+                    }
+                }
+
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
+
+                        <div class="w3-col m6">
+                            @RadioButtonList(linkInfo, "genxml/radio/linktype" + fieldId, "1,2", ResourceKey("DNNrocket.internallink") + "," + ResourceKey("DNNrocket.externallink"), " class='linktypeclick w3-hide' linkrow='" + linkLP + "' ", "2", "", false, linkLP)
+                        </div>
+                        <div class="w3-col m3">
+                            @CheckBox(linkInfo, "genxml/checkbox/blank" + fieldId, "&nbsp;" + ResourceKey("DNNrocket.blank").ToString(), " class='w3-check' ", false, false, linkLP)
+                        </div>
+                        <div class="w3-col m3">
+                            @CheckBox(linkInfo, "genxml/checkbox/hide" + fieldId, "&nbsp;" + ResourceKey("DNNrocket.hidelink").ToString(), " class='w3-check' ", false, false, linkLP)
+                        </div>
+
+                    </div>
+                    <div class="w3-row">
+                        <div class="w3-col m4 w3-padding">
+                            <label>@ResourceKey("DNNrocket.text")</label>&nbsp;@EditFlag(sessionParams)
+                            @TextBox(linkInfo, "genxml/lang/genxml/textbox/name" + fieldId, " class='w3-input w3-border' autocomplete='off'", "", true, linkLP)
+                        </div>
+                        <div class="w3-col m6 w3-padding internallink@(linkLP)" style="@(internaldisplay);height:64px;">
+                            <label>@ResourceKey("DNNrocket.page")</label>
+                            @TabSelectList(linkInfo, "genxml/select/internallink" + fieldId, " class='w3-input w3-border' ", true, false, linkLP)
+                        </div>
+                        <div class="w3-col m6 w3-padding externallink@(linkLP)" style="@(externaldisplay);height:64px;">
+                            <label>@ResourceKey("DNNrocket.url")</label>&nbsp;@EditFlag(sessionParams)
+                            @TextBox(linkInfo, "genxml/lang/genxml/textbox/externallink" + fieldId, " class='w3-input w3-border' autocomplete='off'", "https://", true, linkLP)
+                        </div>
+
+                        <div class="w3-col m2 w3-padding">
+                            <label class="">@ResourceKey("DNNrocket.anchor")</label>&nbsp;@EditFlag(sessionParams)
+                            @TextBox(linkInfo, "genxml/lang/genxml/textbox/anchor" + fieldId, " class='w3-input w3-border' autocomplete='off'", "", true, linkLP)
+                        </div>
+
+                    </div>
+
+                    <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
+                        @ButtonIcon(ButtonTypes.remove)
+                    </div>
+                </div>
+            </li>
+            linkLP += 1;
+        }
+    </ul>
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#linklistdata").sortable();
+        $("#linklistdata").disableSelection();
+
+        $('.linktypeclick').unbind('click');
+        $('.linktypeclick').click(function () {
+            var linkrow = $(this).attr("linkrow");
+            var selectedval = $(this).find(":checked").val();
+            if (selectedval === '1') {
+                $('.internallink' + linkrow).show();
+                $('.externallink' + linkrow).hide();
+            }
+            if (selectedval === '2') {
+                $('.internallink' + linkrow).hide();
+                $('.externallink' + linkrow).show();
+            }
+        });
+
+    });
+
+</script>
+
+

@@ -1,0 +1,45 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
+
+-------------------------------------------------------------------------------
+--------------                       TABLES                        ------------
+-------------------------------------------------------------------------------
+-- CREATE RocketContentAPI
+if NOT exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwner}[{objectQualifier}RocketContentAPI]') and OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+
+CREATE TABLE {databaseOwner}[{objectQualifier}RocketContentAPI] (
+	[ItemId] [int] IDENTITY (1, 1) NOT NULL ,
+	[PortalId] [int] NULL CONSTRAINT [DF_RocketContentAPI_PortalId]  DEFAULT ((-1)),
+	[ModuleId] [int] NULL CONSTRAINT [DF_RocketContentAPI_ModuleId]  DEFAULT ((-1)),
+	[TypeCode] [nvarchar](50) NULL ,
+	[XMLData] [xml] NULL ,
+	[GUIDKey] [nvarchar](250) NULL ,
+	[ModifiedDate] [datetime] NULL ,
+	[TextData] [nvarchar](MAX) NULL ,
+	[XrefItemId] [int] NULL ,
+	[ParentItemId] [int] NULL ,
+	[Lang] [nvarchar] (50) NULL ,
+	[UserId] [int] NOT NULL CONSTRAINT [DF_RocketContentAPI_UserId] DEFAULT ((-1)),
+	[SortOrder] [int] NULL CONSTRAINT [DF_RocketContentAPI_SortOrder]  DEFAULT ((-1)),	
+	CONSTRAINT [PK_RocketContentAPI] PRIMARY KEY  CLUSTERED 
+	(
+		[ItemId]
+	)  ON [PRIMARY] 
+) ON [PRIMARY]
+
+-- Index RocketContentAPI
+ CREATE NONCLUSTERED INDEX IX_RocketContentAPIXref ON {databaseOwner}[{objectQualifier}RocketContentAPI] (  XrefItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ]  
+ CREATE NONCLUSTERED INDEX IX_RocketContentAPIMod ON {databaseOwner}[{objectQualifier}RocketContentAPI] (  ModuleId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketContentAPIParent ON {databaseOwner}[{objectQualifier}RocketContentAPI] (  ParentItemId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketContentAPIPortal ON {databaseOwner}[{objectQualifier}RocketContentAPI] (  PortalId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketContentAPIType ON {databaseOwner}[{objectQualifier}RocketContentAPI] (  TypeCode ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketContentAPIUserId ON {databaseOwner}[{objectQualifier}RocketContentAPI] (  UserId ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketContentAPILang ON {databaseOwner}[{objectQualifier}RocketContentAPI] (  Lang ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketContentAPIGuidKey ON {databaseOwner}[{objectQualifier}RocketContentAPI] (  GuidKey ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+ CREATE NONCLUSTERED INDEX IX_RocketContentAPISortOrder ON {databaseOwner}[{objectQualifier}RocketContentAPI] (  SortOrder ASC  )   WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , DROP_EXISTING = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  ) ON [PRIMARY ] 
+
+END
+
+GO

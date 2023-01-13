@@ -1,0 +1,54 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using RocketContentAPI.Components;
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
+
+@{
+    var sessionParams = Model.SessionParamsData;
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
+    var appThemeAdmin = (AppThemeLimpet)Model.GetDataObject("appthemeadmin");
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var systemData = (SystemLimpet)Model.GetDataObject("systemdata");
+    var portalContent = (PortalContentLimpet)Model.GetDataObject("portalcontent");
+    var info = portalContent.Info;
+}
+
+<div id="generaldata" class="w3-container">
+
+    <div class="w3-row">
+        <div class="w3-row w3-padding">
+            <label class="">@ResourceKey("DNNrocket.active")</label>
+            @CheckBox(info, "genxml/active", "", "class='w3-input w3-border w3-check'", true)
+        </div>
+        <div class="w3-row w3-padding">
+            <label class="">@ResourceKey("DNNrocket.emailon")</label>
+            @CheckBox(info, "genxml/emailon", "", "class='w3-input w3-border w3-check'", true)
+        </div>
+        <div class="w3-row w3-padding">
+            <label class="">Debug Mode</label>
+            @CheckBox(info, "genxml/debugmode", "", "class='w3-input w3-border w3-check'", false)
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        rpadmin.moveToTop('#systemmodal');
+    });
+
+    function docopyclipboard(element) {
+        rpadmin.CopyTextToClipboard(element);
+    }
+
+
+</script>

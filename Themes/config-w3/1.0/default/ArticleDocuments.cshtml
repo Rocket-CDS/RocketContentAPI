@@ -1,0 +1,64 @@
+﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketContentAPI.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
+
+@{
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
+    var docLP = 1;
+
+    var datalist = articleRowData.GetDocList();
+    var globalSettings = new SystemGlobalData();
+    var sessionParams = Model.SessionParamsData;
+}
+
+<div class="w3-row documentlistdatasection">
+
+    <div class="w3-bar">
+        <div class="w3-button w3-bar-item w3-theme-action w3-padding-8" onclick="$('#articledocumentselect').show();">@ButtonIcon(ButtonTypes.add)</div>
+        <div class="w3-button w3-bar-item w3-pale-yellow w3-padding-8 simplisity_itemundo" s-recylebin="documentlistbin" s-return="#documentlistdata" s-removelist=".documentlist" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+    </div>
+
+    <ul id="documentlistdata" class="w3-ul">
+
+        @foreach (var docInfo in datalist)
+        {
+            <li class="documentlist w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
+                @SortableListIndex(docInfo, docLP)
+
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
+                        <span id="deletebutton@(docLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".documentlist" s-recylebin="documentlistbin">
+                            @ButtonIcon(ButtonTypes.remove)
+                        </span>
+                        <div class="w3-col m8 w3-padding">
+                            @HiddenField(docInfo, "genxml/hidden/documentpatharticledoc", "", "", false, docLP)
+                            <label class="">@ResourceKey("DNNrocket.document")</label>
+                            @TextBox(docInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border' ", "", false, docLP)
+                        </div>
+                        <div class="w3-col m2 w3-padding" style="">
+                            <label class="">@ResourceKey("DNNrocket.hidden")</label>&nbsp;@EditFlag(sessionParams)<br />
+                            @CheckBox(docInfo, "genxml/lang/genxml/checkbox/documenthiddenarticledoc", "", "class='w3-check'", false, false, docLP)
+                        </div>
+                    </div>
+                </div>
+            </li>
+            docLP += 1;
+        }
+    </ul>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#documentlistdata").sortable();
+        $("#documentlistdata").disableSelection();
+    });
+
+</script>

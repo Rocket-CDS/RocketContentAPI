@@ -1,0 +1,23 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketContentAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using Rocket.AppThemes.Components;
+@using RocketPortal.Components;
+
+@{
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+}
+
+<!-- create element to load settings. -->
+<span id="loadsettings" class="" s-cmd="rocketcontentapi_settings" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'></span>
+
+<script>
+    $(document).ready(function () {
+        simplisity_callserver($('#loadsettings'), '/Desktopmodules/dnnrocket/api/rocket/action','',false);
+    });
+</script>
+
+

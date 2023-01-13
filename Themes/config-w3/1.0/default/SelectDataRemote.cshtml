@@ -1,0 +1,55 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketContentAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using Rocket.AppThemes.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+@{
+    var articleList = (ArticleLimpetList)Model.List.First();
+    var appThemeSystem = new AppThemeSystemLimpet(PortalUtils.GetPortalId(),"rocketcontentapi");
+}
+
+<div id="selectdataitem" class="">
+    <div class="w3-container w3-xlarge">
+        @ResourceKey("RCT.selectdataitem")
+    </div>
+    <div class="w3-container" style="">
+
+        <table class="w3-table w3-bordered w3-hoverable">
+            <thead>
+                <tr>
+                    <th>@ResourceKey("RP.name")</th>
+                    <th>AppTheme</th>
+                    <th>Ref</th>
+                </tr>
+            </thead>
+            @foreach (ArticleLimpet artcileData in articleList.GetArticleList())
+            {
+                <tr class="simplisity_click" s-cmd="article_selectdataitem" s-fields='{"articleid":"@artcileData.ArticleId"}' style="cursor:pointer;">
+                    <td><b>@artcileData.Name</b></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+        </table>
+
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('.w3-radio').unbind("click");
+        $('.w3-radio').click(function () {
+            $('#createbutton').show();
+        });
+
+    });
+</script>
+
+
