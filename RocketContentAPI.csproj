@@ -15,6 +15,9 @@
     <Reference Include="Handlebars">
       <HintPath>..\..\DNNrocket\API\_external\Handlebars.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\DNNrocket\API\_external\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

@@ -30,11 +30,11 @@ namespace RocketContentAPI.Components
             _dataObjects = new Dictionary<string, object>();
             var articleData = new ArticleLimpet(portalid, moduleRef, cultureCode);
             SetDataObject("modulesettings", new ModuleContentLimpet(portalid, moduleRef, moduleId, tabId));
-            SetDataObject("appthemesystem", new AppThemeSystemLimpet(portalid, SystemKey));
+            SetDataObject("appthemesystem", AppThemeUtils.AppThemeSystem(portalid, SystemKey));
             SetDataObject("portalcontent", new PortalContentLimpet(portalid, cultureCode));
             SetDataObject("portaldata", new PortalLimpet(portalid));
             SetDataObject("systemdata", new SystemLimpet(SystemKey));
-            SetDataObject("appthemeprojects", new AppThemeProjectLimpet());
+            SetDataObject("appthemeprojects", AppThemeUtils.AppThemeProjects());
             SetDataObject("articledata", articleData);
 
             if (articleData != null)
