@@ -28,8 +28,9 @@ namespace RocketContentAPI.Components
         {
             _passSettings = new Dictionary<string, string>();
             _dataObjects = new Dictionary<string, object>();
-            var articleData = new ArticleLimpet(portalid, moduleRef, cultureCode);
-            SetDataObject("modulesettings", new ModuleContentLimpet(portalid, moduleRef, moduleId, tabId));
+            var moduleSettings = new ModuleContentLimpet(portalid, moduleRef, SystemKey, moduleId, tabId);
+            var articleData = new ArticleLimpet(portalid, moduleSettings.DataRef, cultureCode);
+            SetDataObject("modulesettings", moduleSettings);
             SetDataObject("appthemesystem", AppThemeUtils.AppThemeSystem(portalid, SystemKey));
             SetDataObject("portalcontent", new PortalContentLimpet(portalid, cultureCode));
             SetDataObject("portaldata", new PortalLimpet(portalid));

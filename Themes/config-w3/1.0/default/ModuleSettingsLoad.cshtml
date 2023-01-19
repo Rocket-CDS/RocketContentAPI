@@ -12,7 +12,7 @@
 }
 
 <!-- create element to load settings. -->
-<span id="loadsettings" class="" s-cmd="rocketcontentapi_settings" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'></span>
+<span id="loadsettings" class="" s-cmd="rocketcontentapi_settings" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@(Model.SessionParamsData.TabId)"}'></span>
 
 <script>
     $(document).ready(function () {

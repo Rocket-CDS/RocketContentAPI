@@ -17,6 +17,7 @@
     var appThemeAdmin = (AppThemeLimpet)Model.GetDataObject("appthemeadmin");
     var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
     var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var portalContent = (PortalContentLimpet)Model.GetDataObject("portalcontent");
     var info = new SimplisityInfo(moduleData.Record);
     var projectAppThemeData = new AppThemeProjectLimpet();
     var cmdappendix = Model.GetSetting("cmdappendix");
@@ -38,15 +39,31 @@
             @CheckBox(info,"genxml/settings/securesave", ResourceKey("RCT.securesave").ToString(),"class='w3-check'", true)
         </div>
     </div>
+    <div class="w3-row ">
+        <div class="w3-half w3-padding">
+            <label>@ResourceKey("DNNrocket.name")</label>
+            @TextBox(info, "genxml/settings/name"," class='w3-input w3-border' ", "RocketContent: " + moduleData.ModuleRef)
+        </div>
+        <div class="w3-half w3-padding">
+            <label>@ResourceKey("RCT.datasource")</label>
+            @ModSelectList(info, "genxml/settings/dataref", info.PortalId, portalContent.SystemKey, " class='w3-input w3-border' ")
+        </div>
+    </div>
+
 
         <div class="w3-xlarge">AppThemes</div>
+    @if (!moduleData.IsSatellite)
+    {
         <div class="w3-row w3-padding">
-            <span class="w3-button w3-theme w3-round-xxlarge simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.edit")?" s-cmd="rocketcontentapi_resetapptheme" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'>
-                @ButtonIcon(ButtonTypes.edit)
-            </span>
-            &nbsp;
-            <span><b>@appThemeAdmin.Name &nbsp; @moduleData.AppThemeAdminVersion &nbsp; [@ResourceKey("DNNrocket.admin")]</b></span>
-        </div>
+            <div class="w3-half">
+                <span class="w3-button w3-theme w3-round-xxlarge simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.edit")?" s-cmd="rocketcontentapi_resetapptheme" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'>
+                    @ButtonIcon(ButtonTypes.edit)
+                </span>
+                &nbsp;
+                <span><b>@appThemeAdmin.Name &nbsp; @moduleData.AppThemeAdminVersion &nbsp; [@ResourceKey("DNNrocket.admin")]</b></span>
+            </div>
+        </div>        
+    }
         <div class="w3-row w3-padding">
             <span class="w3-button w3-theme w3-round-xxlarge simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.edit")?" s-cmd="rocketcontentapi_resetappthemeview" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'>
                 @ButtonIcon(ButtonTypes.edit)
@@ -67,7 +84,7 @@
 </div>
 
 <!-- create element to update settings via API when the DNN update is clicked. -->
-<span id="postsettings" class="w3-hide" s-cmd="rocketcontentapi_savesettings" s-post="#a-datasection" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'></span>
+<span id="postsettings" class="w3-hide" s-cmd="rocketcontentapi_savesettings" s-post="#a-datasection" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@(Model.SessionParamsData.TabId)"}'></span>
 
 
 

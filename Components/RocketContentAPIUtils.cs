@@ -1,4 +1,5 @@
-﻿using DNNrocketAPI.Components;
+﻿using DNNrocketAPI;
+using DNNrocketAPI.Components;
 using RocketPortal.Components;
 using Simplisity;
 using System;
@@ -15,9 +16,9 @@ namespace RocketContentAPI.Components
     {
         public const string ControlPath = "/DesktopModules/DNNrocketModules/RocketContentAPI";
         public const string ResourcePath = "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources";
-        public static string DisplayView(int portalId, string moduleRef, string rowKey, SessionParams sessionParam, string template = "view.cshtml", string noAppThemeReturn= "")
+        public static string DisplayView(int portalId, string systemKey, string moduleRef, string rowKey, SessionParams sessionParam, string template = "view.cshtml", string noAppThemeReturn= "")
         {
-            var moduleSettings = new ModuleContentLimpet(portalId, moduleRef, sessionParam.ModuleId, sessionParam.TabId);
+            var moduleSettings = new ModuleContentLimpet(portalId, moduleRef, systemKey, sessionParam.ModuleId, sessionParam.TabId);
             var pr = (RazorProcessResult)CacheUtils.GetCache(moduleRef + template, moduleRef);
             if (moduleSettings.DisableCache || pr == null)
             {
@@ -66,6 +67,7 @@ namespace RocketContentAPI.Components
             }
             return str;
         }
+
     }
 
 }

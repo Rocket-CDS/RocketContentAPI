@@ -7,12 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using DNNrocketAPI.Components;
+using DNNrocketAPI;
 
 namespace RocketContentAPI.Components
 {
     public class ModuleContentLimpet : ModuleBase
     {
-        public ModuleContentLimpet(int portalId, string moduleRef, int moduleid = -1, int tabid = -1) : base(portalId, moduleRef, moduleid, tabid)
+        public ModuleContentLimpet(int portalId, string moduleRef, string systemKey, int moduleid = -1, int tabid = -1) : base(portalId, moduleRef, moduleid, tabid, systemKey)
         {
         }
     }
