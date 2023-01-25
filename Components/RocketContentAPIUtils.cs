@@ -16,6 +16,32 @@ namespace RocketContentAPI.Components
     {
         public const string ControlPath = "/DesktopModules/DNNrocketModules/RocketContentAPI";
         public const string ResourcePath = "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources";
+        public static List<SimplisityRecord> DependanciesList(int portalId, string moduleRef, SessionParams sessionParam)
+        {
+            var rtn = new List<SimplisityRecord>();
+            var dataObject = new DataObjectLimpet(portalId, moduleRef, "", sessionParam, false);
+            if (dataObject.AppThemeView != null)
+            {
+                foreach (var depfile in dataObject.AppThemeView.GetTemplatesDep())
+                {
+                    var dep = dataObject.AppThemeView.GetDep(depfile.Key, moduleRef);
+                    foreach (var r in dep.GetRecordList("deps"))
+                    {
+                        var urlstr = r.GetXmlProperty("genxml/url");
+                        if (urlstr.Contains("{"))
+                        {
+                            if (dataObject.PortalData != null) urlstr = urlstr.Replace("{domainurl}", dataObject.PortalData.EngineUrlWithProtocol);
+                            if (dataObject.AppThemeView != null) urlstr = urlstr.Replace("{appthemefolder}", dataObject.AppThemeView.AppThemeVersionFolderRel);
+                            if (dataObject.AppThemeSystem != null) urlstr = urlstr.Replace("{appthemesystemfolder}", dataObject.AppThemeSystem.AppThemeVersionFolderRel);
+                        }
+                        r.SetXmlProperty("genxml/id", CacheUtils.Md5HashCalc(urlstr));
+                        r.SetXmlProperty("genxml/url", urlstr);
+                        rtn.Add(r);
+                    }
+                }
+            }
+            return rtn;
+        }
         public static string DisplayView(int portalId, string systemKey, string moduleRef, string rowKey, SessionParams sessionParam, string template = "view.cshtml", string noAppThemeReturn= "")
         {
             var moduleSettings = new ModuleContentLimpet(portalId, moduleRef, systemKey, sessionParam.ModuleId, sessionParam.TabId);
@@ -23,7 +49,7 @@ namespace RocketContentAPI.Components
             if (moduleSettings.DisableCache || pr == null)
             {
                 var dataObject = new DataObjectLimpet(portalId, moduleRef, rowKey, sessionParam, false);
-                if (!dataObject.ModuleSettings.HasAppThemeAdmin) return noAppThemeReturn;
+                if (!dataObject.ModuleSettings.HasAppThemeAdmin) return noAppThemeReturn; // test on Admin Theme.
                 var razorTempl = dataObject.AppThemeView.GetTemplate(template, moduleRef);
                 pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
                 CacheUtils.SetCache(moduleRef + template, pr, moduleRef);
