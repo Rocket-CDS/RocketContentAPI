@@ -70,6 +70,12 @@ namespace RocketContentAPI.API
                 case "article_addimage":
                     strOut = AddArticleImage();
                     break;
+                case "article_addimage1":
+                    strOut = AddArticleImage(true);
+                    break;
+                case "article_removeimage":
+                    strOut = RemoveArticleImage();
+                    break;                    
                 case "article_adddoc":
                     strOut = AddArticleDoc();
                     break;

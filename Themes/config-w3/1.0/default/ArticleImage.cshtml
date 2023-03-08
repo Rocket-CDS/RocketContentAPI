@@ -1,0 +1,63 @@
+﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketContentAPI.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
+
+@{
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
+    var imgLP = 0;
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
+
+    var datalist = articleRowData.GetImageList();
+    var globalSettings = new SystemGlobalData();
+    var sessionParams = Model.SessionParamsData;
+    var portalData = new PortalLimpet(articleData.PortalId);
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var imagesize = Model.GetSettingInt("imagesize");
+    if (imagesize <= 0)
+    {
+        imagesize = 180;
+    }
+    var resize = Model.GetSetting("imageresize");
+    if (datalist.Count == 0)
+    {
+        datalist.Add(new SimplisityInfo()); // add default first item
+    }
+    var imgInfo = datalist.First();
+    if (imgInfo == null)
+    {
+        imgInfo = new SimplisityInfo();
+    }
+    var articleImage = new ArticleImage(imgInfo, "articleimage");
+    Model.SetSetting("scmd", "article_addimage1");
+}
+
+    <div class="@articleData.ImageListName w3-row w3-display-container w3-padding" >
+
+        @if (articleImage.RelPath != "")
+        {
+        <span class="w3-button w3-display-bottomleft simplisity_confirmclick" s-confirm="@ResourceKey("RCT.removeimage") ?" s-cmd="article_removeimage" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId", "rowkey":"@(articleRowData.RowKey)"}'>@ButtonIcon(ButtonTypes.remove)</span>
+        <img src="@ThumbnailImageUrl(articleImage.RelPath, imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
+        }
+        else
+        {
+        <span onclick="simplisity_setParamField('imageresize', '@(resize)');$('#articleimageselect').show();" class="w3-button w3-display-bottomleft">@ButtonIcon(ButtonTypes.photo)</span>
+        <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
+        }
+        @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, imgLP)
+    </div>
+
+
+<script>
+    $(document).ready(function () {
+    });
+</script>
+
+
+@RenderTemplate("ArticleImageSelect.cshtml", appThemeSystem, Model, true)

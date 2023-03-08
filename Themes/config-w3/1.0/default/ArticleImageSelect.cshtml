@@ -17,6 +17,11 @@
     var datalist = articleRowData.GetImageList();
     var sessionParams = Model.SessionParamsData;
     var imgLP = 0;
+    var scmd = Model.GetSetting("scmd");
+    if (scmd == "")
+    {
+        scmd = "article_addimage";        
+    }
 
     var info = new SimplisityInfo();
     if (articleRowData != null && articleRowData.Info != null)
@@ -40,7 +45,7 @@
                 <h2>@ResourceKey("DNNrocket.imageupload")</h2>
                 <p>@ResourceKey("DNNrocket.imageupload", "", "Msg")</p>
 
-                <input id="imagefileupload" class="simplisity_base64upload" s-reload="false" s-cmd="article_addimage" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' type="file" name="file[]" multiple style="display:none;">
+                <input id="imagefileupload" class="simplisity_base64upload" s-reload="false" s-cmd="@scmd" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' type="file" name="file[]" multiple style="display:none;">
                 <div class="w3-row w3-margin-bottom">
                     <span class="w3-col m12 w3-button w3-teal fileuploadaction" onclick="$('#imagefileupload').trigger('click');">@ButtonText(ButtonTypes.upload)</span>
                 </div>

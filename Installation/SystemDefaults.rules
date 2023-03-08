@@ -50,6 +50,14 @@
 		  <action>true</action>
 	  </command>
 	  <command>
+		  <cmd>article_addimage1</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>article_removeimage</cmd>
+		  <action>true</action>
+	  </command>	  
+	  <command>
 		  <cmd>article_adddoc</cmd>
 		  <action>true</action>
 	  </command>

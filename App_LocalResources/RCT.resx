@@ -165,6 +165,9 @@
   <data name="optional.Text" xml:space="preserve">
     <value>(Optional)</value>
   </data>
+  <data name="removeimage.Text" xml:space="preserve">
+    <value>Remove Image</value>
+  </data>
   <data name="removerow.Text" xml:space="preserve">
     <value>Remove Row ?</value>
   </data>

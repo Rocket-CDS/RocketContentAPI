@@ -12,12 +12,14 @@
     var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
     var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
     var imgLP = 0;
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
 
     var datalist = articleRowData.GetImageList();
     var globalSettings = new SystemGlobalData();
     var sessionParams = Model.SessionParamsData;
     var portalData = new PortalLimpet(articleData.PortalId);
     var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    Model.SetSetting("scmd", "article_addimage")
 }
 
 <div class="w3-row imagelistdatasection">
@@ -72,3 +74,5 @@
         $("#imagelistdata").disableSelection();
     });
 </script>
+
+@RenderTemplate("ArticleImageSelect.cshtml", appThemeSystem, Model, true)

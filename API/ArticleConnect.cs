@@ -96,7 +96,7 @@ namespace RocketContentAPI.API
             CacheUtils.ClearAllCache("article");
             _dataObject.ArticleData.Delete();
         }
-        public string AddArticleImage()
+        public string AddArticleImage(bool singleImage = false)
         {
             var articleData = _dataObject.ArticleData;
             articleData.UpdateRow(_rowKey, _postInfo);
@@ -118,10 +118,24 @@ namespace RocketContentAPI.API
                     var articleRow = articleData.GetRow(_rowKey);
                     if (articleRow != null)
                     {
+                        if (singleImage) articleRow.Info.RemoveList(articleData.ImageListName);
                         articleRow.AddImage(Path.GetFileName(imgFileMapPath));
                         articleData.UpdateRow(_rowKey, articleRow.Info);
                     }
                 }
+            }
+
+            return AdminDetailDisplay();
+        }
+        public string RemoveArticleImage()
+        {
+            var articleData = _dataObject.ArticleData;
+            articleData.UpdateRow(_rowKey, _postInfo);
+            var articleRow = articleData.GetRow(_rowKey);
+            if (articleRow != null)
+            {
+                articleRow.Info.RemoveList(articleData.ImageListName);
+                articleData.UpdateRow(_rowKey, articleRow.Info);
             }
 
             return AdminDetailDisplay();
