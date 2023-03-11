@@ -49,7 +49,11 @@ namespace RocketContentAPI.API
                 case "rocketsystem_login":
                     strOut = ReloadPage();
                     break;
-                
+
+
+                case "rocketcontentapi_activate":
+                    strOut = RocketSystemSave();
+                    break;
 
 
                 case "article_admindetail":

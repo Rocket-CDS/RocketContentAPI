@@ -1,0 +1,11 @@
+<genxml>
+	<hidden>
+		<systemkey><![CDATA[rocketcontentapi]]></systemkey>
+	</hidden>
+	<active><![CDATA[true]]></active>
+	<emailon><![CDATA[false]]></emailon>
+	<debugmode><![CDATA[false]]></debugmode>
+	<lang>
+		<genxml />
+	</lang>
+</genxml>

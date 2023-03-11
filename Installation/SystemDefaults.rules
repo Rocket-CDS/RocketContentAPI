@@ -122,6 +122,10 @@
 		  <cmd>rocketcontentapi_selectappthemeversionview</cmd>
 		  <action>true</action>
 	  </command>
+	  <command>
+		  <cmd>rocketintra_activate</cmd>
+		  <action>true</action>
+	  </command>	  
 
 
 	  <command>
