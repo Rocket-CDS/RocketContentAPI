@@ -91,6 +91,7 @@
 <script>
     $(document).ready(function () {
         $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketcontentapi', debug: false });
+        $('.simplisity_loader').hide();
 
         $('a[id*="_cmdUpdate"]').off("click");
         $('a[id*="_cmdUpdate"]').click(function () {
