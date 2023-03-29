@@ -46,7 +46,7 @@
                 </span>
             </a>
 
-            @if (UserUtils.IsSuperUser())
+            if (UserUtils.IsSuperUser())
             {
                 <a href="/SysAdmin/rocketapptheme?moduleref=@(moduleData.ModuleRef)&appthemefolder=@(moduleData.AppThemeAdminFolder)&appversionfolder=@(moduleData.AppThemeAdminVersion)&project=@(moduleData.ProjectName)&rtn=@sessionParams.Get("returnurl")" class="w3-button w3-round w3-white w3-border w3-text-black" title="@ResourceKey("RCT.editapptheme")">
                     <span class="material-icons ">
