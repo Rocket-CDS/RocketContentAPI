@@ -20,7 +20,7 @@ namespace RocketContentAPI.Components
         {
             var rtn = new List<SimplisityRecord>();
             var dataObject = new DataObjectLimpet(portalId, moduleRef, "", sessionParam, false);
-            if (dataObject.AppThemeView != null)
+            if (dataObject.AppThemeView != null && dataObject.AppThemeView.Exists)
             {
                 foreach (var depfile in dataObject.AppThemeView.GetTemplatesDep())
                 {
