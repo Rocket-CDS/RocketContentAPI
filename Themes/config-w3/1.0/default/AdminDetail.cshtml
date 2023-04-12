@@ -24,6 +24,7 @@
 }
 
 <div class="w3-row">
+
     @foreach (var l in enabledlanguages)
     {
         var selectedcolor = "";
@@ -31,8 +32,11 @@
         {
             selectedcolor = "w3-border";
         }
-        <div class="w3-button w3-padding-small w3-round @(selectedcolor) changeeditlanguage" s-cmd="article_admindetail" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}' language="@(l)"><img src="/DesktopModules/DNNrocket/API/images/flags/24/@(l).png" class="w3-round" /></div>
+        <div class="w3-button w3-round @(selectedcolor) editlanguage simplisity_click" s-cmd="changeeditculture" s-reload="true" s-return="#languagereturn" s-fields='{"selectedculturecode":"@l"}' style="cursor:pointer;" editlang='@l'>
+            <img class='' src='/DesktopModules/DNNrocket/API/images/flags/24/@(l).png' style="" alt='@(l)' />
+        </div>
     }
+
 </div>
 
 <div id="a-articledata" class=" w3-padding">
@@ -85,12 +89,6 @@
 <script>
     $(document).ready(function () {
         $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketcontentapi', debug: false });
-
-        $(".changeeditlanguage").click(function () {
-            var l = $(this).attr('language');
-            simplisity_setSessionField('culturecodeedit', l);
-            simplisity_callserver(this);
-        });
 
         $('.simplisity_loader').hide();
 
