@@ -1,4 +1,5 @@
 ﻿using DNNrocketAPI.Components;
+using DNNrocketAPI.Interfaces;
 using Rocket.AppThemes.Components;
 using RocketContentAPI.Components;
 using RocketPortal.Components;
@@ -10,7 +11,7 @@ using System.Text;
 
 namespace RocketContentAPI.API
 {
-    public partial class StartConnect : DNNrocketAPI.APInterface
+    public partial class StartConnect : IProcessCommand
     {
         private SimplisityInfo _postInfo;
         private SimplisityInfo _paramInfo;
@@ -22,7 +23,7 @@ namespace RocketContentAPI.API
         private int _moduleId;
         private int _tabId;
 
-        public override Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
+        public Dictionary<string, object> ProcessCommand(string paramCmd, SimplisityInfo systemInfo, SimplisityInfo interfaceInfo, SimplisityInfo postInfo, SimplisityInfo paramInfo, string langRequired = "")
         {
             var strOut = ""; // return nothing if not matching commands.
             var storeParamCmd = paramCmd;
