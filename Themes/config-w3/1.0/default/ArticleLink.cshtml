@@ -1,0 +1,78 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketContentAPI.Components;
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components;
+@{
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
+    var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
+    var appThemeAdmin = (AppThemeLimpet)Model.GetDataObject("appthemeadmin");
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var globalSettings = new SystemGlobalData();
+    var sessionParams = Model.SessionParamsData;
+
+    var info = new SimplisityInfo();
+    if (articleRowData != null && articleRowData.Info != null)
+    {
+        info = articleRowData.Info;
+    }
+    AddProcessDataResx(appThemeView, true);
+    AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContent/App_LocalResources/");
+}
+
+
+<div class="w3-row">
+
+    <div class="w3-padding w3-row">
+        <label><b>Link title</b></label>
+        @TextBox(info, "genxml/textbox/linktitle", "class='w3-input w3-border'", "", false)
+    </div>
+    <div class="w3-padding w3-row">
+        <label><b>Link</b></label>
+        @RadioButtonList(info, "genxml/select/rbllink", "0,1,2", "None, Internal link, External link", "0")
+    </div>
+
+    <!-- If "Internal link" is clicked -->
+    <div class="w3-row internallink w3-padding" style="display:none;">
+        <div class="w3-row">
+            <label><b>Page of the website</b></label>
+
+        </div>
+        <div class="w3-row">
+            @TabSelectList(info, "genxml/select/linktab", "class='w3-input w3-border'", false)
+        </div>
+
+        <label><b>Anchor (id)</b></label>
+        @TextBox(info, "genxml/textbox/linkanchor", "class='w3-input w3-border'", "", false)
+    </div>
+
+    <!-- If "External link" is clicked -->
+    <div class="w3-row externallink w3-padding" style="display:none;">
+        <label><b>URL (http://www.mylink.com)</b></label>
+        <div>@TextBox(info, "genxml/textbox/externalhref", "class='w3-input w3-border'", "", false)</div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        var tabddlvalue = $("input:checked[name*='rbllink']").val();
+        displaylinksection(tabddlvalue);
+        $("input[name*='rbllink']").click(function () {
+            var tabddlvalue = $(this).val();
+            displaylinksection(tabddlvalue);
+        });
+
+        function displaylinksection(tabddlvalue) {
+            $(".internallink").hide();
+            $(".externallink").hide();
+            if (tabddlvalue == 1) $(".internallink").show();
+            if (tabddlvalue == 2) $(".externallink").show();
+        }
+
+    });
+</script>
