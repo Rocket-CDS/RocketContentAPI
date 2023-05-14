@@ -50,11 +50,11 @@ namespace RocketContentAPI.Components
         {
             return Info.GetList(ImageListName);
         }
-        public ArticleImage AddImage(string uniqueName)
+        public ArticleImage AddImage(string uniqueName, int moduleId)
         {
             var articleImage = new ArticleImage(new SimplisityInfo(), "articleimage");
             var portalContent = new PortalContentLimpet(PortalUtils.GetCurrentPortalId(), DNNrocketUtils.GetCurrentCulture());
-            articleImage.RelPath = portalContent.ImageFolderRel.TrimEnd('/') + "/" + uniqueName;
+            articleImage.RelPath = portalContent.ImageFolderRel.TrimEnd('/') + "/" + moduleId + "/" + uniqueName;
             Info.AddListItem(ImageListName, articleImage.Info);
             return articleImage;
         }
@@ -92,11 +92,11 @@ namespace RocketContentAPI.Components
         {
             return Info.GetList(DocumentListName);
         }
-        public ArticleDoc AddDoc(string uniqueName)
+        public ArticleDoc AddDoc(string uniqueName, int moduleId)
         {
             var articleDoc = new ArticleDoc(new SimplisityInfo(), "articledoc");
             var portalContent = new PortalContentLimpet(PortalUtils.GetCurrentPortalId(), DNNrocketUtils.GetCurrentCulture());
-            articleDoc.RelPath = portalContent.DocFolderRel.TrimEnd('/') + "/" + uniqueName;
+            articleDoc.RelPath = portalContent.DocFolderRel.TrimEnd('/') + "/" + moduleId + "/" + uniqueName;
             articleDoc.Name = uniqueName;
             Info.AddListItem(DocumentListName, articleDoc.Info);
             return articleDoc;

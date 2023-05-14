@@ -13,16 +13,9 @@ namespace RocketContentAPI.API
 {
     public partial class StartConnect
     {
-        private ArticleLimpet GetActiveArticle(string dataRef, string culturecode = "")
-        {
-            if (culturecode == "") culturecode = _sessionParams.CultureCodeEdit;
-            if (culturecode == "") culturecode = DNNrocketUtils.GetEditCulture();
-            return new ArticleLimpet(_dataObject.PortalId, dataRef, culturecode);
-        }
         public string AddRow()
         {
-            var articleData = _dataObject.ArticleData;
-            _rowKey = articleData.AddRow();
+            _rowKey = _dataObject.ArticleData.AddRow();
             return AdminDetailDisplay();
         }
         public string SortRows()
@@ -40,7 +33,7 @@ namespace RocketContentAPI.API
             // we need to sort ALL langauges. 
             foreach (var cultureCode in DNNrocketUtils.GetCultureCodeList(_dataObject.PortalId))
             {
-                var articleData = new ArticleLimpet(_dataObject.PortalId, _moduleRef, cultureCode);
+                var articleData = new ArticleLimpet(_dataObject.PortalId, _moduleRef, cultureCode, _moduleId);
 
                 // Build new sorted list
                 var rowInfoDict = new Dictionary<string, SimplisityInfo>();
@@ -68,7 +61,7 @@ namespace RocketContentAPI.API
                 //a.RebuildLangIndex(); // rebuild the index record [Essential to get the correct sort order]
             }
 
-            var articleData2 = GetActiveArticle(_moduleRef);
+            var articleData2 = new ArticleLimpet(_dataObject.PortalId, _moduleRef, _sessionParams.CultureCodeEdit, _moduleId);
             _dataObject.SetDataObject("articledata", articleData2);
             return AdminDetailDisplay();
         }
@@ -78,7 +71,7 @@ namespace RocketContentAPI.API
             articleData.RemoveRow(_rowKey);
 
             // reload so we always have 1 row.
-            var articleData2 = GetActiveArticle(_moduleRef);
+            var articleData2 = new ArticleLimpet(_dataObject.PortalId, _moduleRef, _sessionParams.CultureCodeEdit, _moduleId);
             _dataObject.SetDataObject("articledata", articleData2);
 
             _rowKey = articleData.GetRow(0).Info.GetXmlProperty("genxml/config/rowkey");
@@ -87,8 +80,10 @@ namespace RocketContentAPI.API
         public string SaveArticleRow()
         {
             var articleData = _dataObject.ArticleData;
+            articleData.ModuleId = _dataObject.ModuleSettings.ModuleId;
             articleData.UpdateRow(_rowKey, _postInfo, _dataObject.ModuleSettings.SecureSave);
             _dataObject.SetDataObject("articledata", articleData);
+            CacheUtils.ClearAllCache(_dataObject.ModuleSettings.ModuleRef);
             return AdminDetailDisplay();
         }
         public void DeleteArticle()
@@ -112,14 +107,16 @@ namespace RocketContentAPI.API
                 var imgsize = _postInfo.GetXmlPropertyInt("genxml/hidden/imageresize");
                 if (imgsize == 0) imgsize = _dataObject.ModuleSettings.Record.GetXmlPropertyInt("genxml/settings/imageresize");
                 if (imgsize == 0) imgsize = 640;
-                var imgList = ImgUtils.UploadBase64Image(filenameList, filebase64List, baseFileMapPath, _dataObject.PortalContent.ImageFolderMapPath, imgsize);
+                var destDir = _dataObject.PortalContent.ImageFolderMapPath + "\\" + _dataObject.ModuleSettings.ModuleId;
+                if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
+                var imgList = ImgUtils.UploadBase64Image(filenameList, filebase64List, baseFileMapPath, destDir, imgsize);
                 foreach (var imgFileMapPath in imgList)
                 {
                     var articleRow = articleData.GetRow(_rowKey);
                     if (articleRow != null)
                     {
                         if (singleImage) articleRow.Info.RemoveList(articleData.ImageListName);
-                        articleRow.AddImage(Path.GetFileName(imgFileMapPath));
+                        articleRow.AddImage(Path.GetFileName(imgFileMapPath), articleData.ModuleId);
                         articleData.UpdateRow(_rowKey, articleRow.Info);
                     }
                 }
@@ -152,14 +149,16 @@ namespace RocketContentAPI.API
             {
                 var filenameList = fileuploadlist.Split('*');
                 var filebase64List = fileuploadbase64.Split('*');
-                var fileList = DocUtils.UploadBase64file(filenameList, filebase64List, _dataObject.PortalContent.DocFolderMapPath);
+                var destDir = _dataObject.PortalContent.DocFolderMapPath + "\\" + _dataObject.ModuleSettings.ModuleId;
+                if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
+                var fileList = DocUtils.UploadBase64file(filenameList, filebase64List, destDir);
                 if (fileList.Count == 0) return MessageDisplay("RCT.invalidfile");
                 foreach (var docFileMapPath in fileList)
                 {
                     var articleRow = articleData.GetRow(_rowKey);
                     if (articleRow != null)
                     {
-                        articleRow.AddDoc(Path.GetFileName(docFileMapPath));
+                        articleRow.AddDoc(Path.GetFileName(docFileMapPath), articleData.ModuleId);
                         articleData.UpdateRow(_rowKey, articleRow.Info);
                     }
                 }
@@ -202,13 +201,14 @@ namespace RocketContentAPI.API
         {
             var articleData = _dataObject.ArticleData;
             articleData.Delete();
-            var articleData2 = GetActiveArticle(_moduleRef);
+            var articleData2 = new ArticleLimpet(_dataObject.PortalId, _moduleRef, _sessionParams.CultureCodeEdit, _moduleId);
             _dataObject.SetDataObject("articledata", articleData2);
             return AdminDetailDisplay();
         }
         public String AdminDetailDisplay()
         {
             // rowKey can come from the sessionParams or paramInfo.  (Because on no rowkey on the language change)
+            if (_dataObject.ArticleData.GetRowList().Count  == 0) AddRow(); // create first row automatically
             var articleRow = _dataObject.ArticleData.GetRow(0);
             if (_rowKey != "") articleRow = _dataObject.ArticleData.GetRow(_rowKey);
             if (articleRow == null) articleRow = _dataObject.ArticleData.GetRow(0);  // row removed and still in sessionparams

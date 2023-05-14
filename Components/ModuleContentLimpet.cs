@@ -15,6 +15,7 @@ namespace RocketContentAPI.Components
     {
         public ModuleContentLimpet(int portalId, string moduleRef, string systemKey, int moduleid = -1, int tabid = -1) : base(portalId, moduleRef, moduleid, tabid)
         {
+            base.SystemKey = systemKey;
         }
     }
 }

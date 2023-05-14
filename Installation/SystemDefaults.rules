@@ -145,7 +145,18 @@
       <action>false</action>
     </command>
 
-    
+
+	  <command>
+		  <cmd>rocketcontentapi_exportmodule</cmd>
+		  <action>false</action>
+	  </command>
+	  <command>
+		  <cmd>rocketcontentapi_importmodule</cmd>
+		  <action>false</action>
+	  </command>
+
+
+
 
 
   </commands>

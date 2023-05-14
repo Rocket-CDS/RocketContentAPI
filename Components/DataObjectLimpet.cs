@@ -1,4 +1,5 @@
-﻿using DNNrocketAPI.Components;
+﻿using DNNrocketAPI;
+using DNNrocketAPI.Components;
 using Newtonsoft.Json.Linq;
 using Rocket.AppThemes.Components;
 using RocketPortal.Components;
@@ -12,6 +13,7 @@ namespace RocketContentAPI.Components
 {
     public class DataObjectLimpet
     {
+        public const string _tableName = "RocketContentAPI";
         private Dictionary<string, object> _dataObjects;
         private Dictionary<string, string> _passSettings;
         public DataObjectLimpet(int portalid, string moduleRef, string rowKey, SessionParams sessionParams, bool editMode = true)
@@ -29,7 +31,7 @@ namespace RocketContentAPI.Components
             _passSettings = new Dictionary<string, string>();
             _dataObjects = new Dictionary<string, object>();
             var moduleSettings = new ModuleContentLimpet(portalid, moduleRef, SystemKey, moduleId, tabId);
-            var articleData = new ArticleLimpet(portalid, moduleSettings.DataRef, cultureCode);
+            var articleData = new ArticleLimpet(portalid, moduleSettings.DataRef, cultureCode, moduleId);
             SetDataObject("modulesettings", moduleSettings);
             SetDataObject("appthemesystem", AppThemeUtils.AppThemeSystem(portalid, SystemKey));
             SetDataObject("portalcontent", new PortalContentLimpet(portalid, cultureCode));
@@ -85,6 +87,30 @@ namespace RocketContentAPI.Components
         public List<SimplisityRecord> GetAppThemeProjects()
         {
             return AppThemeProjects.List;
+        }
+        public List<SimplisityRecord> GetAllRecordART(int moduleid = -1)
+        {
+            var objCtrl = new DNNrocketController();
+            var rtn = new List<SimplisityRecord>();
+            var l = objCtrl.GetList(PortalContent.PortalId, moduleid, "ART", "", "", "", 0, 0, 0, 0, _tableName);
+            foreach (var a in l)
+            {
+                a.RemoveLangRecord();
+                rtn.Add(a);
+            }
+            return rtn;
+        }
+        public List<SimplisityRecord> GetAllRecordARTLANG(int moduleid = -1)
+        {
+            var objCtrl = new DNNrocketController();
+            var rtn = new List<SimplisityRecord>();
+            var l = objCtrl.GetList(PortalContent.PortalId, moduleid, "ARTLANG", "", "", "", 0, 0, 0, 0, _tableName);
+            foreach (var a in l)
+            {
+                a.RemoveLangRecord();
+                rtn.Add(a);
+            }
+            return rtn;
         }
         public string SystemKey { get { return "rocketcontentapi"; } }
         public int PortalId { get { return PortalData.PortalId; } }

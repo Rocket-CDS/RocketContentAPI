@@ -30,7 +30,7 @@ namespace RocketContentAPI.Components
         /// <param name="portalId"></param>
         /// <param name="dataRef"></param>
         /// <param name="langRequired"></param>
-        public ArticleLimpet(int portalId, string dataRef, string langRequired, int moduleid = -1)
+        public ArticleLimpet(int portalId, string dataRef, string langRequired, int moduleid)
         {
             PortalId = portalId;
             _info = new SimplisityInfo();
@@ -65,11 +65,13 @@ namespace RocketContentAPI.Components
             if (info != null && info.ItemID > 0) _info = info; // check if we have a real record, or a dummy being created and not saved yet.
             _info.Lang = CultureCode;
             PortalId = _info.PortalId;
-            if (DataRef == "") DataRef = GeneralUtils.GetGuidKey();
-            if (GetRowList().Count  == 0) AddRow(); // create first row automatically
+            if (DataRef == "") DataRef = PortalId + "_ModuleId_" + ModuleId;
+            
+            // ** This line creates phantom records. **
+            //if (GetRowList().Count  == 0) AddRow(); // create first row automatically
 
             // Add namespace and json convert to lists. (for handlebars)
-            GeneralUtils.AddJsonNetRootAttribute(ref _info);
+            //GeneralUtils.AddJsonNetRootAttribute(ref _info); //dropped supported
 
         }
         public void Delete()
@@ -94,18 +96,10 @@ namespace RocketContentAPI.Components
         }
         public int Update()
         {
-            // Add namespace and json convert to lists. (for handlebars)
-            GeneralUtils.AddJsonArrayAttributesForXPath("genxml/rows/genxml/imagelist/genxml", ref _info);
-            GeneralUtils.AddJsonArrayAttributesForXPath("genxml/lang/genxml/rows/genxml/imagelist/genxml", ref _info);
-            GeneralUtils.AddJsonArrayAttributesForXPath("genxml/rows/genxml/documentlist/genxml", ref _info);
-            GeneralUtils.AddJsonArrayAttributesForXPath("genxml/lang/genxml/rows/genxml/documentlist/genxml", ref _info);
-            GeneralUtils.AddJsonArrayAttributesForXPath("genxml/rows/genxml/linklist/genxml", ref _info);
-            GeneralUtils.AddJsonArrayAttributesForXPath("genxml/lang/genxml/rows/genxml/linklist/genxml", ref _info);
-
             _info = _objCtrl.SaveData(_info, _tableName);
             if (_info.GUIDKey == "")
             {
-                _info.GUIDKey = GeneralUtils.GetGuidKey();
+                _info.GUIDKey = PortalId + "_ModuleId_" + ModuleId;
                 _info = _objCtrl.SaveData(_info, _tableName);
             }
             return _info.ItemID;
@@ -119,13 +113,6 @@ namespace RocketContentAPI.Components
             Validate();
             return Update();
         }
-        public int Copy()
-        {
-            _info.ItemID = -1;
-            _info.GUIDKey = GeneralUtils.GetGuidKey();
-            return Update();
-        }
-
         public void AddListItem(string listname)
         {
             if (_info.ItemID < 0) Update(); // blank record, not on DB.  Create now.

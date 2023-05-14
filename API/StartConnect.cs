@@ -150,6 +150,13 @@ namespace RocketContentAPI.API
                 case "remote_publicseo":
                     strOut = ""; // not used for rocketcontentapi
                     break;
+                case "rocketcontentapi_exportmodule":
+                    strOut = ExportData(); 
+                    break;
+                case "rocketcontentapi_importmodule":
+                    ImportData();
+                    strOut = "";
+                    break;                    
 
                 case "invalidcommand":
                     strOut = "INVALID COMMAND: " + storeParamCmd;

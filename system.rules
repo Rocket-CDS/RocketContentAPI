@@ -16,10 +16,93 @@
     </groupsdata>
 
     <providerdata list="true">
-      
 
 
-    </providerdata>
+		<genxml>
+			<textbox>
+				<interfacekey>scheduler</interfacekey>
+				<namespaceclass>RocketContentAPI.Components.Scheduler</namespaceclass>
+				<assembly>RocketContentAPI</assembly>
+				<interfaceicon></interfaceicon>
+				<defaultcommand></defaultcommand>
+				<relpath>/DesktopModules/DNNrocketModules/RocketContentAPI</relpath>
+			</textbox>
+			<providertype>scheduler</providertype>
+			<dropdownlist>
+				<group></group>
+			</dropdownlist>
+			<checkbox>
+				<onmenu>false</onmenu>
+				<active>true</active>
+			</checkbox>
+			<radio>
+				<securityrolesadministrators>1</securityrolesadministrators>
+				<securityrolesmanager>0</securityrolesmanager>
+				<securityroleseditor>0</securityroleseditor>
+				<securityrolesclienteditor>0</securityrolesclienteditor>
+				<securityrolesregisteredusers>0</securityrolesregisteredusers>
+				<securityrolessubscribers>0</securityrolessubscribers>
+				<securityrolesall>0</securityrolesall>
+			</radio>
+		</genxml>
+
+		<genxml>
+			<textbox>
+				<interfacekey>exportmodule</interfacekey>
+				<namespaceclass>RocketContentAPI.API.StartConnect</namespaceclass>
+				<assembly>RocketContentAPI</assembly>
+				<interfaceicon></interfaceicon>
+				<defaultcommand>rocketcontentapi_exportmodule</defaultcommand>
+				<relpath>/DesktopModules/DNNrocketModules/RocketContentAPI</relpath>
+			</textbox>
+			<providertype>exportmodule</providertype>
+			<dropdownlist>
+				<group></group>
+			</dropdownlist>
+			<checkbox>
+				<onmenu>false</onmenu>
+				<active>true</active>
+			</checkbox>
+			<radio>
+				<securityrolesadministrators>1</securityrolesadministrators>
+				<securityrolesmanager>0</securityrolesmanager>
+				<securityroleseditor>0</securityroleseditor>
+				<securityrolesclienteditor>0</securityrolesclienteditor>
+				<securityrolesregisteredusers>0</securityrolesregisteredusers>
+				<securityrolessubscribers>0</securityrolessubscribers>
+				<securityrolesall>0</securityrolesall>
+			</radio>
+		</genxml>
+
+		<genxml>
+			<textbox>
+				<interfacekey>importmodule</interfacekey>
+				<namespaceclass>RocketContentAPI.API.StartConnect</namespaceclass>
+				<assembly>RocketContentAPI</assembly>
+				<interfaceicon></interfaceicon>
+				<defaultcommand>rocketcontentapi_importmodule</defaultcommand>
+				<relpath>/DesktopModules/DNNrocketModules/RocketContentAPI</relpath>
+			</textbox>
+			<providertype>importmodule</providertype>
+			<dropdownlist>
+				<group></group>
+			</dropdownlist>
+			<checkbox>
+				<onmenu>false</onmenu>
+				<active>true</active>
+			</checkbox>
+			<radio>
+				<securityrolesadministrators>1</securityrolesadministrators>
+				<securityrolesmanager>0</securityrolesmanager>
+				<securityroleseditor>0</securityroleseditor>
+				<securityrolesclienteditor>0</securityrolesclienteditor>
+				<securityrolesregisteredusers>0</securityrolesregisteredusers>
+				<securityrolessubscribers>0</securityrolessubscribers>
+				<securityrolesall>0</securityrolesall>
+			</radio>
+		</genxml>
+
+	</providerdata>
 
 
     <interfacedata list="true">
