@@ -279,9 +279,42 @@ namespace RocketContentAPI.API
                 }
             }
 
-
-
             //import DOCS
+
+            var docsDict = new Dictionary<string, string>();
+            var destDocFolder = _dataObject.PortalContent.DocFolderRel + "/" + moduleId;
+            var destDocFolderMapPath = DNNrocketUtils.MapPath(destDocFolder);
+            if (!Directory.Exists(destDocFolderMapPath)) Directory.CreateDirectory(destDocFolderMapPath);
+            var articleData2 = new ArticleLimpet(portalId, moduleRef, _sessionParams.CultureCodeEdit, moduleId);
+            foreach (var rowData in articleData2.GetRows())
+            {
+                foreach (var i in rowData.GetDocs())
+                {
+                    if (!docsDict.ContainsKey(i.RelPath)) docsDict.Add(i.RelPath, destDocFolder + "/" + Path.GetFileName(i.RelPath));
+                }
+            }
+            var xData2 = articleData2.Info.XMLData;
+            foreach (var i in docsDict)
+            {
+                xData2 = xData2.Replace(i.Key, i.Value);
+            }
+            articleData2.Info.XMLData = xData2;
+            articleData2.Update();
+
+            var DocNods = xmlDoc.SelectNodes("export/docs/*");
+            if (DocNods != null)
+            {
+                foreach (XmlNode base64Node in DocNods)
+                {
+                    var oldDocPath = base64Node.SelectSingleNode("@filerelpath").InnerText;
+                    var base64String = base64Node.InnerText;
+                    if (base64String != "")
+                    {
+                        var Docpath = destDocFolderMapPath + "\\" + Path.GetFileName(oldDocPath);
+                        File.WriteAllBytes(Docpath, Convert.FromBase64String(base64String));
+                    }
+                }
+            }
 
 
 
