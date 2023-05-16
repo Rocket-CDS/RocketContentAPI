@@ -36,7 +36,7 @@ namespace RocketContentAPI.Components
             SetDataObject("appthemesystem", AppThemeUtils.AppThemeSystem(portalid, SystemKey));
             SetDataObject("portalcontent", new PortalContentLimpet(portalid, cultureCode));
             SetDataObject("portaldata", new PortalLimpet(portalid));
-            SetDataObject("systemdata", new SystemLimpet(SystemKey));
+            SetDataObject("systemdata", SystemSingleton.Instance(SystemKey));
             SetDataObject("appthemeprojects", AppThemeUtils.AppThemeProjects());
             SetDataObject("articledata", articleData);
 

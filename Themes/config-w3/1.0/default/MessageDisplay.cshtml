@@ -9,7 +9,7 @@
 
 @{
     var articleData = (ArticleLimpet)Model.List.First();
-    var systemData = new SystemLimpet("rocketcontentapi");
+    var systemData = SystemSingleton.Instance("rocketcontentapi");
     var appThemeSystem = new AppThemeSystemLimpet(systemData.SystemKey);
     var info = articleData.Info;
     var appTheme = (AppThemeLimpet)Model.GetDataObject("apptheme");
