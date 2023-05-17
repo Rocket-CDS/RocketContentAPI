@@ -84,6 +84,12 @@ namespace RocketContentAPI.API
                 case "article_adddoc":
                     strOut = AddArticleDoc();
                     break;
+                case "article_adddoc1":
+                    strOut = AddArticleDoc(true);
+                    break;
+                case "article_removedoc":
+                    strOut = RemoveArticleDoc();
+                    break;
                 case "article_addlink":
                     strOut = AddArticleLink();
                     break;

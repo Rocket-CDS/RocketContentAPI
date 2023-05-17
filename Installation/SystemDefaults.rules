@@ -62,6 +62,14 @@
 		  <action>true</action>
 	  </command>
 	  <command>
+		  <cmd>article_adddoc1</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>article_removedoc</cmd>
+		  <action>true</action>
+	  </command>	  
+	  <command>
 		  <cmd>article_addlink</cmd>
 		  <action>true</action>
 	  </command>

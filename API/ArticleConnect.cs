@@ -137,7 +137,7 @@ namespace RocketContentAPI.API
 
             return AdminDetailDisplay();
         }
-        public string AddArticleDoc()
+        public string AddArticleDoc(bool singleDoc = false)
         {
             var articleData = _dataObject.ArticleData;
             articleData.UpdateRow(_rowKey, _postInfo);
@@ -158,6 +158,7 @@ namespace RocketContentAPI.API
                     var articleRow = articleData.GetRow(_rowKey);
                     if (articleRow != null)
                     {
+                        if (singleDoc) articleRow.Info.RemoveList(articleData.ImageListName);
                         articleRow.AddDoc(Path.GetFileName(docFileMapPath), articleData.ModuleId);
                         articleData.UpdateRow(_rowKey, articleRow.Info);
                     }
@@ -166,6 +167,19 @@ namespace RocketContentAPI.API
 
             return AdminDetailDisplay();
         }
+        public string RemoveArticleDoc()
+        {
+            var articleData = _dataObject.ArticleData;
+            articleData.UpdateRow(_rowKey, _postInfo);
+            var articleRow = articleData.GetRow(_rowKey);
+            if (articleRow != null)
+            {
+                articleRow.Info.RemoveList(articleData.DocumentListName);
+                articleData.UpdateRow(_rowKey, articleRow.Info);
+            }
+            return AdminDetailDisplay();
+        }
+
         /// <summary>
         /// Add a listitem to a row item.
         /// </summary>

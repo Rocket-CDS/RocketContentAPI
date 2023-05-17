@@ -16,6 +16,11 @@
         info = articleData.Info;
     }
     var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var cmd = Model.GetSetting("cmd");
+    if (cmd == "")
+    {
+        cmd = "article_adddoc";
+    }
 }
 
 <div id="articledocumentselect" class="w3-modal">
@@ -29,7 +34,7 @@
                     <h2>@ResourceKey("DNNrocket.documentupload")</h2>
                     <p>@ResourceKey("DNNrocket.documentupload", "", "Msg")</p>
 
-                <input id="documentfileupload" class="simplisity_base64upload" s-reload="false" s-cmd="article_adddoc" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' type="file" name="file[]" multiple style="display:none;">
+                <input id="documentfileupload" class="simplisity_base64upload" s-reload="false" s-cmd="@(cmd)" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' type="file" name="file[]" multiple style="display:none;">
                     <div class="w3-row w3-margin-bottom">
                         <span class="w3-col m12 w3-button w3-teal fileuploadaction" onclick="$('#documentfileupload').trigger('click');">@ButtonText(ButtonTypes.upload)</span>
                     </div>

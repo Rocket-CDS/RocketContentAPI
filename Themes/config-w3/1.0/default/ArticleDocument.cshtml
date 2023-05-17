@@ -1,0 +1,53 @@
+﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketContentAPI.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
+
+@{
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
+    var docLP = 1;
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
+    var docData = articleRowData.GetDoc(1);
+    var globalSettings = new SystemGlobalData();
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var sessionParams = Model.SessionParamsData;
+    Model.GetSetting("cmd", "article_adddoc1");
+}
+
+<div class="w3-row">
+
+     <div class=" @articleData.DocumentListName w3-display-container w3-padding w3-card">
+        <div class="w3-row">
+            @if (docData.Exists)
+            {
+                <span class="w3-button w3-display-topright  simplisity_confirmclick" s-confirm="@ResourceKey("RCT.removedoc") ?"  s-cmd="article_removedoc"  s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId", "rowkey":"@(articleRowData.RowKey)"}'>
+                    @ButtonIcon(ButtonTypes.remove)
+                </span>
+            }
+            else
+            {
+                <span class="w3-button w3-display-topleft" onclick="$('#articledocumentselect').show();">
+                    @ButtonIcon(ButtonTypes.add)
+                </span>                
+            }
+            <div class="w3-col m8 w3-padding">
+                @HiddenField(docData.Info, "genxml/hidden/documentpatharticledoc", "", "", false)
+                <label class="">@ResourceKey("DNNrocket.document")</label>
+                @TextBox(docData.Info, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border' ", "", false)
+            </div>
+            <div class="w3-col m2 w3-padding" style="">
+                <label class="">@ResourceKey("DNNrocket.hidden")</label>&nbsp;@EditFlag(sessionParams)<br />
+                @CheckBox(docData.Info, "genxml/lang/genxml/checkbox/documenthiddenarticledoc", "", "class='w3-check'", false, false)
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@RenderTemplate("ArticleDocumentSelect.cshtml", appThemeSystem, Model, true)
