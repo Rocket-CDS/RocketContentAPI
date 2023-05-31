@@ -172,6 +172,11 @@ namespace RocketContentAPI.Components
             {
                 _info.AddListItem("rows", sInfo);
             }
+
+            // Set header Data
+            _info = ReplaceInfoFields(_info, postInfo, "genxml/header/*");
+            _info = ReplaceInfoFields(_info, postInfo, "genxml/lang/genxml/header/*");
+
             Update();
         }
         public string AddRow()
