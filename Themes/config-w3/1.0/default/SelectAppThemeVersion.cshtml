@@ -32,7 +32,7 @@
     @foreach (var appThemeV in appThemeView.VersionList)
     {
         <div class="w3-padding w3-col m2">
-            <div class="w3-button w3-theme w3-round-xxlarge w3-large simplisity_click" s-cmd="@cmd" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","appthemefolderversion":"@appThemeV"}'>
+            <div class="w3-button w3-theme w3-round-xxlarge w3-large a-trigger simplisity_click" s-cmd="@cmd" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","appthemefolderversion":"@appThemeV"}'>
                 @appThemeV
             </div>
         </div>
@@ -43,6 +43,13 @@
     $(document).ready(function () {
         $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketcontentapi', debug: false });
         $('.simplisity_loader').hide();
+        @if (appThemeView.VersionList.Count == 1)
+        {
+            <text>
+                $('.a-trigger').trigger('click');
+            </text>
+        }
+
     });
 </script>
 
