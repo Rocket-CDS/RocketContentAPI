@@ -1,0 +1,49 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI;
+@using Simplisity;
+@using RocketContentAPI.Components;
+@using DNNrocketAPI.Components;
+@using RocketPortal.Components;
+@{
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
+    var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
+    var appThemeAdmin = (AppThemeLimpet)Model.GetDataObject("appthemeadmin");
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var globalSettings = new SystemGlobalData();
+    var sessionParams = Model.SessionParamsData;
+
+    var info = new SimplisityInfo();
+    if (articleRowData != null && articleRowData.Info != null)
+    {
+        info = articleRowData.Info;
+    }
+    AddProcessDataResx(appThemeView, true);
+    AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContent/App_LocalResources/");
+}
+
+<div class='w3-row w3-margin-top' style="background-color: lightgrey;">
+    <div class="w3-row">
+        <div class='w3-col m12 w3-padding'>    
+            <label> @ResourceKey("HtmlContent.heading") </label>		&nbsp;@EditFlag(sessionParams)
+            @TextBox(info, "genxml/lang/genxml/header/headingtitle", " class='w3-input w3-border' autocomplete='off' ", "", true, 0)
+        </div>
+    </div>
+    <div class="w3-row">
+        <div class='w3-col m3 w3-padding'>
+            <label>@ResourceKey("General.headingstyle")</label>
+            @DropDownList(info, "genxml/select/headerstyle", "h1,h2,h3,h4", "H1,H2,H3,H4", "class='w3-select w3-border ' ", "", false, 0)
+        </div>
+        <div class='w3-col m3 w3-padding'>
+            <label>&nbsp;</label>
+            @RadioButtonList(info, "genxml/select/headeralign", "start,center,end", "<span class='material-icons'>format_align_left</span>,<span class='material-icons'>format_align_center</span>,<span class='material-icons'>format_align_right</span>", "", "1", "", false, 0, "")
+        </div>
+        <div class="w3-col m3 w3-padding">
+            <label>Anchor id</label>		&nbsp;@EditFlag(sessionParams)
+            @TextBox(info, "genxml/lang/genxml/textbox/headeranchor", "class='w3-input w3-border' autocomplete='off'", "", true, 0)
+        </div>
+
+    </div>
+</div>

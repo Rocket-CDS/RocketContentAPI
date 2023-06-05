@@ -24,12 +24,11 @@
     AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContent/App_LocalResources/");
 }
 
-
 <div class="w3-row">
 
     <div class="w3-padding w3-row">
-        <label><b>Link title</b></label>
-        @TextBox(info, "genxml/textbox/linktitle", "class='w3-input w3-border'", "", false)
+        <label><b>Link title</b></label>&nbsp;@EditFlag(sessionParams)
+        @TextBox(info, "genxml/lang/genxml/textbox/linktitle", "class='w3-input w3-border'", "", false)
     </div>
     <div class="w3-padding w3-row">
         <label><b>Link</b></label>
@@ -46,14 +45,18 @@
             @TabSelectList(info, "genxml/select/linktab", "class='w3-input w3-border'", false)
         </div>
 
-        <label><b>Anchor (id)</b></label>
-        @TextBox(info, "genxml/textbox/linkanchor", "class='w3-input w3-border'", "", false)
+        <label><b>Anchor (id)</b></label>&nbsp;@EditFlag(sessionParams)
+        @TextBox(info, "genxml/lang/genxml/textbox/linkanchor", "class='w3-input w3-border'", "", false)
     </div>
 
     <!-- If "External link" is clicked -->
     <div class="w3-row externallink w3-padding" style="display:none;">
         <label><b>URL (http://www.mylink.com)</b></label>
         <div>@TextBox(info, "genxml/textbox/externalhref", "class='w3-input w3-border'", "", false)</div>
+        <div class="w3-col m3">
+            <label>Blank</label>
+            @CheckBox(info, "genxml/checkbox/blank", "", "class='w3-check' ", false, false)
+        </div>
     </div>
 </div>
 

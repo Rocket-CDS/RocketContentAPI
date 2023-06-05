@@ -24,8 +24,7 @@
     AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/");
 }
 
-
-<div class="w3-theme-action w3-margin-bottom w3-row w3-padding simplisity_click" s-cmd="article_addrow" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' style="cursor:pointer;">
+<div class="w3-theme-action w3-button w3-block w3-left-align w3-section simplisity_click" s-cmd="article_addrow" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' style="cursor:pointer;">
     @ButtonText(ButtonTypes.add)
 </div>
 
@@ -35,10 +34,24 @@
 
     @foreach (var articleRow in articleData.GetRows())
     {
-        <li class="w3-row w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
-            <div id="@articleRow.RowKey" class="w3-row w3-card w3-padding w3-theme-l3 w3-small selectedrow" style="cursor:pointer;">
-                <span class="simplisity_click" rowkey="@articleRow.RowKey" s-cmd="article_editrow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.edit)&nbsp;<b>@articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/title")&nbsp;</b></span>
-                <span class="w3-right w3-button w3-align-right simplisity_confirmclick" s-confirm="@ResourceKey("RCT.removerow")" s-cmd="article_removerow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' style="width:60px;">@(ButtonIcon(ButtonTypes.remove))</span>
+        <li class="w3-padding w3-border-0" style="list-style-type:none;">
+            <div id="@articleRow.RowKey" class="w3-card w3-padding w3-theme-l3 selectedrow w3-display-container w3-row" style="cursor:grab;">
+                <b>@articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/title")</b>
+                <hr />
+                <div class="w3-left">
+                    <span class="w3-button w3-circle w3-theme-action simplisity_click" style="width:40px;height:40px;padding:8px 0;" rowkey="@articleRow.RowKey" s-cmd="article_editrow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.edit)</span>
+                    <span class="w3-button w3-circle w3-theme-action simplisity_confirmclick" style="width:40px;height:40px;padding:8px 0;" s-confirm="@ResourceKey("RCT.removerow")" s-cmd="article_removerow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.delete)</span>
+                </div>
+                <div class="w3-right">
+                    @if (articleRow.Info.GetXmlPropertyBool("genxml/checkbox/hiderow"))
+                    {
+                        <span class="w3-button w3-circle" style="width:40px;height:40px;padding:8px 0;"><span class="material-icons">visibility_off</span></span>
+                    }
+                    else
+                    {
+                        <span class="w3-button w3-circle" style="width:40px;height:40px;padding:8px 0;"><span class="material-icons">visibility</span></span>
+                    }
+                </div>
             </div>
         </li>
     }

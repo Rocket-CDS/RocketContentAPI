@@ -40,12 +40,15 @@
                         </span>
                         <div class="w3-col m8 w3-padding">
                             @HiddenField(docInfo, "genxml/hidden/documentpatharticledoc", "", "", false, docLP)
-                            <label class="">@ResourceKey("DNNrocket.document")</label>
+
+                            <label class="">Name</label>&nbsp;@EditFlag(sessionParams)
+                            @TextBox(docInfo, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' ", "", false, docLP)
+                            <label class="">@ResourceKey("DNNrocket.document")</label>&nbsp;@EditFlag(sessionParams)
                             @TextBox(docInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border' ", "", false, docLP)
                         </div>
                         <div class="w3-col m2 w3-padding" style="">
-                            <label class="">@ResourceKey("DNNrocket.hidden")</label>&nbsp;@EditFlag(sessionParams)<br />
-                            @CheckBox(docInfo, "genxml/lang/genxml/checkbox/documenthiddenarticledoc", "", "class='w3-check'", false, false, docLP)
+                            <label class="">open in a new tab<br />
+                            @CheckBox(docInfo, "genxml/checkbox/openinnewtab", "", "class='w3-check'", false, false, docLP)
                         </div>
                     </div>
                 </div>

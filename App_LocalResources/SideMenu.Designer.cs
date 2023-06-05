@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RocketContentAPIAPI.App_LocalResources {
+namespace RocketContentAPI.App_LocalResources {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace RocketContentAPIAPI.App_LocalResources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SideMenu {
@@ -39,7 +39,7 @@ namespace RocketContentAPIAPI.App_LocalResources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RocketContentAPIAPI.App_LocalResources.SideMenu", typeof(SideMenu).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RocketContentAPI.App_LocalResources.SideMenu", typeof(SideMenu).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -75,6 +75,31 @@ namespace RocketContentAPIAPI.App_LocalResources {
         internal static string dashboard_Text {
             get {
                 return ResourceManager.GetString("dashboard.Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;root&gt;
+        ///  &lt;!-- 
+        ///    Microsoft ResX Schema 
+        ///    
+        ///    Version 2.0
+        ///    
+        ///    The primary goals of this format is to allow a simple XML format 
+        ///    that is mostly human readable. The generation and parsing of the 
+        ///    various data types are done through the TypeConverter classes 
+        ///    associated with the data types.
+        ///    
+        ///    Example:
+        ///    
+        ///    ... ado.net/XML headers &amp; schema ...
+        ///    &lt;resheader name=&quot;resmimetype&quot;&gt;text/microsoft-resx&lt;/resheader&gt;
+        ///    &lt;resheader n [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string RCT {
+            get {
+                return ResourceManager.GetString("RCT", resourceCulture);
             }
         }
     }

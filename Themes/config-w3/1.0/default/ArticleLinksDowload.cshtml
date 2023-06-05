@@ -39,27 +39,48 @@
                     var linktype = linkInfo.GetXmlPropertyInt("genxml/radio/linktype" + fieldId);
                     var internaldisplay = "";
                     var externaldisplay = "";
+                    var documentdisplay = "";
+                    if (linktype == 0)
+                    {
+                        internaldisplay = "display:none;";
+                        externaldisplay = "display:none;";
+                        documentdisplay = "display:none;";
+                    }
                     if (linktype == 1)
                     {
                         internaldisplay = "";
                         externaldisplay = "display:none;";
+                        documentdisplay = "display:none;";
                     }
                     if (linktype == 2)
                     {
                         internaldisplay = "display:none;";
                         externaldisplay = "";
+                        documentdisplay = "display:none;";
+                    }
+                    if (linktype == 3)
+                    {
+                        internaldisplay = "display:none;";
+                        externaldisplay = "display:none;";
+                        documentdisplay = "";
                     }
                 }
                 <div class="w3-display-container w3-padding w3-card">
                     <div class="w3-row">
                         <div class="w3-col m6">
-                            @RadioButtonList(linkInfo, "genxml/radio/linktype" + fieldId, "1,2", "Internal link, External link", " class='linktypeclick' linkrow='" + linkLP + "' ", "1", "", false, linkLP)
+                            @RadioButtonList(linkInfo, "genxml/radio/linktype" + fieldId, "0,1,2,3", "None, Internal link, External link, Document Link", " class='linktypeclick' linkrow='" + linkLP + "' ", "0", "", false, linkLP)
+                        </div>
+                        <div class="w3-col m3">
+                            @CheckBox(linkInfo, "genxml/checkbox/blank" + fieldId, "Blank", " class='w3-check' ", false, false, linkLP)
+                        </div>
+                        <div class="w3-col m3">
+                            @CheckBox(linkInfo, "genxml/checkbox/hide" + fieldId, "&nbsp;" + ResourceKey("DNNrocket.hidelink").ToString(), " class='w3-check' ", false, false, linkLP)
                         </div>
                     </div>
                     <div class="w3-row">
-                        <div class="w3-col m12 w3-padding">
+                        <div class="w3-col m4 w3-padding">
                             <label>@ResourceKey("DNNrocket.text")</label>&nbsp;@EditFlag(sessionParams)
-                            @TextBox(linkInfo, "genxml/lang/genxml/textbox/name" + fieldId, " class='w3-input w3-border' autocomplete='off'", "", false, linkLP)
+                            @TextBox(linkInfo, "genxml/textbox/name" + fieldId, " class='w3-input w3-border' autocomplete='off'", "", false, linkLP)
                         </div>
 
                         <!-- Internal Links -->
@@ -70,19 +91,31 @@
                             </div>
                             <div class="w3-row m2">
                                 <label>@ResourceKey("DNNrocket.anchor")</label>&nbsp;@EditFlag(sessionParams)
-                                @TextBox(linkInfo, "genxml/lang/genxml/textbox/anchor" + fieldId, " class='w3-input w3-border' autocomplete='off'", "", false, linkLP)
+                                @TextBox(linkInfo, "genxml/textbox/anchor" + fieldId, " class='w3-input w3-border' autocomplete='off'", "", false, linkLP)
                             </div>
                         </div>
 
                         <!-- External Links -->
                         <div class="w3-row m6 w3-padding externallink@(linkLP)" style="@(externaldisplay);height:auto;">
-                            <label>Manual link</label>&nbsp;@EditFlag(sessionParams)
+                            <label>@ResourceKey("DNNrocket.url")</label>&nbsp;@EditFlag(sessionParams)
                             @TextBox(linkInfo, "genxml/textbox/externallink" + fieldId, " class='w3-input w3-border' autocomplete='off'", "", false, linkLP)
-                            <div class="w3-col m3">
-                                @CheckBox(linkInfo, "genxml/checkbox/blank" + fieldId, "Blank", " class='w3-check' ", false, false, linkLP)
-                            </div>
                         </div>
 
+                        <!-- Documents -->
+                        <div class="w3-row documentlink@(linkLP)">
+                            <div class="w3-bar">
+                                <div class="w3-button w3-bar-item w3-theme-action w3-padding-8" onclick="$('#articledocumentselect').show();">@ButtonIcon(ButtonTypes.add)</div>
+                            </div>
+                            <div class="w3-col m8 w3-padding">
+                                <label class="">Name</label>
+                                @TextBox(linkInfo, "genxml/textbox/name", " class='w3-input w3-border' ", "", false, linkLP)
+                            </div>
+                            <div class="w3-col m8 w3-padding">
+                                @HiddenField(linkInfo, "genxml/hidden/documentpatharticledoc", "", "", false, linkLP)
+                                <label class="">@ResourceKey("DNNrocket.document")</label>
+                                @TextBox(linkInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border'", "", false, linkLP)
+                            </div>
+                        </div>
                     </div>
                     <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
                         @ButtonIcon(ButtonTypes.remove)
@@ -103,14 +136,33 @@
         $('.linktypeclick').click(function () {
             var linkrow = $(this).attr("linkrow");
             var selectedval = $(this).find(":checked").val();
+            if (selectedval === '0') {
+                console.log("lien interne");
+                $('.internallink' + linkrow).hide();
+                $('.externallink' + linkrow).hide();
+                $('.documentlink' + linkrow).hide();
+            }
             if (selectedval === '1') {
+                console.log("lien interne");
                 $('.internallink' + linkrow).show();
                 $('.externallink' + linkrow).hide();
+                $('.documentlink' + linkrow).hide();
             }
             if (selectedval === '2') {
+                console.log("lien externe");
                 $('.internallink' + linkrow).hide();
                 $('.externallink' + linkrow).show();
+                $('.documentlink' + linkrow).hide();
+            }
+            if (selectedval === '3') {
+                console.log("lien externe");
+                $('.internallink' + linkrow).hide();
+                $('.externallink' + linkrow).hide();
+                $('.documentlink' + linkrow).show();
             }
         });
+
     });
+
 </script>
+@RenderTemplate("ArticleDocumentSelect.cshtml", appThemeSystem, Model, true)
