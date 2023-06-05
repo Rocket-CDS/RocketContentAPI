@@ -38,26 +38,32 @@
     Model.SetSetting("scmd", "article_addimage1");
 }
 
-    <div class="@articleData.ImageListName w3-row w3-display-container w3-padding" >
+<div class="@articleData.ImageListName w3-row w3-display-container w3-padding">
 
-        @if (articleImage.RelPath != "")
-        {
+    @if (articleImage.RelPath != "")
+    {
         <span class="w3-button w3-display-bottomleft simplisity_confirmclick" s-confirm="@ResourceKey("RCT.removeimage") ?" s-cmd="article_removeimage" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId", "rowkey":"@(articleRowData.RowKey)"}'>@ButtonIcon(ButtonTypes.remove)</span>
         <img src="@ThumbnailImageUrl(articleImage.RelPath, imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
-        }
-        else
-        {
+        
+        <div class="w3-row">
+            <div class="w3-col w3-right m2 w3-padding">
+                <label>Width</label>
+                @TextBox(imgInfo, "genxml/hidden/width", "type='number' class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", false, imgLP)
+            </div>
+            <div class="w3-col w3-right m2 w3-padding">
+                <label>Height</label>
+                @TextBox(imgInfo, "genxml/hidden/height", "type='number' class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", false, imgLP)
+            </div>
+        </div>
+    }
+    else
+    {
         <span onclick="simplisity_setParamField('imageresize', '@(resize)');$('#articleimageselect').show();" class="w3-button w3-display-bottomleft">@ButtonIcon(ButtonTypes.photo)</span>
         <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
-        }
-        @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, imgLP)
-    </div>
+    }
+    @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, imgLP)
 
 
-<script>
-    $(document).ready(function () {
-    });
-</script>
-
+</div>
 
 @RenderTemplate("ArticleImageSelect.cshtml", appThemeSystem, Model, true)

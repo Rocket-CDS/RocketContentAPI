@@ -1,0 +1,90 @@
+﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketContentAPI.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
+
+@{
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
+    var imgLP = 0;
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
+
+    var datalist = articleRowData.GetImageList();
+    var globalSettings = new SystemGlobalData();
+    var sessionParams = Model.SessionParamsData;
+    var portalData = new PortalLimpet(articleData.PortalId);
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    Model.SetSetting("scmd", "article_addimage");
+}
+
+<div class="w3-row imagelistdatasection">
+
+    <div class="w3-bar">
+        <div class=" w3-medium"><b>Click on the button to add an image !</b></div>
+        <div class="w3-button w3-bar-item w3-margin-top w3-theme-action w3-padding" onclick="$('#articleimageselect').show();">@ButtonIcon(ButtonTypes.add)</div>
+        <div class="w3-button w3-bar-item w3-pale-yellow w3-padding simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".@articleData.ImageListName" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+    </div>
+
+    <ul id="imagelistdata" class="w3-ul">
+
+        @foreach (var imgInfo in datalist)
+        {
+            imgLP += 1;
+            var articleImage = new ArticleImage(imgInfo, "articleimage");
+
+            <li class="@articleData.ImageListName w3-row w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
+
+                @SortableListIndex(imgInfo, imgLP)
+
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
+                        <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin">
+                            @ButtonIcon(ButtonTypes.remove)
+                        </span>
+                        <div class="w3-col m2 w3-padding" style="width:100px;">
+                            @if (articleImage.RelPath != "")
+                            {
+                                <img src="@ThumbnailImageUrl(articleImage.RelPath, 80, 80)" style="height: 80px;width: 80px;" class="w3-round" />
+
+                            }
+                            else
+                            {
+                                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 80, 80)" style="height: 80px;width: 80px;" class="w3-round" />
+                            }
+                        </div>
+                        <div class="w3-col m8 w3-padding">
+                            <label><b>Titre ligne 1</b></label>
+                            @TextBox(imgInfo, "genxml/hidden/title1", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='100'", "", false, imgLP)
+                            <label><b>Titre ligne 2</b></label>
+                            @TextBox(imgInfo, "genxml/hidden/title2", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='100'", "", false, imgLP)
+                            <label><b>Texte</b></label>
+                            @TextArea(imgInfo, "genxml/hidden/text", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='500'", "", false, imgLP)
+                            <label><b>Alternative text</b></label>
+                            @TextBox(imgInfo, "genxml/hidden/imagealtarticleimage", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='200'", "", false, imgLP)
+
+                            <!-- TODO ajouter les inputs pour faire le lien entre les pages -->
+                            @RenderTemplate("ArticleLink.cshtml", appThemeSystem, Model, true)
+                            @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, imgLP)
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        }
+    </ul>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#imagelistdata").sortable();
+        $("#imagelistdata").disableSelection();
+    });
+</script>
+
+@RenderTemplate("ArticleImageSelect.cshtml", appThemeSystem, Model, true)

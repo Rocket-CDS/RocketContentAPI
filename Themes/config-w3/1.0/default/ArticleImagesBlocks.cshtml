@@ -1,0 +1,152 @@
+﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using Simplisity;
+@using RocketContentAPI.Components;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
+
+@{
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
+    var imgLP = 0;
+    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
+
+    var datalist = articleRowData.GetImageList();
+    var globalSettings = new SystemGlobalData();
+    var sessionParams = Model.SessionParamsData;
+    var portalData = new PortalLimpet(articleData.PortalId);
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    Model.SetSetting("scmd", "article_addimage");
+}
+
+<div class="w3-row imagelistdatasection">
+
+    <div class="w3-bar">
+        <div class=" w3-medium"><b>Click on the button to add an image !</b></div>
+        <div class="w3-button w3-bar-item w3-margin-top w3-theme-action w3-padding" onclick="$('#articleimageselect').show();">@ButtonIcon(ButtonTypes.add)</div>
+        <div class="w3-button w3-bar-item w3-pale-yellow w3-padding simplisity_itemundo" s-recylebin="imagelistbin linklistbin" s-return="#imagelistdata #linklistdata" s-removelist=".@articleData.ImageListName .linklist" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+    </div>
+
+    <ul id="imagelistdata linklistdata" class="w3-ul">
+
+        @foreach (var imgInfo in datalist)
+        {
+            imgLP += 1;
+            var articleImage = new ArticleImage(imgInfo, "articleimage");
+
+
+            var linktype = imgInfo.GetXmlPropertyInt("genxml/hidden/rbllink");
+            var internaldisplay = "";
+            var externaldisplay = "display:none;";
+            if (linktype == 2)
+            {
+                internaldisplay = "display:none;";
+                externaldisplay = "";
+            }
+            else if (linktype == 0)
+            {
+                internaldisplay = "display:none;";
+                externaldisplay = "display:none;";
+            }
+
+
+            <li class="@articleData.ImageListName w3-row w3-display-container w3-padding w3-border-0 linklist" style="list-style-type: none;">
+
+                @SortableListIndex(imgInfo, imgLP)
+
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
+                        <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin">
+                            @ButtonIcon(ButtonTypes.remove)
+                        </span>
+                        <div class="w3-col m2 w3-padding" style="width:100px;">
+                            @if (articleImage.RelPath != "")
+                            {
+                                <img src="@ThumbnailImageUrl(articleImage.RelPath, 80, 80)" style="height: 80px;width: 80px;" class="w3-round" />
+
+                            }
+                            else
+                            {
+                                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 80, 80)" style="height: 80px;width: 80px;" class="w3-round" />
+                            }
+                        </div>
+                        <div class="w3-col m8 w3-padding">
+                            <label><b>Alternative text</b></label>
+                            @TextBox(imgInfo, "genxml/hidden/imagealtarticleimage", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='200'", "", false, imgLP)
+
+                            <label><b>Title</b></label>
+                            @TextBox(imgInfo, "genxml/hidden/title", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='200'", "", false, imgLP)
+                            <label><b>Text</b></label>
+                            @TextBox(imgInfo, "genxml/hidden/text", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='200'", "", false, imgLP)
+
+                            <!-- ***************** LINK ***************** -->
+                            <div class="w3-row">
+                                <div class="w3-padding w3-row">
+                                    <label><b>Link</b></label>
+                                    @RadioButtonList(imgInfo, "genxml/hidden/rbllink", "0,1,2", "None, Internal link, External link", "class='linktypeclick' linkrow='" + imgLP + "' ", "0", "", false, imgLP)
+                                </div>
+                                
+
+                                <!-- If "Internal link" is clicked -->
+                                <div class="w3-row internallink@(imgLP) w3-padding" style="@(internaldisplay)">
+                                    <div class="w3-row">
+                                        <label><b>Page of the website</b></label>
+                                    </div>
+                                    <div class="w3-row">
+                                        @TabSelectList(imgInfo, "genxml/hidden/linktab", "class='w3-input w3-border' ", true, false, imgLP)
+                                    </div>
+
+                                    <label><b>Anchor (id)</b></label>
+                                    @TextBox(imgInfo, "genxml/hidden/linkanchor", "class='w3-input w3-border' autocomplete='off'", "", false, imgLP)
+                                </div>
+
+                                <!-- If "External link" is clicked -->
+                                <div class="w3-row externallink@(imgLP) w3-padding" style="@(externaldisplay)">
+                                    <label><b>URL (http://www.mylink.com)</b></label>
+                                    @TextBox(imgInfo, "genxml/hidden/externalhref", "class='w3-input w3-border' autocomplete='off'", "https://", false, imgLP)
+                                    <div class="w3-col m3">
+                                        @CheckBox(imgInfo, "genxml/hidden/blank", "Blank", " class='w3-check' ", false, false, imgLP)
+                                    </div>
+                                </div>
+                            </div>
+                            @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, imgLP)
+                        </div>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#imagelistdata").sortable();
+        $("#imagelistdata").disableSelection();
+        $("#linklistdata").sortable();
+        $("#linklistdata").disableSelection();
+
+        $('.linktypeclick').unbind('click');
+        $('.linktypeclick').click(function () {
+            var linkrow = $(this).attr("linkrow");
+            var selectedval = $(this).find(":checked").val();
+            if (selectedval === '1') {
+                $('.internallink' + linkrow).show();
+                $('.externallink' + linkrow).hide();
+            }
+            if (selectedval === '2') {
+                $('.internallink' + linkrow).hide();
+                $('.externallink' + linkrow).show();
+            }
+            if (selectedval === '0') {
+                $('.internallink' + linkrow).hide();
+                $('.externallink' + linkrow).hide();
+            }
+        });
+    });
+</script>
+
+@RenderTemplate("ArticleImageSelect.cshtml", appThemeSystem, Model, true)

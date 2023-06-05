@@ -37,8 +37,14 @@
     {
         <li class="w3-row w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
             <div id="@articleRow.RowKey" class="w3-row w3-card w3-padding w3-theme-l3 w3-small selectedrow" style="cursor:pointer;">
-                <span class="simplisity_click" rowkey="@articleRow.RowKey" s-cmd="article_editrow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.edit)&nbsp;<b>@articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/title")&nbsp;</b></span>
-                <span class="w3-right w3-button w3-align-right simplisity_confirmclick" s-confirm="@ResourceKey("RCT.removerow")" s-cmd="article_removerow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' style="width:60px;">@(ButtonIcon(ButtonTypes.remove))</span>
+                <b>@articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/title")</b>
+                <hr />
+                <div class="w3-left">
+                    <span class="w3-button simplisity_click" rowkey="@articleRow.RowKey" s-cmd="article_editrow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.edit)</span>
+                </div>
+                <div class="w3-right">
+                    <span class="w3-button simplisity_confirmclick" s-confirm="@ResourceKey("RCT.removerow")" s-cmd="article_removerow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' style="width:60px;">@(ButtonIcon(ButtonTypes.remove))</span>
+                </div>
             </div>
         </li>
     }
