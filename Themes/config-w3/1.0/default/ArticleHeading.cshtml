@@ -27,25 +27,25 @@
 <div class='w3-row w3-margin-top w3-border'>
     <div class="w3-row">
         <div class='w3-col m12 w3-padding'>
-            <label>@ResourceKey("HtmlContent.heading")</label>		&nbsp;@EditFlag(sessionParams)
+            <label>@ResourceKey("DNNrocket.heading")</label>		&nbsp;@EditFlag(sessionParams)
             @TextBox(info, "genxml/lang/genxml/textbox/title", " id='title' class='w3-input w3-border' autocomplete='off' ", "", true, 0)
         </div>
     </div>
     <div class="w3-row">
         <div class='w3-col m3 w3-padding'>
-            <label>@ResourceKey("HtmlContent.headingstyle")</label>
+            <label>@ResourceKey("DNNrocket.headingstyle")</label>
             @DropDownList(info, "genxml/select/headingstyle", "h1,h2,h3,h4", "H1,H2,H3,H4", "class='w3-select w3-border ' ", "", false, 0)
         </div>
         <div class='w3-col m3 w3-padding'>
-            <label>&nbsp;</label>
+            <label>@ResourceKey("DNNrocket.headingalign")</label>
             @RadioButtonList(info, "genxml/select/headingalign", "start,center,end", "<span class='material-icons'>format_align_left</span>,<span class='material-icons'>format_align_center</span>,<span class='material-icons'>format_align_right</span>", "", "1", "", false, 0, "")
         </div>
         <div class='w3-col m3 w3-padding'>
-            <label>Hide Heading</label><br />
+            <label>@ResourceKey("DNNrocket.hideheading")</label><br />
             @CheckBox(info, "genxml/checkbox/hideheading", "", "class='w3-check' ", false, false, 0)
         </div>
         <div class="w3-col m3 w3-padding">
-            <label>Anchor id</label>		&nbsp;@EditFlag(sessionParams)
+            <label>@ResourceKey("DNNrocket.anchor")</label>		&nbsp;@EditFlag(sessionParams)
             @TextBox(info, "genxml/lang/genxml/textbox/anchor", "class='w3-input w3-border' autocomplete='off'", "", true, 0)
         </div>
         

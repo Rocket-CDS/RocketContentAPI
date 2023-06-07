@@ -74,38 +74,37 @@
                             }
                         </div>
                         <div class="w3-col m8 w3-padding">
-                            <label><b>Alternative text</b></label>
+                            <label><b>@RessourceKey("DNNrocket.alt")</b></label>
                             @TextBox(imgInfo, "genxml/hidden/imagealtarticleimage", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='200'", "", false, imgLP)
 
-                            <label><b>Title</b></label>
+                            <label><b>@RessourceKey("DNNrocket.title")</b></label>
                             @TextBox(imgInfo, "genxml/hidden/title", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='200'", "", false, imgLP)
-                            <label><b>Text</b></label>
+                            <label><b>@RessourceKey("DNNrocket.text")</b></label>
                             @TextBox(imgInfo, "genxml/hidden/text", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='200'", "", false, imgLP)
 
                             <!-- ***************** LINK ***************** -->
                             <div class="w3-row">
                                 <div class="w3-padding w3-row">
-                                    <label><b>Link</b></label>
+                                    <label><b>@RessourceKey("DNNrocket.linktype")</b></label>
                                     @RadioButtonList(imgInfo, "genxml/hidden/rbllink", "0,1,2", "None, Internal link, External link", "class='linktypeclick' linkrow='" + imgLP + "' ", "0", "", false, imgLP)
                                 </div>
                                 
-
                                 <!-- If "Internal link" is clicked -->
                                 <div class="w3-row internallink@(imgLP) w3-padding" style="@(internaldisplay)">
                                     <div class="w3-row">
-                                        <label><b>Page of the website</b></label>
+                                        <label><b>@RessourceKey("DNNrocket.page")</b></label>
                                     </div>
                                     <div class="w3-row">
                                         @TabSelectList(imgInfo, "genxml/hidden/linktab", "class='w3-input w3-border' ", true, false, imgLP)
                                     </div>
 
-                                    <label><b>Anchor (id)</b></label>
+                                    <label>@RessourceKey("DNNrocket.anchor")</label>
                                     @TextBox(imgInfo, "genxml/hidden/linkanchor", "class='w3-input w3-border' autocomplete='off'", "", false, imgLP)
                                 </div>
 
                                 <!-- If "External link" is clicked -->
                                 <div class="w3-row externallink@(imgLP) w3-padding" style="@(externaldisplay)">
-                                    <label><b>URL (http://www.mylink.com)</b></label>
+                                    <label><b>@RessourceKey("DNNrocket.url") (http://www.mylink.com)</b></label>
                                     @TextBox(imgInfo, "genxml/hidden/externalhref", "class='w3-input w3-border' autocomplete='off'", "https://", false, imgLP)
                                     <div class="w3-col m3">
                                         @CheckBox(imgInfo, "genxml/hidden/blank", "Blank", " class='w3-check' ", false, false, imgLP)

@@ -43,12 +43,12 @@
     @if (articleImage.RelPath != "")
     {
         <span class="w3-button w3-display-bottomleft simplisity_confirmclick" s-confirm="@ResourceKey("RCT.removeimage") ?" s-cmd="article_removeimage" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId", "rowkey":"@(articleRowData.RowKey)"}'>@ButtonIcon(ButtonTypes.remove)</span>
-        <img src="@ThumbnailImageUrl(articleImage.RelPathWebp, imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
+        <img src="@ImageUrl(articleImage.RelPathWebp, imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
     }
     else
     {
         <span onclick="simplisity_setParamField('imageresize', '@(resize)');$('#articleimageselect').show();" class="w3-button w3-display-bottomleft">@ButtonIcon(ButtonTypes.photo)</span>
-        <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
+        <img src="@ImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
     }
     @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, imgLP)
 

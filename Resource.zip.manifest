@@ -66,6 +66,14 @@
     </file>
     <file>
       <path>Themes/config-w3/1.0/default/</path>
+      <name>ArticleHeader.cshtml</name>
+    </file>
+    <file>
+      <path>Themes/config-w3/1.0/default/</path>
+      <name>ArticleHeading.cshtml</name>
+    </file>
+    <file>
+      <path>Themes/config-w3/1.0/default/</path>
       <name>ArticleImage.cshtml</name>
     </file>
     <file>
@@ -74,7 +82,27 @@
     </file>
     <file>
       <path>Themes/config-w3/1.0/default/</path>
+      <name>ArticleImagesBlocks.cshtml</name>
+    </file>
+    <file>
+      <path>Themes/config-w3/1.0/default/</path>
       <name>ArticleImageSelect.cshtml</name>
+    </file>
+    <file>
+      <path>Themes/config-w3/1.0/default/</path>
+      <name>ArticleImagesLinks.cshtml</name>
+    </file>
+    <file>
+      <path>Themes/config-w3/1.0/default/</path>
+      <name>ArticleImagesListDetail.cshtml</name>
+    </file>
+    <file>
+      <path>Themes/config-w3/1.0/default/</path>
+      <name>ArticleImagesSize.cshtml</name>
+    </file>
+    <file>
+      <path>Themes/config-w3/1.0/default/</path>
+      <name>ArticleImagesSlideshow.cshtml</name>
     </file>
     <file>
       <path>Themes/config-w3/1.0/default/</path>
@@ -83,6 +111,10 @@
     <file>
       <path>Themes/config-w3/1.0/default/</path>
       <name>ArticleLinks.cshtml</name>
+    </file>
+    <file>
+      <path>Themes/config-w3/1.0/default/</path>
+      <name>ArticleLinksDowload.cshtml</name>
     </file>
     <file>
       <path>Themes/config-w3/1.0/default/</path>

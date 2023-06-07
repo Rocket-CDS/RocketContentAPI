@@ -107,12 +107,12 @@
                                 <div class="w3-button w3-bar-item w3-theme-action w3-padding-8" onclick="$('#articledocumentselect').show();">@ButtonIcon(ButtonTypes.add)</div>
                             </div>
                             <div class="w3-col m8 w3-padding">
-                                <label class="">Name</label>
+                                <label>@ResourceKey("DNNrocket.name")</label>
                                 @TextBox(linkInfo, "genxml/textbox/name", " class='w3-input w3-border' ", "", false, linkLP)
                             </div>
                             <div class="w3-col m8 w3-padding">
                                 @HiddenField(linkInfo, "genxml/hidden/documentpatharticledoc", "", "", false, linkLP)
-                                <label class="">@ResourceKey("DNNrocket.document")</label>
+                                <label>@ResourceKey("DNNrocket.document")</label>
                                 @TextBox(linkInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border'", "", false, linkLP)
                             </div>
                         </div>

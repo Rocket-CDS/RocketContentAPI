@@ -58,10 +58,10 @@
                             }
                         </div>
                         <div class="w3-col m8 w3-padding">
-                            <label><b>Alternative text</b></label>
+                            <label><b>@RessourceKey("DNNrocket.alt")</b></label>
                             @TextBox(imgInfo, "genxml/hidden/imagealtarticleimage", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='200'", "", false, imgLP)
 
-                            <label><b>Redirect link</b></label>
+                            <label><b>@RessourceKey("DNNrocket.redirectlink")</b></label>
                             @TextBox(imgInfo, "genxml/hidden/imageredirectlink", "placeholder='https://example.com' class='w3-input w3-border' autocomplete='off' MaxLength='400'", "", false, imgLP)
                             @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, imgLP)
                             <div class="w3-col m3">

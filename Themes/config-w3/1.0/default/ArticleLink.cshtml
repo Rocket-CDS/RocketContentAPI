@@ -27,34 +27,34 @@
 <div class="w3-row">
 
     <div class="w3-padding w3-row">
-        <label><b>Link title</b></label>&nbsp;@EditFlag(sessionParams)
+        <label><b>@ResourceKey("DNNrocket.linktitle")</b></label>&nbsp;@EditFlag(sessionParams)
         @TextBox(info, "genxml/lang/genxml/textbox/linktitle", "class='w3-input w3-border'", "", false)
     </div>
     <div class="w3-padding w3-row">
-        <label><b>Link</b></label>
+        <label><b>@ResourceKey("DNNrocket.link")</b></label>
         @RadioButtonList(info, "genxml/select/rbllink", "0,1,2", "None, Internal link, External link", "0")
     </div>
 
     <!-- If "Internal link" is clicked -->
     <div class="w3-row internallink w3-padding" style="display:none;">
         <div class="w3-row">
-            <label><b>Page of the website</b></label>
+            <label><b>@ResourceKey("DNNrocket.page")</b></label>
 
         </div>
         <div class="w3-row">
             @TabSelectList(info, "genxml/select/linktab", "class='w3-input w3-border'", false)
         </div>
 
-        <label><b>Anchor (id)</b></label>&nbsp;@EditFlag(sessionParams)
+        <label><b>@ResourceKey("DNNrocket.anchor")</b></label>&nbsp;@EditFlag(sessionParams)
         @TextBox(info, "genxml/lang/genxml/textbox/linkanchor", "class='w3-input w3-border'", "", false)
     </div>
 
     <!-- If "External link" is clicked -->
     <div class="w3-row externallink w3-padding" style="display:none;">
-        <label><b>URL (http://www.mylink.com)</b></label>
+        <label><b>@ResourceKey("DNNrocket.url") (http://www.mylink.com)</b></label>
         <div>@TextBox(info, "genxml/textbox/externalhref", "class='w3-input w3-border'", "", false)</div>
         <div class="w3-col m3">
-            <label>Blank</label>
+            <label>@ResourceKey("DNNrocket.blank")</label>
             @CheckBox(info, "genxml/checkbox/blank", "", "class='w3-check' ", false, false)
         </div>
     </div>

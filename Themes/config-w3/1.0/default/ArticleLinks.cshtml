@@ -76,7 +76,7 @@
 
                         <!-- External Links -->
                         <div class="w3-row m6 w3-padding externallink@(linkLP)" style="@(externaldisplay);height:auto;">
-                            <label>Manual link</label>&nbsp;@EditFlag(sessionParams)
+                            <label>@ResourceKey("DNNrocket.manuallink")</label>&nbsp;@EditFlag(sessionParams)
                             @TextBox(linkInfo, "genxml/textbox/externallink" + fieldId, " class='w3-input w3-border' autocomplete='off'", "", false, linkLP)
                             <div class="w3-col m3">
                                 @CheckBox(linkInfo, "genxml/checkbox/blank" + fieldId, "Blank", " class='w3-check' ", false, false, linkLP)

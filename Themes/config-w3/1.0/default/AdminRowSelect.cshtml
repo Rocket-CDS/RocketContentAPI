@@ -36,7 +36,18 @@
     {
         <li class="w3-padding w3-border-0" style="list-style-type:none;">
             <div id="@articleRow.RowKey" class="w3-card w3-padding w3-theme-l3 selectedrow w3-display-container w3-row" style="cursor:grab;">
-                <b>@articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/title")</b>
+
+
+                @if (articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/title") != "")
+                {
+                    <b>@articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/title")</b>
+                }
+                else
+                {
+                    <b>@articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/linktitle")</b>
+                }
+
+
                 <hr />
                 <div class="w3-left">
                     <span class="w3-button w3-circle w3-theme-action simplisity_click" style="width:40px;height:40px;padding:8px 0;" rowkey="@articleRow.RowKey" s-cmd="article_editrow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.edit)</span>
