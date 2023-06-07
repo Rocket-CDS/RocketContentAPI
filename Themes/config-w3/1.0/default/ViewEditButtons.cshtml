@@ -20,6 +20,18 @@
     var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
     var info = new SimplisityInfo(moduleData.Record);
     var projectAppThemeData = new AppThemeProjectLimpet();
+
+    var colorclass = "w3-white";
+    
+    if (appThemeView.HasPortalLevel())
+    {
+        colorclass = "w3-pale-yellow";
+    }
+    if (appThemeView.HasModuleLevel(moduleData.ModuleRef))
+    {
+        colorclass = "w3-pale-blue";
+    }
+
 }
 
 <div id="a-editbuttons-@(moduleData.ModuleId)" class=" " style="display: none; position: absolute; top: 0px; left:0px; z-index: 9999;">
@@ -48,7 +60,7 @@
 
             if (UserUtils.IsSuperUser())
             {
-                <a href="/SysAdmin/rocketapptheme?moduleref=@(moduleData.ModuleRef)&appthemefolder=@(moduleData.AppThemeAdminFolder)&appversionfolder=@(moduleData.AppThemeAdminVersion)&project=@(moduleData.ProjectName)&rtn=@sessionParams.Get("returnurl")" class="w3-button w3-round w3-white w3-border w3-text-black" title="@ResourceKey("RCT.editapptheme")">
+                <a href="/SysAdmin/rocketapptheme?moduleref=@(moduleData.ModuleRef)&appthemefolder=@(moduleData.AppThemeAdminFolder)&appversionfolder=@(moduleData.AppThemeAdminVersion)&project=@(moduleData.ProjectName)&rtn=@sessionParams.Get("returnurl")" class="w3-button w3-round w3-border w3-text-black @(colorclass)" title="@ResourceKey("RCT.editapptheme")">
                     <span class="material-icons ">
                         movie_edit
                     </span>
@@ -64,7 +76,7 @@
                 }
                 if (editappthemeview)
                 {
-                    <a href="/SysAdmin/rocketapptheme?moduleref=@(moduleData.ModuleRef)&appthemefolder=@(moduleData.AppThemeViewFolder)&appversionfolder=@(moduleData.AppThemeViewVersion)&project=@(moduleData.ProjectName)&rtn=@sessionParams.Get("returnurl")" class="w3-button w3-round w3-white w3-border w3-text-blue" title="@ResourceKey("RCT.editappthemeview")">
+                    <a href="/SysAdmin/rocketapptheme?moduleref=@(moduleData.ModuleRef)&appthemefolder=@(moduleData.AppThemeViewFolder)&appversionfolder=@(moduleData.AppThemeViewVersion)&project=@(moduleData.ProjectName)&rtn=@sessionParams.Get("returnurl")" class="w3-button w3-round w3-border w3-text-blue  @(colorclass)" title="@ResourceKey("RCT.editappthemeview")">
                         <span class="material-icons ">
                             movie
                         </span>
