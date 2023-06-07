@@ -42,9 +42,17 @@
                 {
                     <b>@articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/title")</b>
                 }
-                else
+                else if (articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/linktitle") != "")
                 {
                     <b>@articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/linktitle")</b>
+                }
+                else if (articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/name") != "")
+                {
+                    <b>@articleRow.Info.GetXmlProperty("genxml/lang/genxml/textbox/name")</b>
+                }
+                else
+                {
+                    <b>@articleRow.Info.GetXmlProperty("genxml/textbox/documentnamearticledoc")</b>
                 }
 
 

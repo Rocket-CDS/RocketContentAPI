@@ -16,9 +16,9 @@
     var sessionParams = Model.SessionParamsData;
 
     var info = new SimplisityInfo();
-    if (articleRowData != null && articleRowData.Info != null)
+    if (articleData != null && articleData.Info != null)
     {
-        info = articleRowData.Info;
+        info = articleData.Info;
     }
     AddProcessDataResx(appThemeView, true);
     @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
@@ -27,22 +27,22 @@
 <div class='w3-row w3-margin-top' style="background-color: lightgrey;">
     <div class="w3-row">
         <div class='w3-col m12 w3-padding'>
-            <label> @ResourceKey("DNNrocket.heading") </label>		&nbsp;@EditFlag(sessionParams)
-            @TextBox(info, "genxml/lang/genxml/header/headertitle", "class='w3-input w3-border'", "", false)
+            <label> @ResourceKey("DNNrocket.moduletitle") </label>		&nbsp;@EditFlag(sessionParams)
+            @TextBox(info, "genxml/lang/genxml/header/headertitle", "class='w3-input w3-border'", "", true)
         </div>
     </div>
     <div class="w3-row">
         <div class='w3-col m3 w3-padding'>
-            <label>@ResourceKey("DNNrocket.headingstyle")</label>
-            @DropDownList(info, "genxml/select/headerstyle", "h1,h2,h3,h4", "H1,H2,H3,H4", "class='w3-select w3-border ' ", "", false)
+            <label>@ResourceKey("DNNrocket.moduletitlestyle")</label>
+            @DropDownList(info, "genxml/header/headerstyle", "h1,h2,h3,h4", "H1,H2,H3,H4", "class='w3-select w3-border ' ", "", false)
         </div>
         <div class='w3-col m3 w3-padding'>
-            <label>@ResourceKey("DNNrocket.headingalign")</label>
-            @RadioButtonList(info, "genxml/select/headeralign", "start,center,end", "<span class='material-icons'>format_align_left</span>,<span class='material-icons'>format_align_center</span>,<span class='material-icons'>format_align_right</span>", "", "1", "", false, 0, "")
+            <label>@ResourceKey("DNNrocket.moduletitlealign")</label>
+            @RadioButtonList(info, "genxml/header/headeralign", "start,center,end", "<span class='material-icons'>format_align_left</span>,<span class='material-icons'>format_align_center</span>,<span class='material-icons'>format_align_right</span>", "", "1", "", false, 0, "")
         </div>
         <div class="w3-col m3 w3-padding">
             <label>@ResourceKey("DNNrocket.anchor")</label>		&nbsp;@EditFlag(sessionParams)
-            @TextBox(info, "genxml/lang/genxml/textbox/headeranchor", "class='w3-input w3-border' autocomplete='off'", "", false)
+            @TextBox(info, "genxml/lang/genxml/header/headeranchor", "class='w3-input w3-border' autocomplete='off'", "", true)
         </div>
 
     </div>
