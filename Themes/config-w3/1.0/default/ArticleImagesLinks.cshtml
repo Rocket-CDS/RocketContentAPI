@@ -49,19 +49,19 @@
                         <div class="w3-col m2 w3-padding" style="width:100px;">
                             @if (articleImage.RelPath != "")
                             {
-                                <img src="@ThumbnailImageUrl(articleImage.RelPath, 80, 80)" style="height: 80px;width: 80px;" class="w3-round" />
+                                <img src="@ImageUrl(articleImage.RelPath, 80, 80)" style="height: 80px;width: 80px;" class="w3-round" />
 
                             }
                             else
                             {
-                                <img src="@ThumbnailImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 80, 80)" style="height: 80px;width: 80px;" class="w3-round" />
+                                <img src="@ImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", 80, 80)" style="height: 80px;width: 80px;" class="w3-round" />
                             }
                         </div>
                         <div class="w3-col m8 w3-padding">
-                            <label><b>@RessourceKey("DNNrocket.alt")</b></label>
+                            <label><b>Alt de l'image</b></label>
                             @TextBox(imgInfo, "genxml/hidden/imagealtarticleimage", "class='w3-input w3-border w3-margin-bottom' autocomplete='off' MaxLength='200'", "", false, imgLP)
 
-                            <label><b>@RessourceKey("DNNrocket.redirectlink")</b></label>
+                            <label><b>Lien de redirection</b></label>
                             @TextBox(imgInfo, "genxml/hidden/imageredirectlink", "placeholder='https://example.com' class='w3-input w3-border' autocomplete='off' MaxLength='400'", "", false, imgLP)
                             @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, imgLP)
                             <div class="w3-col m3">
