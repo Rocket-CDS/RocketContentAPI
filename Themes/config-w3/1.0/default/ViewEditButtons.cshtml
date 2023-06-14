@@ -22,14 +22,17 @@
     var projectAppThemeData = new AppThemeProjectLimpet();
 
     var colorclass = "w3-white";
-    
-    if (appThemeView.HasPortalLevel())
+
+    if (appThemeView != null)
     {
-        colorclass = "w3-pale-yellow";
-    }
-    if (appThemeView.HasModuleLevel(moduleData.ModuleRef))
-    {
-        colorclass = "w3-pale-blue";
+        if (appThemeView.HasPortalLevel())
+        {
+            colorclass = "w3-pale-yellow";
+        }
+        if (appThemeView.HasModuleLevel(moduleData.ModuleRef))
+        {
+            colorclass = "w3-pale-blue";
+       }
     }
 
 }
@@ -102,3 +105,4 @@
           $("#a-editbuttons-@(moduleData.ModuleId)").hide();
     });
 </script>
+
