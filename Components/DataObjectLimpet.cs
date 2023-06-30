@@ -57,7 +57,7 @@ namespace RocketContentAPI.Components
             {
                 if (ModuleSettings.HasProject)
                 {
-                    SetDataObject("appthemedatalist", new AppThemeDataList(ModuleSettings.ProjectName, SystemKey));
+                    SetDataObject("appthemedatalist", new AppThemeDataList(ModuleSettings.PortalId, ModuleSettings.ProjectName, SystemKey));
                     if (ModuleSettings.HasAppThemeAdmin)
                     {
                         SetDataObject("appthemeadmin", new AppThemeLimpet(ModuleSettings.PortalId, ModuleSettings.AppThemeAdminFolder, ModuleSettings.AppThemeAdminVersion, ModuleSettings.ProjectName));

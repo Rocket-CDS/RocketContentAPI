@@ -83,145 +83,129 @@ namespace RocketContentAPI.API
 
         private string ExportData()
         {
-            var rtn = "<export>";
-    
-            rtn += "<systemkey>" + _dataObject.SystemKey + "</systemkey>";
-            rtn += "<databasetable>RocketContentAPI</databasetable>";
+            // check the scheduler initiated the call.
+            var rtn = "";
+            var securityKey = DNNrocketUtils.GetTempStorage(_paramInfo.GetXmlProperty("genxml/hidden/securitykey"));
+            if (securityKey != null) // if it exists in the temp table, it was created by the scheduler.
+            {
 
-            rtn += "<modulesettings>";
-            rtn += _dataObject.ModuleSettings.Record.ToXmlItem();
-            rtn += "</modulesettings>";
+                rtn = "<export>";
 
-            rtn += "<art>";
-            var artList = _dataObject.GetAllRecordART(_dataObject.ModuleSettings.ModuleId);
-            foreach (var a in artList)
-            {
-                rtn += a.ToXmlItem();
-            }
-            rtn += "</art>";
-            rtn += "<artlang>";
-            var artLangList = _dataObject.GetAllRecordARTLANG(_dataObject.ModuleSettings.ModuleId);
-            foreach (var a in artLangList)
-            {
-                rtn += a.ToXmlItem();
-            }
-            rtn += "</artlang>";
-            rtn += "<images>";
-            var destDir = _dataObject.PortalContent.ImageFolderMapPath + "\\" + _dataObject.ModuleSettings.ModuleId;
-            if (Directory.Exists(destDir))
-            {
-                foreach (var i in Directory.GetFiles(destDir))
+                rtn += "<systemkey>" + _dataObject.SystemKey + "</systemkey>";
+                rtn += "<databasetable>RocketContentAPI</databasetable>";
+
+                rtn += "<modulesettings>";
+                rtn += _dataObject.ModuleSettings.Record.ToXmlItem();
+                rtn += "</modulesettings>";
+
+                rtn += "<art>";
+                var artList = _dataObject.GetAllRecordART(_dataObject.ModuleSettings.ModuleId);
+                foreach (var a in artList)
                 {
-                    var imgByte = File.ReadAllBytes(i);
-                    var imgBase64 = Convert.ToBase64String(imgByte, Base64FormattingOptions.None);
-                    rtn += "<imgbase64 filerelpath='" + i + "'><![CDATA[";
-                    rtn += imgBase64;
-                    rtn += "]]></imgbase64>";
+                    rtn += a.ToXmlItem();
                 }
-            }
-            rtn += "</images>";
-            rtn += "<docs>";
-            var destDir2 = _dataObject.PortalContent.DocFolderMapPath + "\\" + _dataObject.ModuleSettings.ModuleId;
-            if (Directory.Exists(destDir2))
-            {
-                foreach (var i in Directory.GetFiles(destDir2))
+                rtn += "</art>";
+                rtn += "<artlang>";
+                var artLangList = _dataObject.GetAllRecordARTLANG(_dataObject.ModuleSettings.ModuleId);
+                foreach (var a in artLangList)
                 {
-                    var imgByte = File.ReadAllBytes(i);
-                    var imgBase64 = Convert.ToBase64String(imgByte, Base64FormattingOptions.None);
-                    rtn += "<docbase64 filerelpath='" + i + "'><![CDATA[";
-                    rtn += imgBase64;
-                    rtn += "]]></docbase64>";
+                    rtn += a.ToXmlItem();
                 }
-            }
-            rtn += "</docs>";
+                rtn += "</artlang>";
+                rtn += "<images>";
+                var destDir = _dataObject.PortalContent.ImageFolderMapPath + "\\" + _dataObject.ModuleSettings.ModuleId;
+                if (Directory.Exists(destDir))
+                {
+                    foreach (var i in Directory.GetFiles(destDir))
+                    {
+                        var imgByte = File.ReadAllBytes(i);
+                        var imgBase64 = Convert.ToBase64String(imgByte, Base64FormattingOptions.None);
+                        rtn += "<imgbase64 filerelpath='" + i + "'><![CDATA[";
+                        rtn += imgBase64;
+                        rtn += "]]></imgbase64>";
+                    }
+                }
+                rtn += "</images>";
+                rtn += "<docs>";
+                var destDir2 = _dataObject.PortalContent.DocFolderMapPath + "\\" + _dataObject.ModuleSettings.ModuleId;
+                if (Directory.Exists(destDir2))
+                {
+                    foreach (var i in Directory.GetFiles(destDir2))
+                    {
+                        var imgByte = File.ReadAllBytes(i);
+                        var imgBase64 = Convert.ToBase64String(imgByte, Base64FormattingOptions.None);
+                        rtn += "<docbase64 filerelpath='" + i + "'><![CDATA[";
+                        rtn += imgBase64;
+                        rtn += "]]></docbase64>";
+                    }
+                }
+                rtn += "</docs>";
 
-            rtn += "</export>";
+                rtn += "</export>";
+            }
+
             return rtn;
         }
         private void ImportData()
         {
-            var moduleId = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
-            var tabId = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid");
-            var systemKey = _paramInfo.GetXmlProperty("genxml/hidden/systemkey");
-            var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
-            var databasetable = _paramInfo.GetXmlProperty("genxml/hidden/databasetable");
-            var moduleRef = portalId + "_ModuleID_" + moduleId;
-
-            var objCtrl = new DNNrocketController();
-
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(_postInfo.XMLData);
-
-            //import Settings (Saved in DNNrocket table)
-            var settingsNod = xmlDoc.SelectSingleNode("export/modulesettings");
-            if (settingsNod != null)
+            // check the scheduler initiated the call.
+            var securityKey = DNNrocketUtils.GetTempStorage(_paramInfo.GetXmlProperty("genxml/hidden/securitykey"));
+            if (securityKey != null) // if it exists in the temp table, it was created by the scheduler.
             {
-                var ms = new SimplisityRecord();
-                ms.FromXmlItem(settingsNod.InnerXml);
-                var rec = objCtrl.GetRecordByGuidKey(portalId, moduleId, "MODSETTINGS", moduleRef, "");
-                if (rec != null)
-                {
-                    var storeId = rec.ItemID;
-                    ms = rec;
-                    ms.FromXmlItem(settingsNod.InnerXml);
-                    ms.ItemID = storeId;
-                }
-                else
-                    ms.ItemID = -1;
 
-                var legacymoduleid = ms.ModuleId.ToString();
-                ms.SetXmlProperty("genxml/legacymoduleid", legacymoduleid);
-                ms.SetXmlProperty("genxml/settings/name", ms.GetXmlProperty("genxml/settings/name").Replace(legacymoduleid, moduleId.ToString()));
-                ms.PortalId = portalId;
-                ms.ModuleId = moduleId;
-                ms.GUIDKey = moduleRef;
+                var moduleId = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+                var tabId = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid");
+                var systemKey = _paramInfo.GetXmlProperty("genxml/hidden/systemkey");
+                var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+                var databasetable = _paramInfo.GetXmlProperty("genxml/hidden/databasetable");
+                var moduleRef = portalId + "_ModuleID_" + moduleId;
 
-                objCtrl.Update(ms);
-            }
 
-            //import ART
-            var parentItemId = -1;
-            var artNod = xmlDoc.SelectSingleNode("export/art/item[1]");
-            if (artNod != null)
-            {
-                var ms = new SimplisityRecord();
-                ms.FromXmlItem(artNod.OuterXml);
-                var rec = objCtrl.GetRecordByGuidKey(portalId, moduleId, "ART", moduleRef, "", "RocketContentAPI");
-                if (rec != null)
-                {
-                    var storeId = rec.ItemID;
-                    ms = rec;
-                    ms.FromXmlItem(artNod.OuterXml);
-                    ms.ItemID = storeId;
-                }
-                else
-                    ms.ItemID = -1;
+                var objCtrl = new DNNrocketController();
 
-                var legacymoduleid = ms.ModuleId.ToString();
-                ms.SetXmlProperty("genxml/legacymoduleid", legacymoduleid);
-                ms.SetXmlProperty("genxml/legacyid", ms.ItemID.ToString());
-                ms.PortalId = portalId;
-                ms.ModuleId = moduleId;
-                ms.GUIDKey = moduleRef;
+                var xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(_postInfo.XMLData);
 
-                parentItemId = objCtrl.Update(ms, "RocketContentAPI");
-            }
-
-            //import ARTLANG
-            var artLangNods = xmlDoc.SelectNodes("export/artlang/item");
-            if (artLangNods != null && parentItemId > 0)
-            {
-                foreach (XmlNode artLangNod in artLangNods)
+                //import Settings (Saved in DNNrocket table)
+                var settingsNod = xmlDoc.SelectSingleNode("export/modulesettings");
+                if (settingsNod != null)
                 {
                     var ms = new SimplisityRecord();
-                    ms.FromXmlItem(artLangNod.OuterXml);
-
-                    var rec = objCtrl.GetRecordLang(parentItemId, ms.Lang, "RocketContentAPI");
+                    ms.FromXmlItem(settingsNod.InnerXml);
+                    var rec = objCtrl.GetRecordByGuidKey(portalId, moduleId, "MODSETTINGS", moduleRef, "");
                     if (rec != null)
                     {
                         var storeId = rec.ItemID;
                         ms = rec;
-                        ms.FromXmlItem(artLangNod.OuterXml);
+                        ms.FromXmlItem(settingsNod.InnerXml);
+                        ms.ItemID = storeId;
+                    }
+                    else
+                        ms.ItemID = -1;
+
+                    var legacymoduleid = ms.ModuleId.ToString();
+                    ms.SetXmlProperty("genxml/legacymoduleid", legacymoduleid);
+                    ms.SetXmlProperty("genxml/settings/name", ms.GetXmlProperty("genxml/settings/name").Replace(legacymoduleid, moduleId.ToString()));
+                    ms.PortalId = portalId;
+                    ms.ModuleId = moduleId;
+                    ms.GUIDKey = moduleRef;
+
+                    objCtrl.Update(ms);
+                }
+
+                //import ART
+                var parentItemId = -1;
+                var artNod = xmlDoc.SelectSingleNode("export/art/item[1]");
+                if (artNod != null)
+                {
+                    var ms = new SimplisityRecord();
+                    ms.FromXmlItem(artNod.OuterXml);
+                    var rec = objCtrl.GetRecordByGuidKey(portalId, moduleId, "ART", moduleRef, "", "RocketContentAPI");
+                    if (rec != null)
+                    {
+                        var storeId = rec.ItemID;
+                        ms = rec;
+                        ms.FromXmlItem(artNod.OuterXml);
                         ms.ItemID = storeId;
                     }
                     else
@@ -232,91 +216,121 @@ namespace RocketContentAPI.API
                     ms.SetXmlProperty("genxml/legacyid", ms.ItemID.ToString());
                     ms.PortalId = portalId;
                     ms.ModuleId = moduleId;
-                    ms.GUIDKey = ms.GUIDKey.Split('_')[0] + "_" + moduleId;
-                    ms.ParentItemId = parentItemId;
+                    ms.GUIDKey = moduleRef;
 
-                    objCtrl.Update(ms, "RocketContentAPI");
-
+                    parentItemId = objCtrl.Update(ms, "RocketContentAPI");
                 }
-            }
-            
-            objCtrl.RebuildLangIndex(portalId, parentItemId, "RocketContentAPI");
 
-
-            //import IMAGES
-            var imageDict = new Dictionary<string, string>();
-            var destImgFolder = _dataObject.PortalContent.ImageFolderRel + "/" + moduleId;
-            var destImgFolderMapPath = DNNrocketUtils.MapPath(destImgFolder);
-            if (!Directory.Exists(destImgFolderMapPath)) Directory.CreateDirectory(destImgFolderMapPath);
-            var articleData = new ArticleLimpet(portalId, moduleRef, _sessionParams.CultureCodeEdit, moduleId);
-            foreach (var rowData in articleData.GetRows())
-            {
-                foreach (var i in rowData.GetImages())
+                //import ARTLANG
+                var artLangNods = xmlDoc.SelectNodes("export/artlang/item");
+                if (artLangNods != null && parentItemId > 0)
                 {
-                    if (!imageDict.ContainsKey(i.RelPath)) imageDict.Add(i.RelPath, destImgFolder  + "/" + Path.GetFileName(i.RelPath));
-                }
-            }
-            var xData = articleData.Info.XMLData;
-            foreach (var i in imageDict)
-            {
-                xData = xData.Replace(i.Key, i.Value);
-            }
-            articleData.Info.XMLData = xData;
-            articleData.Update();
-
-            var imgNods = xmlDoc.SelectNodes("export/images/*");
-            if (imgNods != null)
-            {
-                foreach (XmlNode base64Node in imgNods)
-                {
-                    var oldImgPath = base64Node.SelectSingleNode("@filerelpath").InnerText;
-                    var base64String = base64Node.InnerText;
-                    if (base64String != "")
+                    foreach (XmlNode artLangNod in artLangNods)
                     {
-                        var imgpath = destImgFolderMapPath + "\\" + Path.GetFileName(oldImgPath);
-                        File.WriteAllBytes(imgpath, Convert.FromBase64String(base64String));
+                        var ms = new SimplisityRecord();
+                        ms.FromXmlItem(artLangNod.OuterXml);
+
+                        var rec = objCtrl.GetRecordLang(parentItemId, ms.Lang, "RocketContentAPI");
+                        if (rec != null)
+                        {
+                            var storeId = rec.ItemID;
+                            ms = rec;
+                            ms.FromXmlItem(artLangNod.OuterXml);
+                            ms.ItemID = storeId;
+                        }
+                        else
+                            ms.ItemID = -1;
+
+                        var legacymoduleid = ms.ModuleId.ToString();
+                        ms.SetXmlProperty("genxml/legacymoduleid", legacymoduleid);
+                        ms.SetXmlProperty("genxml/legacyid", ms.ItemID.ToString());
+                        ms.PortalId = portalId;
+                        ms.ModuleId = moduleId;
+                        ms.GUIDKey = ms.GUIDKey.Split('_')[0] + "_" + moduleId;
+                        ms.ParentItemId = parentItemId;
+
+                        objCtrl.Update(ms, "RocketContentAPI");
+
                     }
                 }
-            }
 
-            //import DOCS
+                objCtrl.RebuildLangIndex(portalId, parentItemId, "RocketContentAPI");
 
-            var docsDict = new Dictionary<string, string>();
-            var destDocFolder = _dataObject.PortalContent.DocFolderRel + "/" + moduleId;
-            var destDocFolderMapPath = DNNrocketUtils.MapPath(destDocFolder);
-            if (!Directory.Exists(destDocFolderMapPath)) Directory.CreateDirectory(destDocFolderMapPath);
-            var articleData2 = new ArticleLimpet(portalId, moduleRef, _sessionParams.CultureCodeEdit, moduleId);
-            foreach (var rowData in articleData2.GetRows())
-            {
-                foreach (var i in rowData.GetDocs())
+
+                //import IMAGES
+                var imageDict = new Dictionary<string, string>();
+                var destImgFolder = _dataObject.PortalContent.ImageFolderRel + "/" + moduleId;
+                var destImgFolderMapPath = DNNrocketUtils.MapPath(destImgFolder);
+                if (!Directory.Exists(destImgFolderMapPath)) Directory.CreateDirectory(destImgFolderMapPath);
+                var articleData = new ArticleLimpet(portalId, moduleRef, _sessionParams.CultureCodeEdit, moduleId);
+                foreach (var rowData in articleData.GetRows())
                 {
-                    if (!docsDict.ContainsKey(i.RelPath)) docsDict.Add(i.RelPath, destDocFolder + "/" + Path.GetFileName(i.RelPath));
-                }
-            }
-            var xData2 = articleData2.Info.XMLData;
-            foreach (var i in docsDict)
-            {
-                xData2 = xData2.Replace(i.Key, i.Value);
-            }
-            articleData2.Info.XMLData = xData2;
-            articleData2.Update();
-
-            var DocNods = xmlDoc.SelectNodes("export/docs/*");
-            if (DocNods != null)
-            {
-                foreach (XmlNode base64Node in DocNods)
-                {
-                    var oldDocPath = base64Node.SelectSingleNode("@filerelpath").InnerText;
-                    var base64String = base64Node.InnerText;
-                    if (base64String != "")
+                    foreach (var i in rowData.GetImages())
                     {
-                        var Docpath = destDocFolderMapPath + "\\" + Path.GetFileName(oldDocPath);
-                        File.WriteAllBytes(Docpath, Convert.FromBase64String(base64String));
+                        if (!imageDict.ContainsKey(i.RelPath)) imageDict.Add(i.RelPath, destImgFolder + "/" + Path.GetFileName(i.RelPath));
                     }
                 }
+                var xData = articleData.Info.XMLData;
+                foreach (var i in imageDict)
+                {
+                    xData = xData.Replace(i.Key, i.Value);
+                }
+                articleData.Info.XMLData = xData;
+                articleData.Update();
+
+                var imgNods = xmlDoc.SelectNodes("export/images/*");
+                if (imgNods != null)
+                {
+                    foreach (XmlNode base64Node in imgNods)
+                    {
+                        var oldImgPath = base64Node.SelectSingleNode("@filerelpath").InnerText;
+                        var base64String = base64Node.InnerText;
+                        if (base64String != "")
+                        {
+                            var imgpath = destImgFolderMapPath + "\\" + Path.GetFileName(oldImgPath);
+                            File.WriteAllBytes(imgpath, Convert.FromBase64String(base64String));
+                        }
+                    }
+                }
+
+                //import DOCS
+
+                var docsDict = new Dictionary<string, string>();
+                var destDocFolder = _dataObject.PortalContent.DocFolderRel + "/" + moduleId;
+                var destDocFolderMapPath = DNNrocketUtils.MapPath(destDocFolder);
+                if (!Directory.Exists(destDocFolderMapPath)) Directory.CreateDirectory(destDocFolderMapPath);
+                var articleData2 = new ArticleLimpet(portalId, moduleRef, _sessionParams.CultureCodeEdit, moduleId);
+                foreach (var rowData in articleData2.GetRows())
+                {
+                    foreach (var i in rowData.GetDocs())
+                    {
+                        if (!docsDict.ContainsKey(i.RelPath)) docsDict.Add(i.RelPath, destDocFolder + "/" + Path.GetFileName(i.RelPath));
+                    }
+                }
+                var xData2 = articleData2.Info.XMLData;
+                foreach (var i in docsDict)
+                {
+                    xData2 = xData2.Replace(i.Key, i.Value);
+                }
+                articleData2.Info.XMLData = xData2;
+                articleData2.Update();
+
+                var DocNods = xmlDoc.SelectNodes("export/docs/*");
+                if (DocNods != null)
+                {
+                    foreach (XmlNode base64Node in DocNods)
+                    {
+                        var oldDocPath = base64Node.SelectSingleNode("@filerelpath").InnerText;
+                        var base64String = base64Node.InnerText;
+                        if (base64String != "")
+                        {
+                            var Docpath = destDocFolderMapPath + "\\" + Path.GetFileName(oldDocPath);
+                            File.WriteAllBytes(Docpath, Convert.FromBase64String(base64String));
+                        }
+                    }
+                }
+
             }
-
-
 
         }
     }

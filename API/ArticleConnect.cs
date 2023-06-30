@@ -244,7 +244,7 @@ namespace RocketContentAPI.API
         }
         public String AdminSelectAppThemeDisplay()
         {
-            var appThemeDataList = new AppThemeDataList(_dataObject.SystemKey);
+            var appThemeDataList = new AppThemeDataList(_dataObject.PortalId, _dataObject.SystemKey);
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("SelectAppTheme.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, appThemeDataList, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, _dataObject.PortalContent.DebugMode);
             if (pr.StatusCode != "00") return pr.ErrorMsg;

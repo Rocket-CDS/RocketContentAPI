@@ -181,8 +181,8 @@ namespace RocketContentAPI.API
             _postInfo = postInfo;
             _paramInfo = paramInfo;
 
-            var portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
-            if (portalid == 0) portalid = PortalUtils.GetCurrentPortalId();
+            var portalid = PortalUtils.GetCurrentPortalId();
+            if (portalid < 0 && systemInfo.PortalId >= 0) portalid = systemInfo.PortalId;
 
             _rocketInterface = new RocketInterface(interfaceInfo);
             _sessionParams = new SessionParams(_paramInfo);
