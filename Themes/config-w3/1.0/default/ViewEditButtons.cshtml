@@ -63,28 +63,11 @@
 
             if (UserUtils.IsSuperUser() && moduleData.HasAppThemeAdmin)
             {
-                <a href="/SysAdmin/rocketapptheme?moduleref=@(moduleData.ModuleRef)&appthemefolder=@(moduleData.AppThemeAdminFolder)&appversionfolder=@(moduleData.AppThemeAdminVersion)&project=@(moduleData.ProjectName)&rtn=@sessionParams.Get("returnurl")" class="w3-button w3-round w3-border w3-text-black @(colorclass)" title="@ResourceKey("RCT.editapptheme")">
+                <a href="@sessionParams.Get("appthemeurl")" class="w3-button w3-round w3-border w3-text-black @(colorclass)" title="@ResourceKey("RCT.editapptheme")">
                     <span class="material-icons ">
                         movie_edit
                     </span>
                 </a>
-
-                var editappthemeview = false;
-                if (moduleData.HasAppThemeView)
-                {
-                    if (moduleData.AppThemeAdminFolder != moduleData.AppThemeViewFolder || moduleData.AppThemeAdminVersion != moduleData.AppThemeViewVersion)
-                    {
-                        editappthemeview = true;
-                    }
-                }
-                if (editappthemeview)
-                {
-                    <a href="/SysAdmin/rocketapptheme?moduleref=@(moduleData.ModuleRef)&appthemefolder=@(moduleData.AppThemeViewFolder)&appversionfolder=@(moduleData.AppThemeViewVersion)&project=@(moduleData.ProjectName)&rtn=@sessionParams.Get("returnurl")" class="w3-button w3-round w3-border w3-text-blue  @(colorclass)" title="@ResourceKey("RCT.editappthemeview")">
-                        <span class="material-icons ">
-                            movie
-                        </span>
-                    </a>
-                }
             }
         }
 

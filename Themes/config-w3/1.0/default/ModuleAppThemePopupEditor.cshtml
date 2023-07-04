@@ -1,0 +1,41 @@
+@inherits DNNrocketAPI.render.DNNrocketTokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using DNNrocketAPI.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
+
+<link rel="stylesheet" href="/DesktopModules/DNNrocket/Simplisity/css/simplisity.css">
+<script type="text/javascript" src="/DesktopModules/DNNrocket/Simplisity/js/simplisity.js"></script>
+
+
+<div id="editmodal" class="w3-modal " style="top:-30px;">
+    <div class="w3-modal-content w3-animate-opacity" style="width:90%;">
+        <header class="w3-container" style="height:38px;">
+            <div class="w3-button w3-display-topright" onclick="$('#editmodal').hide();">
+                &times;
+            </div>
+        </header>
+        <div id="editmodalcontainer" class="w3-container editmodalpopup" style="min-height:480px;"></div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $(".a-popupeditor").on("click", function () {
+            $('#editmodal').show();
+            simplisity_callserver($(this), "/Desktopmodules/dnnrocket/api/rocket/action", "#editmodalcontainer", false)
+        } );
+
+    });
+
+    function showeditpopup() {
+        $('#editmodal').show();
+    }
+
+</script>
+
+
