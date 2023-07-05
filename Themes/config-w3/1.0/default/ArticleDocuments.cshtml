@@ -27,10 +27,9 @@
     </div>
 
     <ul id="documentlistdata" class="w3-ul">
-
         @foreach (var docInfo in datalist)
         {
-            <li class="documentlist w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
+            <li class="documentlist w3-display-container w3-padding w3-border-0" style="list-style-type:none;">
                 @SortableListIndex(docInfo, docLP)
 
                 <div class="w3-display-container w3-padding w3-card">
@@ -38,17 +37,13 @@
                         <span id="deletebutton@(docLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".documentlist" s-recylebin="documentlistbin">
                             @ButtonIcon(ButtonTypes.remove)
                         </span>
-                        <div class="w3-col m8 w3-padding">
+                        <div class="w3-padding">
                             @HiddenField(docInfo, "genxml/hidden/documentpatharticledoc", "", "", false, docLP)
-
-                            <label class="">@ResourceKey("DNNrocket.name")</label>&nbsp;@EditFlag(sessionParams)
+                            <label>@ResourceKey("DNNrocket.name")</label>&nbsp;@EditFlag(sessionParams)
                             @TextBox(docInfo, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' ", "", false, docLP)
-                            <label class="">@ResourceKey("DNNrocket.document")</label>&nbsp;@EditFlag(sessionParams)
-                            @TextBox(docInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border' ", "", false, docLP)
-                        </div>
-                        <div class="w3-col m2 w3-padding" style="">
-                            <label class="">@ResourceKey("DNNrocket.blank")<br />
-                            @CheckBox(docInfo, "genxml/checkbox/openinnewtab", "", "class='w3-check'", false, false, docLP)
+                            <label>@ResourceKey("DNNrocket.document")</label>
+                            @TextBox(docInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border w3-light-grey' disabled ", "", false, docLP)
+                            @CheckBox(docInfo, "genxml/checkbox/forcedownload", "", "class='w3-check' style='margin-right:6px' ", false, false, docLP)<label>@ResourceKey("DNNrocket.forcedownload")</label>
                         </div>
                     </div>
                 </div>

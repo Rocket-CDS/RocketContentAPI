@@ -55,8 +55,9 @@
                                 <img src="@ThumbnailImageUrl(portalData.EngineUrlWithProtocol, "/DesktopModules/DNNrocket/api/images/noimage2.png", 80, 80)" style="height:80px;width:80px;" class="w3-round" />
                             }
                         </div>
-                        <div class="w3-col m8 w3-padding">
-                            @TextBox(imgInfo, "genxml/lang/genxml/textbox/imagealtarticleimage", "class='w3-input w3-border w3-margin-top' autocomplete='off' MaxLength='200'", "", true, imgLP)
+                        <div class="w3-col m10 w3-padding">
+                            <label>@ResourceKey("DNNrocket.imagealt")</label>&nbsp;@EditFlag(sessionParams)
+                            @TextBox(imgInfo, "genxml/lang/genxml/textbox/imagealtarticleimage", "class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", true, imgLP)
                             @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, imgLP)
                         </div>
                         <div class="w3-row">
