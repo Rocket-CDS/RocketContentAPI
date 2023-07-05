@@ -59,14 +59,17 @@
                     @ButtonIcon(ButtonTypes.save)
                 </span>
             </span>
+            @if (UserUtils.IsAdministrator())
+            {
             <span class="w3-padding w3-button w3-margin-left w3-red w3-right simplisity_confirmclick" s-cmd="article_admindelete" s-confirm="@ResourceKey("DNNrocket.delete") ?" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>
                 <span class="w3-hide-small">
-                    @ButtonText(ButtonTypes.delete)
+                    @ButtonText(ButtonTypes.reset)
                 </span>
                 <span class="w3-hide-medium w3-hide-large">
-                    @ButtonIcon(ButtonTypes.delete)
+                    @ButtonIcon(ButtonTypes.reset)
                 </span>
             </span>
+            }
         </div>
     </div>
 
