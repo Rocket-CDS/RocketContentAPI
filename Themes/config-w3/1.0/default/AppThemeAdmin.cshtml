@@ -5,11 +5,15 @@
 @using RazorEngine.Text;
 @using Rocket.AppThemes.Components;
 @using RocketPortal.Components;
+@using System.IO;
 
 @{
     var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
     var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var portalShop = (PortalLimpet)Model.GetDataObject("portalshop");
     var systemAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
+    var appThemeView = new AppThemeLimpet(moduleData.PortalId, moduleData.AppThemeViewFolder, moduleData.AppThemeViewVersion, moduleData.ProjectName);
+    var appThemeAdmin = new AppThemeLimpet(moduleData.PortalId, moduleData.AppThemeAdminFolder, moduleData.AppThemeAdminVersion, moduleData.ProjectName);
 }
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketAppTheme/App_LocalResources/")
@@ -19,40 +23,59 @@
 
 <div class="w3-row">
     <a href="@DNNrocketUtils.NavigateURL(moduleData.TabId)" class="w3-button w3-black">@ButtonIconText(ButtonTypes.back)</a>
+
+    <div class="w3-row w3-right">
+        <div class="w3-padding">
+            <label>Ref</label><br />
+            <b>@moduleData.ModuleRef</b>
+        </div>
+        @if (moduleData.AppThemeAdminFolder != "")
+        {
+        <div class="w3-padding">
+            <label>Admin</label><br/>
+            <b>@moduleData.AppThemeAdminFolder</b>
+        </div>            
+        }
+        @if (moduleData.AppThemeViewFolder != "")
+        {
+            <div class="w3-padding">
+                <label>View</label><br />
+                <b>@moduleData.AppThemeViewFolder</b>
+            </div>
+        }
+    </div>
+
 </div>
 
 <div class="w3-row">
 
-    <div class="w3-row">
+
+    <div class="w3-row w3-margin-top">
         <div class="w3-quarter">
             &nbsp;
         </div>
-          <div class="w3-half w3-pale-blue w3-container w3-center">
+        <div class="w3-half w3-pale-green w3-container w3-center">
             <div class="w3-padding">
-                <div class="w3-xlarge">Module Level&nbsp;<img src="/images/level_module.svg" /></div>
-            </div>
-            <div class="w3-padding">
-                @if (moduleData.HasAppThemeView)
-                {
-                    <div class="w3-button w3-blue w3-block w3-hover-blue-grey w3-padding-16 simplisity_click" s-cmd="rocketapptheme_getdetail" s-return="#editmodalcontainer" s-after="showeditpopup" s-fields='{"selectedproject":"@moduleData.ProjectName","moduleref":"@moduleData.ModuleRef","appthemefolder":"@moduleData.AppThemeViewFolder","appversionfolder":"@moduleData.AppThemeViewVersion"}'>
-                        @ResourceKey("AppThemes.viewtemplate")
-                    </div>
-                }
-                <div class="w3-button w3-blue w3-block w3-hover-blue-grey w3-padding-16 simplisity_click" s-cmd="rocketapptheme_getdetail" s-return="#editmodalcontainer" s-after="showeditpopup" s-fields='{"selectedproject":"@moduleData.ProjectName","moduleref":"@moduleData.ModuleRef","appthemefolder":"@moduleData.AppThemeAdminFolder","appversionfolder":"@moduleData.AppThemeAdminVersion"}'>
-                    @if (!moduleData.HasAppThemeView)
-                    {
-                        @ResourceKey("AppThemes.defaulttemplate")
-                    }
-                    else
-                    {
-                        @ResourceKey("AppThemes.admintemplate")
-                    }
+                <div class="w3-xlarge">
+                    System Level&nbsp;
+                    <span class="material-icons">
+                        system_update_alt
+                    </span>
                 </div>
             </div>
-          </div>
+            <div class="w3-padding">
+                @ResourceKey("AppThemes.systemleveleditmsg")
+            </div>
+        </div>
         <div class="w3-quarter">
             &nbsp;
         </div>
+    </div>
+
+    <div class="w3-row w3-margin w3-center">
+        <span class="material-icons w3-jumbo">
+            keyboard_double_arrow_up
+        </span>
     </div>
 
     <div class="w3-row w3-margin-top">
@@ -69,6 +92,15 @@
                     <div class="w3-button w3-yellow w3-block w3-hover-blue-grey w3-padding-16 simplisity_click" s-cmd="rocketapptheme_getdetail" s-return="#editmodalcontainer" s-after="showeditpopup" s-fields='{"selectedproject":"@moduleData.ProjectName","moduleref":"","appthemefolder":"@moduleData.AppThemeViewFolder","appversionfolder":"@moduleData.AppThemeViewVersion"}'>
                         @ResourceKey("AppThemes.viewtemplate")
                     </div>
+
+                    <div class="w3-small w3-left">
+                        @foreach (var t in appThemeView.PortalTemplateList())
+                        {
+                            <div class="w3-left-align">@t</div>
+                        }
+                    </div>
+
+
                 }
                 <div class="w3-button w3-yellow w3-block w3-hover-blue-grey w3-padding-16 simplisity_click" s-cmd="rocketapptheme_getdetail" s-return="#editmodalcontainer" s-after="showeditpopup" s-fields='{"selectedproject":"@moduleData.ProjectName","moduleref":"","appthemefolder":"@moduleData.AppThemeAdminFolder","appversionfolder":"@moduleData.AppThemeAdminVersion"}'>
                     @if (!moduleData.HasAppThemeView)
@@ -80,12 +112,74 @@
                         @ResourceKey("AppThemes.admintemplate")
                     }
                 </div>
+
+                <div class="w3-small w3-left">
+                    @foreach (var t in appThemeAdmin.PortalTemplateList())
+                    {
+                        <div class="w3-left-align">@t</div>
+                    }
+                </div>
+
             </div>
         </div>
         <div class="w3-quarter">
             &nbsp;
         </div>
     </div>
+
+    <div class="w3-row w3-margin w3-center">
+        <span class="material-icons w3-jumbo">
+            keyboard_double_arrow_up
+        </span>
+    </div>
+
+    <div class="w3-row">
+        <div class="w3-quarter">
+            &nbsp;
+        </div>
+        <div class="w3-half w3-pale-blue w3-container w3-center">
+            <div class="w3-padding">
+                <div class="w3-xlarge">Module Level&nbsp;<img src="/images/level_module.svg" /></div>
+            </div>
+            <div class="w3-padding">
+                @if (moduleData.HasAppThemeView)
+                {
+                    <div class="w3-button w3-blue w3-block w3-hover-blue-grey w3-padding-16 simplisity_click" s-cmd="rocketapptheme_getdetail" s-return="#editmodalcontainer" s-after="showeditpopup" s-fields='{"selectedproject":"@moduleData.ProjectName","moduleref":"@moduleData.ModuleRef","appthemefolder":"@moduleData.AppThemeViewFolder","appversionfolder":"@moduleData.AppThemeViewVersion"}'>
+                        @ResourceKey("AppThemes.viewtemplate")
+                    </div>
+                    <div class="w3-small w3-left">
+                        @foreach (var t in appThemeView.ModuleTemplateList(moduleData.ModuleRef))
+                        {
+                            <div class="w3-left-align">@t.Replace(moduleData.ModuleRef + "_","")</div>
+                        }
+                    </div>
+                }
+                <div class="w3-button w3-blue w3-block w3-hover-blue-grey w3-padding-16 simplisity_click" s-cmd="rocketapptheme_getdetail" s-return="#editmodalcontainer" s-after="showeditpopup" s-fields='{"selectedproject":"@moduleData.ProjectName","moduleref":"@moduleData.ModuleRef","appthemefolder":"@moduleData.AppThemeAdminFolder","appversionfolder":"@moduleData.AppThemeAdminVersion"}'>
+                    @if (!moduleData.HasAppThemeView)
+                    {
+                        @ResourceKey("AppThemes.defaulttemplate")
+                    }
+                    else
+                    {
+                        @ResourceKey("AppThemes.admintemplate")
+                    }
+                </div>
+
+                <div class="w3-small w3-left">
+                    @foreach (var t in appThemeAdmin.ModuleTemplateList(moduleData.ModuleRef))
+                    {
+                        <div class="w3-left-align">@t.Replace(moduleData.ModuleRef + "_","")</div>
+                    }
+                </div>
+
+            </div>
+        </div>
+        <div class="w3-quarter">
+            &nbsp;
+        </div>
+    </div>
+
+
 
 </div>
 
