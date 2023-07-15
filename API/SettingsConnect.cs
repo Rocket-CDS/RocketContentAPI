@@ -71,6 +71,7 @@ namespace RocketContentAPI.API
             moduleData.Save(_postInfo);
             moduleData.Update();
             _dataObject.SetDataObject("modulesettings", moduleData);
+            CacheUtils.ClearAllCache(_dataObject.ModuleSettings.ModuleRef);
             return RenderSystemTemplate("ModuleSettings.cshtml");
         }
         private string DisplaySettings()

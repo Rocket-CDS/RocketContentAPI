@@ -102,7 +102,7 @@ namespace RocketContentAPI.API
                 rtn += "<appthemes>";
                 rtn += "<admin>";
 
-                var zipMapPath = _dataObject.AppThemeAdmin.ExportZipFile(_moduleRef);
+                var zipMapPath = _dataObject.AppThemeAdmin.ExportZipFile(_dataObject.PortalId, _moduleRef);
                 var systemByte = File.ReadAllBytes(zipMapPath);
                 var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
                 rtn += "<systembase64 filetype='zip'><![CDATA[";
@@ -110,7 +110,7 @@ namespace RocketContentAPI.API
                 rtn += "]]></systembase64>";
                 File.Delete(zipMapPath);
 
-                zipMapPath = _dataObject.AppThemeAdmin.ExportPortalZipFile(_moduleRef);
+                zipMapPath = _dataObject.AppThemeAdmin.ExportPortalZipFile(_dataObject.PortalId, _moduleRef);
                 systemByte = File.ReadAllBytes(zipMapPath);
                 systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
                 rtn += "<portalbase64 filetype='zip'><![CDATA[";
@@ -124,7 +124,7 @@ namespace RocketContentAPI.API
                 {
                     rtn += "<view>";
 
-                    zipMapPath = _dataObject.AppThemeView.ExportZipFile(_moduleRef);
+                    zipMapPath = _dataObject.AppThemeView.ExportZipFile(_dataObject.PortalId, _moduleRef);
                     systemByte = File.ReadAllBytes(zipMapPath);
                     systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
                     rtn += "<systembase64 filetype='zip'><![CDATA[";
@@ -132,7 +132,7 @@ namespace RocketContentAPI.API
                     rtn += "]]></systembase64>";
                     File.Delete(zipMapPath);
 
-                    zipMapPath = _dataObject.AppThemeView.ExportPortalZipFile(_moduleRef);
+                    zipMapPath = _dataObject.AppThemeView.ExportPortalZipFile(_dataObject.PortalId, _moduleRef);
                     systemByte = File.ReadAllBytes(zipMapPath);
                     systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
                     rtn += "<portalbase64 filetype='zip'><![CDATA[";
@@ -192,31 +192,31 @@ namespace RocketContentAPI.API
 
             return rtn;
         }
-        private void ImportAppTheme(AppThemeLimpet appTheme, XmlNode appThemeNod, string prefix)
+        private void ImportAppTheme(int portalId, AppThemeLimpet appTheme, XmlNode appThemeNod, string prefix)
         {
             if (appTheme != null &&  appThemeNod != null)
             {
                 var base64String = appThemeNod.InnerText;
                 if (base64String != "")
                 {
-                    var importZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + prefix + ".zip";
+                    var importZipMapPath = PortalUtils.TempDirectoryMapPath(portalId) + "\\" + prefix + ".zip";
                     File.WriteAllBytes(importZipMapPath, Convert.FromBase64String(base64String));
-                    appTheme.ImportZipFile(importZipMapPath);
-                    //File.Delete(importZipMapPath);
+                    appTheme.ImportZipFile(portalId, importZipMapPath);
+                    if (File.Exists(importZipMapPath)) File.Delete(importZipMapPath);
                 }
             }
         }
-        private void ImportPortalAppTheme(AppThemeLimpet appTheme, XmlNode appThemeNod, string prefix, string oldModuleRef, string newModuleRef)
+        private void ImportPortalAppTheme(int portalId, AppThemeLimpet appTheme, XmlNode appThemeNod, string prefix, string oldModuleRef, string newModuleRef)
         {
             if (appTheme != null && appThemeNod != null)
             {
                 var base64String = appThemeNod.InnerText;
                 if (base64String != "")
                 {
-                    var importZipMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + prefix + ".zip";
+                    var importZipMapPath = PortalUtils.TempDirectoryMapPath(portalId) + "\\" + prefix + ".zip";
                     File.WriteAllBytes(importZipMapPath, Convert.FromBase64String(base64String));
-                    appTheme.ImportPortalZipFile(importZipMapPath, oldModuleRef, newModuleRef);
-                    //File.Delete(importZipMapPath);
+                    appTheme.ImportPortalZipFile(portalId, importZipMapPath, oldModuleRef, newModuleRef);
+                    if (File.Exists(importZipMapPath)) File.Delete(importZipMapPath);
                 }
             }
         }
@@ -283,10 +283,10 @@ namespace RocketContentAPI.API
                         }
 
                         // Import AppTheme
-                        ImportAppTheme(appThemeAdmin, xmlDoc.SelectSingleNode("export/appthemes/admin/systembase64"), moduleRef + "adminsystem");
-                        ImportAppTheme(appThemeView, xmlDoc.SelectSingleNode("export/appthemes/view/systembase64"), moduleRef + "viewsystem");
-                        ImportPortalAppTheme(appThemeAdmin, xmlDoc.SelectSingleNode("export/appthemes/admin/portalbase64"), moduleRef + "adminportal", legacymoduleref, moduleRef);
-                        ImportPortalAppTheme(appThemeView, xmlDoc.SelectSingleNode("export/appthemes/view/portalbase64"), moduleRef + "viewportal", legacymoduleref, moduleRef);
+                        ImportAppTheme(portalId, appThemeAdmin, xmlDoc.SelectSingleNode("export/appthemes/admin/systembase64"), moduleRef + "adminsystem");
+                        ImportAppTheme(portalId, appThemeView, xmlDoc.SelectSingleNode("export/appthemes/view/systembase64"), moduleRef + "viewsystem");
+                        ImportPortalAppTheme(portalId, appThemeAdmin, xmlDoc.SelectSingleNode("export/appthemes/admin/portalbase64"), moduleRef + "adminportal", legacymoduleref, moduleRef);
+                        ImportPortalAppTheme(portalId, appThemeView, xmlDoc.SelectSingleNode("export/appthemes/view/portalbase64"), moduleRef + "viewportal", legacymoduleref, moduleRef);
                     }
                 }
 
@@ -353,10 +353,11 @@ namespace RocketContentAPI.API
 
                 objCtrl.RebuildLangIndex(portalId, parentItemId, "RocketContentAPI");
 
+                var portalContentData = new PortalContentLimpet(portalId, "en-US"); //langauge not important;
 
                 //import IMAGES
                 var imageDict = new Dictionary<string, string>();
-                var destImgFolder = _dataObject.PortalContent.ImageFolderRel + "/" + moduleId;
+                var destImgFolder = portalContentData.ImageFolderRel + "/" + moduleId;
                 var destImgFolderMapPath = DNNrocketUtils.MapPath(destImgFolder);
                 if (!Directory.Exists(destImgFolderMapPath)) Directory.CreateDirectory(destImgFolderMapPath);
                 var articleData = new ArticleLimpet(portalId, moduleRef, _sessionParams.CultureCodeEdit, moduleId);
@@ -393,7 +394,7 @@ namespace RocketContentAPI.API
                 //import DOCS
 
                 var docsDict = new Dictionary<string, string>();
-                var destDocFolder = _dataObject.PortalContent.DocFolderRel + "/" + moduleId;
+                var destDocFolder = portalContentData.DocFolderRel + "/" + moduleId;
                 var destDocFolderMapPath = DNNrocketUtils.MapPath(destDocFolder);
                 if (!Directory.Exists(destDocFolderMapPath)) Directory.CreateDirectory(destDocFolderMapPath);
                 var articleData2 = new ArticleLimpet(portalId, moduleRef, _sessionParams.CultureCodeEdit, moduleId);
