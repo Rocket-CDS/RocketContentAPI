@@ -103,20 +103,26 @@ namespace RocketContentAPI.API
                 rtn += "<admin>";
 
                 var zipMapPath = _dataObject.AppThemeAdmin.ExportZipFile(_dataObject.PortalId, _moduleRef);
-                var systemByte = File.ReadAllBytes(zipMapPath);
-                var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
-                rtn += "<systembase64 filetype='zip'><![CDATA[";
-                rtn += systemBase64;
-                rtn += "]]></systembase64>";
-                File.Delete(zipMapPath);
+                if (File.Exists(zipMapPath))
+                {
+                    var systemByte = File.ReadAllBytes(zipMapPath);
+                    var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
+                    rtn += "<systembase64 filetype='zip'><![CDATA[";
+                    rtn += systemBase64;
+                    rtn += "]]></systembase64>";
+                    File.Delete(zipMapPath);
+                }
 
                 zipMapPath = _dataObject.AppThemeAdmin.ExportPortalZipFile(_dataObject.PortalId, _moduleRef);
-                systemByte = File.ReadAllBytes(zipMapPath);
-                systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
-                rtn += "<portalbase64 filetype='zip'><![CDATA[";
-                rtn += systemBase64;
-                rtn += "]]></portalbase64>";
-                File.Delete(zipMapPath);
+                if (File.Exists(zipMapPath))
+                {
+                    var systemByte = File.ReadAllBytes(zipMapPath);
+                    var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
+                    rtn += "<portalbase64 filetype='zip'><![CDATA[";
+                    rtn += systemBase64;
+                    rtn += "]]></portalbase64>";
+                    File.Delete(zipMapPath);
+                }
 
                 rtn += "</admin>";
 
@@ -125,20 +131,26 @@ namespace RocketContentAPI.API
                     rtn += "<view>";
 
                     zipMapPath = _dataObject.AppThemeView.ExportZipFile(_dataObject.PortalId, _moduleRef);
-                    systemByte = File.ReadAllBytes(zipMapPath);
-                    systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
-                    rtn += "<systembase64 filetype='zip'><![CDATA[";
-                    rtn += systemBase64;
-                    rtn += "]]></systembase64>";
-                    File.Delete(zipMapPath);
+                    if (File.Exists(zipMapPath))
+                    {
+                        var systemByte = File.ReadAllBytes(zipMapPath);
+                        var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
+                        rtn += "<systembase64 filetype='zip'><![CDATA[";
+                        rtn += systemBase64;
+                        rtn += "]]></systembase64>";
+                        File.Delete(zipMapPath);
+                    }
 
                     zipMapPath = _dataObject.AppThemeView.ExportPortalZipFile(_dataObject.PortalId, _moduleRef);
-                    systemByte = File.ReadAllBytes(zipMapPath);
-                    systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
-                    rtn += "<portalbase64 filetype='zip'><![CDATA[";
-                    rtn += systemBase64;
-                    rtn += "]]></portalbase64>";
-                    File.Delete(zipMapPath);
+                    if (File.Exists(zipMapPath))
+                    {
+                        var systemByte = File.ReadAllBytes(zipMapPath);
+                        var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
+                        rtn += "<portalbase64 filetype='zip'><![CDATA[";
+                        rtn += systemBase64;
+                        rtn += "]]></portalbase64>";
+                        File.Delete(zipMapPath);
+                    }
 
                     rtn += "</view>";
                 }
