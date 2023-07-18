@@ -217,7 +217,7 @@
           <securityrolesadministrators>1</securityrolesadministrators>
           <securityrolesmanager>1</securityrolesmanager>
           <securityroleseditor>1</securityroleseditor>
-          <securityrolesclienteditor>0</securityrolesclienteditor>
+          <securityrolesclienteditor>1</securityrolesclienteditor>
           <securityrolesregisteredusers>0</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>
@@ -245,7 +245,7 @@
           <securityrolesadministrators>1</securityrolesadministrators>
           <securityrolesmanager>1</securityrolesmanager>
           <securityroleseditor>1</securityroleseditor>
-          <securityrolesclienteditor>0</securityrolesclienteditor>
+          <securityrolesclienteditor>1</securityrolesclienteditor>
           <securityrolesregisteredusers>0</securityrolesregisteredusers>
           <securityrolessubscribers>0</securityrolessubscribers>
           <securityrolesall>0</securityrolesall>

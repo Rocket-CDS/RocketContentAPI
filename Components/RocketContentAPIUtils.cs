@@ -93,6 +93,30 @@ namespace RocketContentAPI.Components
             }
             return str;
         }
+        public static List<SimplisityRecord> GetAllRecordART(int portalId, int moduleid = -1, string tableName = "RocketContentAPI")
+        {
+            var objCtrl = new DNNrocketController();
+            var rtn = new List<SimplisityRecord>();
+            var l = objCtrl.GetList(portalId, moduleid, "ART", "", "", "", 0, 0, 0, 0, tableName);
+            foreach (var a in l)
+            {
+                a.RemoveLangRecord();
+                rtn.Add(a);
+            }
+            return rtn;
+        }
+        public static List<SimplisityRecord> GetAllRecordARTLANG(int portalId, int moduleid = -1, string tableName = "RocketContentAPI")
+        {
+            var objCtrl = new DNNrocketController();
+            var rtn = new List<SimplisityRecord>();
+            var l = objCtrl.GetList(portalId, moduleid, "ARTLANG", "", "", "", 0, 0, 0, 0, tableName);
+            foreach (var a in l)
+            {
+                a.RemoveLangRecord();
+                rtn.Add(a);
+            }
+            return rtn;
+        }
 
     }
 

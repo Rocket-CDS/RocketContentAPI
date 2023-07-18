@@ -88,30 +88,6 @@ namespace RocketContentAPI.Components
         {
             return AppThemeProjects.List;
         }
-        public List<SimplisityRecord> GetAllRecordART(int moduleid = -1)
-        {
-            var objCtrl = new DNNrocketController();
-            var rtn = new List<SimplisityRecord>();
-            var l = objCtrl.GetList(PortalContent.PortalId, moduleid, "ART", "", "", "", 0, 0, 0, 0, _tableName);
-            foreach (var a in l)
-            {
-                a.RemoveLangRecord();
-                rtn.Add(a);
-            }
-            return rtn;
-        }
-        public List<SimplisityRecord> GetAllRecordARTLANG(int moduleid = -1)
-        {
-            var objCtrl = new DNNrocketController();
-            var rtn = new List<SimplisityRecord>();
-            var l = objCtrl.GetList(PortalContent.PortalId, moduleid, "ARTLANG", "", "", "", 0, 0, 0, 0, _tableName);
-            foreach (var a in l)
-            {
-                a.RemoveLangRecord();
-                rtn.Add(a);
-            }
-            return rtn;
-        }
         public string SystemKey { get { return "rocketcontentapi"; } }
         public int PortalId { get { return PortalData.PortalId; } }
         public Dictionary<string, object> DataObjects { get { return _dataObjects; } }

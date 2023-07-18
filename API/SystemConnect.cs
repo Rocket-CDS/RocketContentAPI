@@ -89,48 +89,37 @@ namespace RocketContentAPI.API
             var securityKey = DNNrocketUtils.GetTempStorage(_paramInfo.GetXmlProperty("genxml/hidden/securitykey"));
             if (securityKey != null) // if it exists in the temp table, it was created by the scheduler.
             {
-
-                rtn = "<export>";
-
-                rtn += "<systemkey>" + _dataObject.SystemKey + "</systemkey>";
-                rtn += "<databasetable>RocketContentAPI</databasetable>";
-
-                rtn += "<modulesettings>";
-                rtn += _dataObject.ModuleSettings.Record.ToXmlItem();
-                rtn += "</modulesettings>";
-
-                rtn += "<appthemes>";
-                rtn += "<admin>";
-
-                var zipMapPath = _dataObject.AppThemeAdmin.ExportZipFile(_dataObject.PortalId, _moduleRef);
-                if (File.Exists(zipMapPath))
+                var moduleId = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
+                var systemKey = "rocketcontentapi";
+                var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
+                var databasetable = _paramInfo.GetXmlProperty("genxml/hidden/databasetable");
+                var moduleRef = portalId + "_ModuleID_" + moduleId;
+                var moduleSettings = new ModuleContentLimpet(portalId, moduleRef, systemKey, moduleId, -1);
+                AppThemeLimpet appThemeAdmin;
+                AppThemeLimpet appThemeView;
+                if (moduleSettings.HasProject)
                 {
-                    var systemByte = File.ReadAllBytes(zipMapPath);
-                    var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
-                    rtn += "<systembase64 filetype='zip'><![CDATA[";
-                    rtn += systemBase64;
-                    rtn += "]]></systembase64>";
-                    File.Delete(zipMapPath);
-                }
+                    appThemeAdmin = new AppThemeLimpet(moduleSettings.PortalId, moduleSettings.AppThemeAdminFolder, moduleSettings.AppThemeAdminVersion, moduleSettings.ProjectName);
+                    if (moduleSettings.HasAppThemeView)
+                        appThemeView = new AppThemeLimpet(moduleSettings.PortalId, moduleSettings.AppThemeViewFolder, moduleSettings.AppThemeViewVersion, moduleSettings.ProjectName);
+                    else
+                        appThemeView = appThemeAdmin;
 
-                zipMapPath = _dataObject.AppThemeAdmin.ExportPortalZipFile(_dataObject.PortalId, _moduleRef);
-                if (File.Exists(zipMapPath))
-                {
-                    var systemByte = File.ReadAllBytes(zipMapPath);
-                    var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
-                    rtn += "<portalbase64 filetype='zip'><![CDATA[";
-                    rtn += systemBase64;
-                    rtn += "]]></portalbase64>";
-                    File.Delete(zipMapPath);
-                }
+                    var portalContent = new PortalContentLimpet(portalId, "en-US");
 
-                rtn += "</admin>";
+                    rtn = "<export>";
 
-                if (_dataObject.ModuleSettings.HasAppThemeView)
-                {
-                    rtn += "<view>";
+                    rtn += "<systemkey>" + systemKey + "</systemkey>";
+                    rtn += "<databasetable>RocketContentAPI</databasetable>";
 
-                    zipMapPath = _dataObject.AppThemeView.ExportZipFile(_dataObject.PortalId, _moduleRef);
+                    rtn += "<modulesettings>";
+                    rtn += moduleSettings.Record.ToXmlItem();
+                    rtn += "</modulesettings>";
+
+                    rtn += "<appthemes>";
+                    rtn += "<admin>";
+
+                    var zipMapPath = appThemeAdmin.ExportZipFile(portalId, _moduleRef);
                     if (File.Exists(zipMapPath))
                     {
                         var systemByte = File.ReadAllBytes(zipMapPath);
@@ -141,7 +130,7 @@ namespace RocketContentAPI.API
                         File.Delete(zipMapPath);
                     }
 
-                    zipMapPath = _dataObject.AppThemeView.ExportPortalZipFile(_dataObject.PortalId, _moduleRef);
+                    zipMapPath = appThemeAdmin.ExportPortalZipFile(portalId, _moduleRef);
                     if (File.Exists(zipMapPath))
                     {
                         var systemByte = File.ReadAllBytes(zipMapPath);
@@ -152,54 +141,83 @@ namespace RocketContentAPI.API
                         File.Delete(zipMapPath);
                     }
 
-                    rtn += "</view>";
-                }
-                rtn += "</appthemes>";
+                    rtn += "</admin>";
 
-                rtn += "<art>";
-                var artList = _dataObject.GetAllRecordART(_dataObject.ModuleSettings.ModuleId);
-                foreach (var a in artList)
-                {
-                    rtn += a.ToXmlItem();
-                }
-                rtn += "</art>";
-                rtn += "<artlang>";
-                var artLangList = _dataObject.GetAllRecordARTLANG(_dataObject.ModuleSettings.ModuleId);
-                foreach (var a in artLangList)
-                {
-                    rtn += a.ToXmlItem();
-                }
-                rtn += "</artlang>";
-                rtn += "<images>";
-                var destDir = _dataObject.PortalContent.ImageFolderMapPath + "\\" + _dataObject.ModuleSettings.ModuleId;
-                if (Directory.Exists(destDir))
-                {
-                    foreach (var i in Directory.GetFiles(destDir))
+                    if (moduleSettings.HasAppThemeView)
                     {
-                        var imgByte = File.ReadAllBytes(i);
-                        var imgBase64 = Convert.ToBase64String(imgByte, Base64FormattingOptions.None);
-                        rtn += "<imgbase64 filerelpath='" + i + "'><![CDATA[";
-                        rtn += imgBase64;
-                        rtn += "]]></imgbase64>";
-                    }
-                }
-                rtn += "</images>";
-                rtn += "<docs>";
-                var destDir2 = _dataObject.PortalContent.DocFolderMapPath + "\\" + _dataObject.ModuleSettings.ModuleId;
-                if (Directory.Exists(destDir2))
-                {
-                    foreach (var i in Directory.GetFiles(destDir2))
-                    {
-                        var imgByte = File.ReadAllBytes(i);
-                        var imgBase64 = Convert.ToBase64String(imgByte, Base64FormattingOptions.None);
-                        rtn += "<docbase64 filerelpath='" + i + "'><![CDATA[";
-                        rtn += imgBase64;
-                        rtn += "]]></docbase64>";
-                    }
-                }
-                rtn += "</docs>";
+                        rtn += "<view>";
 
-                rtn += "</export>";
+                        zipMapPath = appThemeView.ExportZipFile(portalId, _moduleRef);
+                        if (File.Exists(zipMapPath))
+                        {
+                            var systemByte = File.ReadAllBytes(zipMapPath);
+                            var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
+                            rtn += "<systembase64 filetype='zip'><![CDATA[";
+                            rtn += systemBase64;
+                            rtn += "]]></systembase64>";
+                            File.Delete(zipMapPath);
+                        }
+
+                        zipMapPath = appThemeView.ExportPortalZipFile(portalId, _moduleRef);
+                        if (File.Exists(zipMapPath))
+                        {
+                            var systemByte = File.ReadAllBytes(zipMapPath);
+                            var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
+                            rtn += "<portalbase64 filetype='zip'><![CDATA[";
+                            rtn += systemBase64;
+                            rtn += "]]></portalbase64>";
+                            File.Delete(zipMapPath);
+                        }
+
+                        rtn += "</view>";
+                    }
+                    rtn += "</appthemes>";
+
+                    rtn += "<art>";
+                    var artList = RocketContentAPIUtils.GetAllRecordART(portalId, moduleSettings.ModuleId);
+                    foreach (var a in artList)
+                    {
+                        rtn += a.ToXmlItem();
+                    }
+                    rtn += "</art>";
+                    rtn += "<artlang>";
+                    var artLangList = RocketContentAPIUtils.GetAllRecordARTLANG(portalId, moduleSettings.ModuleId);
+                    foreach (var a in artLangList)
+                    {
+                        rtn += a.ToXmlItem();
+                    }
+                    rtn += "</artlang>";
+                    rtn += "<images>";
+                    var destDir = portalContent.ImageFolderMapPath + "\\" + moduleSettings.ModuleId;
+                    if (Directory.Exists(destDir))
+                    {
+                        foreach (var i in Directory.GetFiles(destDir))
+                        {
+                            var imgByte = File.ReadAllBytes(i);
+                            var imgBase64 = Convert.ToBase64String(imgByte, Base64FormattingOptions.None);
+                            rtn += "<imgbase64 filerelpath='" + i + "'><![CDATA[";
+                            rtn += imgBase64;
+                            rtn += "]]></imgbase64>";
+                        }
+                    }
+                    rtn += "</images>";
+                    rtn += "<docs>";
+                    var destDir2 = portalContent.DocFolderMapPath + "\\" + moduleSettings.ModuleId;
+                    if (Directory.Exists(destDir2))
+                    {
+                        foreach (var i in Directory.GetFiles(destDir2))
+                        {
+                            var imgByte = File.ReadAllBytes(i);
+                            var imgBase64 = Convert.ToBase64String(imgByte, Base64FormattingOptions.None);
+                            rtn += "<docbase64 filerelpath='" + i + "'><![CDATA[";
+                            rtn += imgBase64;
+                            rtn += "]]></docbase64>";
+                        }
+                    }
+                    rtn += "</docs>";
+
+                    rtn += "</export>";
+                }
             }
 
             return rtn;
@@ -255,6 +273,8 @@ namespace RocketContentAPI.API
                 var settingsNod = xmlDoc.SelectSingleNode("export/modulesettings");
                 if (settingsNod != null)
                 {
+                    var legacymoduleref = "";
+                    var legacymoduleid = "";
                     var ms = new SimplisityRecord();
                     ms.FromXmlItem(settingsNod.InnerXml);
                     var rec = objCtrl.GetRecordByGuidKey(portalId, moduleId, "MODSETTINGS", moduleRef, "");
@@ -266,17 +286,17 @@ namespace RocketContentAPI.API
                         ms.ItemID = storeId;
                     }
                     else
+                    {
                         ms.ItemID = -1;
-
-                    var legacymoduleref = ms.GUIDKey;
+                    }
+                    legacymoduleref = ms.GUIDKey;
                     ms.SetXmlProperty("genxml/legacymoduleref", legacymoduleref); // used to link DataRef on Satellite modules.
-                    var legacymoduleid = ms.ModuleId.ToString();
+                    legacymoduleid = ms.ModuleId.ToString();
                     ms.SetXmlProperty("genxml/legacymoduleid", legacymoduleid);
                     ms.SetXmlProperty("genxml/settings/name", ms.GetXmlProperty("genxml/settings/name").Replace(legacymoduleid, moduleId.ToString()));
                     ms.PortalId = portalId;
                     ms.ModuleId = moduleId;
                     ms.GUIDKey = moduleRef;
-
                     objCtrl.Update(ms);
 
                     var moduleSettings = new ModuleContentLimpet(portalId, moduleRef, systemKey, moduleId, tabId);
@@ -318,15 +338,15 @@ namespace RocketContentAPI.API
                         ms.ItemID = storeId;
                     }
                     else
+                    {
                         ms.ItemID = -1;
-
+                    }
                     var legacymoduleid = ms.ModuleId.ToString();
                     ms.SetXmlProperty("genxml/legacymoduleid", legacymoduleid);
                     ms.SetXmlProperty("genxml/legacyid", ms.ItemID.ToString());
                     ms.PortalId = portalId;
                     ms.ModuleId = moduleId;
                     ms.GUIDKey = moduleRef;
-
                     parentItemId = objCtrl.Update(ms, "RocketContentAPI");
                 }
 
@@ -348,8 +368,9 @@ namespace RocketContentAPI.API
                             ms.ItemID = storeId;
                         }
                         else
+                        {
                             ms.ItemID = -1;
-
+                        }
                         var legacymoduleid = ms.ModuleId.ToString();
                         ms.SetXmlProperty("genxml/legacymoduleid", legacymoduleid);
                         ms.SetXmlProperty("genxml/legacyid", ms.ItemID.ToString());
@@ -357,9 +378,7 @@ namespace RocketContentAPI.API
                         ms.ModuleId = moduleId;
                         ms.GUIDKey = ms.GUIDKey.Split('_')[0] + "_" + moduleId;
                         ms.ParentItemId = parentItemId;
-
                         objCtrl.Update(ms, "RocketContentAPI");
-
                     }
                 }
 
@@ -440,6 +459,23 @@ namespace RocketContentAPI.API
                     }
                 }
 
+                // align dataref, select ALL dataref and align.  We cannot do 1 by 1 becuase we are unsure if a legacy record exists.
+                var sqlFiler = " and R1.[XMLData].value('(genxml/settings/dataref)[1]','nvarchar(max)') != '' ";
+                var dataRefList = objCtrl.GetList(portalId, -1, "MODSETTINGS", sqlFiler);
+                foreach (var ms in dataRefList)
+                {
+                    sqlFiler = " and R1.[XMLData].value('(genxml/legacymoduleref)[1]','nvarchar(max)') = '" + ms.GetXmlProperty("genxml/settings/dataref") + "' ";
+                    var legacyRefList = objCtrl.GetList(portalId, -1, "MODSETTINGS", sqlFiler);
+                    foreach (var l in legacyRefList)
+                    {
+                        var legRef = l.GUIDKey;
+                        if (ms.GetXmlProperty("genxml/settings/dataref") != legRef)
+                        {
+                            ms.SetXmlProperty("genxml/settings/dataref", legRef);
+                            objCtrl.Update(ms);
+                        }
+                    }
+                }
             }
 
         }
