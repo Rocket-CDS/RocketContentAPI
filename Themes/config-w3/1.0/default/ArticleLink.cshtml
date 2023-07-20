@@ -50,6 +50,9 @@
     <div class="w3-row externallink w3-padding" style="display:none;">
         <label><b>@ResourceKey("DNNrocket.url") (http://www.example.com)</b></label>
         <div>@TextBox(info, "genxml/textbox/externalhref", "class='w3-input w3-border'", "", false)</div>
+        <div class="w3-col m3">
+            @CheckBox(info, "genxml/checkbox/blank", ResourceKey("DNNrocket.blank").ToString(), " class='w3-check' ", false)
+        </div>
     </div>
 </div>
 
