@@ -30,7 +30,7 @@
     @foreach (var appTheme in appThemeList.List)
     {
         <div class="w3-padding w3-third">
-            <div class="w3-button w3-theme w3-round-xxlarge w3-large simplisity_click" s-cmd="@cmd" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","appthemefolder":"@appTheme.AppThemeFolder"}'>
+            <div class="w3-button w3-theme w3-round-xxlarge w3-large simplisity_click" s-cmd="@cmd" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","appthemefolder":"@appTheme.AppThemeFolder","tabid":"@(Model.SessionParamsData.TabId)"}'>
                 @appTheme.Name
             </div>
         </div>

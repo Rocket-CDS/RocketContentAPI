@@ -37,6 +37,34 @@
         </div>
     </div>
 
+    <div class="w3-row w3-margin">
+        <div class="w3-quarter w3-padding">
+            <div class="w3-button w3-blue simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.validate") ?" s-cmd="rocketcontentapi_validate" s-return='#completedmodelmsgreturn' s-fields='{"portalid":"@portalContent.PortalId"}' style="width:100%;">@ResourceKey("DNNrocket.validate")</div>
+        </div>
+        <div class="w3-threequarter">
+            @ResourceKey("DNNrocket.validate", "", "Help")
+        </div>
+    </div>
+
+    <div class="w3-row w3-margin a-copylanguage">
+        <div class="w3-quarter w3-padding">
+            <label>@ResourceKey("DNNrocket.source")</label>
+            @DropDownCultureCodeList(new SimplisityInfo(),"genxml/sourcelanguage"," class='w3-input w3-border'")
+        </div>
+        <div class="w3-quarter w3-padding">
+            <label>@ResourceKey("DNNrocket.destination")</label>
+            @DropDownCultureCodeList(new SimplisityInfo(),"genxml/destlanguage"," class='w3-input w3-border'")
+        </div>
+        <div class="w3-twoquarter w3-padding">
+            <label>@ResourceKey("DNNrocket.overwrite")</label><br />
+            @CheckBox(new SimplisityInfo(),"genxml/overwritelang", "","class='w3-check' style='width:80px;'")
+            &nbsp;
+            <span class="w3-button w3-blue simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.copy") ?" s-return="#copyreturn" s-cmd="rocketcontentapi_copylanguage" s-post=".a-copylanguage" s-fields='{"portalid":"@portalContent.PortalId"}'>@ResourceKey("DNNrocket.copy")</span>
+        </div>
+    </div>
+    <div id="copyreturn" class="w3-xlarge w3-pale-blue w3-center">
+    </div>
+
 
 </div>
 

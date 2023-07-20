@@ -144,6 +144,12 @@ namespace RocketContentAPI.API
                     ImportData();
                     strOut = "";
                     break;
+                case "rocketcontentapi_copylanguage":
+                    strOut = CopyLanguage();
+                    break;
+                case "rocketcontentapi_validate":
+                    strOut = ValidateContent();
+                    break;
 
 
 

@@ -297,6 +297,7 @@ namespace RocketContentAPI.API
                     ms.PortalId = portalId;
                     ms.ModuleId = moduleId;
                     ms.GUIDKey = moduleRef;
+                    ms.SetXmlProperty("genxml/data/tabid", tabId.ToString());
                     objCtrl.Update(ms);
 
                     var moduleSettings = new ModuleContentLimpet(portalId, moduleRef, systemKey, moduleId, tabId);
@@ -479,6 +480,51 @@ namespace RocketContentAPI.API
             }
 
         }
+
+        private string ValidateContent()
+        {
+            return "OK";
+        }
+        private String CopyLanguage()
+        {
+            var overwritelang = _postInfo.GetXmlPropertyBool("genxml/overwritelang");
+            var sourcelanguage = _postInfo.GetXmlProperty("genxml/sourcelanguage");
+            var destlanguage = _postInfo.GetXmlProperty("genxml/destlanguage");
+            if (sourcelanguage != destlanguage)
+            {
+                var objCtrl = new DNNrocketController();
+
+                // Products
+                var articleList = objCtrl.GetList(_dataObject.PortalId, -1, "ART", "", sourcelanguage, "", 0, 0, 0, 0, "RocketContentAPI");
+                foreach (var p in articleList)
+                {
+                    var prdSourceLangRec = objCtrl.GetRecordLang(p.ItemID, sourcelanguage, "RocketContentAPI");
+                    if (prdSourceLangRec != null)
+                    {
+                        var prdDestLangRec = objCtrl.GetRecordLang(p.ItemID, destlanguage, "RocketContentAPI");
+                        if (prdDestLangRec == null || overwritelang)
+                        {
+                            if (prdDestLangRec == null)
+                            {
+                                prdDestLangRec = prdSourceLangRec;
+                                prdDestLangRec.ItemID = -1;
+                                prdDestLangRec.Lang = destlanguage;
+                            }
+                            else
+                            {
+                                prdDestLangRec.XMLData = prdSourceLangRec.XMLData;
+                            }
+
+                            objCtrl.Update(prdDestLangRec, "RocketContentAPI");
+                        }
+                    }
+                }
+
+            }
+            return "OK";
+        }
+
+
     }
 }
 
