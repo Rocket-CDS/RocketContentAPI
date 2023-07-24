@@ -9,22 +9,12 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
 
 <style>
-.button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;  
-}
+    a.rocketconfigbutton { border: none; display: inline-block; padding: 8px 16px; vertical-align: middle; overflow: hidden; text-align: center; cursor: pointer; white-space: nowrap; background: #02be8e; color: #fff !important; border-radius: 6px; text-decoration: none !important; }
+    a.rocketconfigbutton:hover { background: #ccc; color: #000 !important; }
 </style>
 
 <div style='text-align: center;'>
-    <a href="{redirecturl}" class="button">
+    <a href="{redirecturl}" class="rocketconfigbutton">
         @ResourceKey("RCT.modulesettings")
     </a>
 </div>
