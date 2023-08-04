@@ -20,7 +20,8 @@
     var info = articleData.Info;
     var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
     var sessionParams = Model.SessionParamsData;
-    var rtnUrl = DNNrocketUtils.NavigateURL(sessionParams.TabId,  new string[0]);
+    var userParams = new UserParams(0);
+    var rtnUrl = userParams.Get("viewurl");
 }
 
 <div class="w3-row">
