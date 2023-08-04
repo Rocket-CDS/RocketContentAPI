@@ -141,7 +141,7 @@ namespace RocketContentAPI.API
                     strOut = ExportData();
                     break;
                 case "rocketcontentapi_importmodule":
-                    ImportData();
+                     ImportData();
                     strOut = "";
                     break;
                 case "rocketcontentapi_copylanguage":

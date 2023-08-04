@@ -269,6 +269,9 @@ namespace RocketContentAPI.API
                 var xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(_postInfo.XMLData);
 
+                LogUtils.LogSystem("IMPORT XML _paramInfo: " + _paramInfo.XMLData);
+                LogUtils.LogSystem("IMPORT XML _postInfo: " + _postInfo.XMLData);
+
                 //import Settings (Saved in DNNrocket table)
                 var settingsNod = xmlDoc.SelectSingleNode("export/modulesettings");
                 if (settingsNod != null)
@@ -293,7 +296,14 @@ namespace RocketContentAPI.API
                     ms.SetXmlProperty("genxml/legacymoduleref", legacymoduleref); // used to link DataRef on Satellite modules.
                     legacymoduleid = ms.ModuleId.ToString();
                     ms.SetXmlProperty("genxml/legacymoduleid", legacymoduleid);
-                    ms.SetXmlProperty("genxml/settings/name", ms.GetXmlProperty("genxml/settings/name").Replace(legacymoduleid, moduleId.ToString()));
+                    if (ms.GetXmlProperty("genxml/settings/name") != "" && legacymoduleid != "")
+                    {
+                        ms.SetXmlProperty("genxml/settings/name", ms.GetXmlProperty("genxml/settings/name").Replace(legacymoduleid, moduleId.ToString()));
+                    }
+                    else
+                    {
+                        LogUtils.LogSystem("ERROR IMPORTDATA: ms.GetXmlProperty(\"genxml/settings/name\"):" + ms.GetXmlProperty("genxml/settings/name") + " legacymoduleid:" + legacymoduleid);
+                    }
                     ms.PortalId = portalId;
                     ms.ModuleId = moduleId;
                     ms.GUIDKey = moduleRef;
@@ -401,12 +411,15 @@ namespace RocketContentAPI.API
                     }
                 }
                 var xData = articleData.Info.XMLData;
-                foreach (var i in imageDict)
+                if (!String.IsNullOrEmpty(xData))
                 {
-                    xData = xData.Replace(i.Key, i.Value);
+                    foreach (var i in imageDict)
+                    {
+                        if (!String.IsNullOrEmpty(i.Key)) xData = xData.Replace(i.Key, i.Value);
+                    }
+                    articleData.Info.XMLData = xData;
+                    articleData.Update();
                 }
-                articleData.Info.XMLData = xData;
-                articleData.Update();
 
                 var imgNods = xmlDoc.SelectNodes("export/images/*");
                 if (imgNods != null)
@@ -438,12 +451,15 @@ namespace RocketContentAPI.API
                     }
                 }
                 var xData2 = articleData2.Info.XMLData;
-                foreach (var i in docsDict)
+                if (!String.IsNullOrEmpty(xData2))
                 {
-                    xData2 = xData2.Replace(i.Key, i.Value);
+                    foreach (var i in docsDict)
+                    {
+                        if (!String.IsNullOrEmpty(i.Key)) xData2 = xData2.Replace(i.Key, i.Value);
+                    }
+                    articleData2.Info.XMLData = xData2;
+                    articleData2.Update();
                 }
-                articleData2.Info.XMLData = xData2;
-                articleData2.Update();
 
                 var DocNods = xmlDoc.SelectNodes("export/docs/*");
                 if (DocNods != null)
