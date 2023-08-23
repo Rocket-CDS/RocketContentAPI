@@ -1,7 +1,7 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
     
-		<package name="RocketContentAPI" type="Library" version="1.0.3">
+		<package name="RocketContentAPI" type="Library" version="1.0.4">
 			<friendlyName>RocketContentAPI</friendlyName>
 			<description>RocketContentAPI</description>
       <iconFile></iconFile>
