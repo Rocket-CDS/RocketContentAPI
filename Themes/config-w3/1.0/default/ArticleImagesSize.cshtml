@@ -46,14 +46,7 @@
                             @ButtonIcon(ButtonTypes.remove)
                         </span>
                         <div class="w3-col m2 w3-padding" style="width:100px;">
-                            @if (articleImage.RelPath != "")
-                            {
-                                <img src="@ThumbnailImageUrl(portalData.EngineUrlWithProtocol, articleImage.RelPath, 80, 80)" style="height:80px;width:80px;" class="w3-round" />
-                            }
-                            else
-                            {
-                                <img src="@ThumbnailImageUrl(portalData.EngineUrlWithProtocol, "/DesktopModules/DNNrocket/api/images/noimage2.png", 80, 80)" style="height:80px;width:80px;" class="w3-round" />
-                            }
+							<img src="@ImageUrl(articleImage.RelPath, 80, 80)" style="height:80px;width:80px;" class="w3-round" />
                         </div>
                         <div class="w3-col m10 w3-padding">
                             <label>@ResourceKey("DNNrocket.imagealt")</label>&nbsp;@EditFlag(sessionParams)
