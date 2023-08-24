@@ -42,40 +42,29 @@
         @if (!moduleData.IsSatellite)
         {
             <a href="@sessionParams.Get("editurl")" class="w3-button w3-round w3-white w3-border w3-text-black" title="@ResourceKey("DNNrocket.edit")">
-                <span class="material-icons ">
-                    edit
-                </span>
+                <img src="/DesktopModules/DNNrocket/API/images/edit.svg" alt="@ResourceKey("DNNrocket.edit")" />
             </a>
         }
         <a href="?action=clearcache" class="w3-button w3-round w3-white w3-border w3-text-black" title="@ResourceKey("RCT.clearcache")">
-            <span class="material-icons ">
-                sync
-            </span>
+            <img src="/DesktopModules/DNNrocket/API/images/clear_cache.svg" alt="@ResourceKey("RCT.clearcache")" />
         </a>
         @if (UserUtils.IsAdministrator())
         {
 
             <a href="@sessionParams.Get("settingsurl")" class="w3-button w3-round w3-white w3-border w3-text-black" title="@ResourceKey("DNNrocket.settings")">
-                <span class="material-icons ">
-                    settings
-                </span>
+                <img src="/DesktopModules/DNNrocket/API/images/action_settings.svg" alt="@ResourceKey("DNNrocket.settings")" />
             </a>
 
             if (UserUtils.IsSuperUser() && moduleData.HasAppThemeAdmin)
             {
                 <a href="@sessionParams.Get("appthemeurl")" class="w3-button w3-round w3-border w3-text-black @(colorclass)" title="@ResourceKey("RCT.editapptheme")">
-                    <span class="material-icons ">
-                        movie_edit
-                    </span>
+                    <img src="/DesktopModules/DNNrocket/API/images/movie_edit.svg" alt="@ResourceKey("RCT.editapptheme")" />
                 </a>
             }
         }
 
-
-        <span onclick="$('#a-editbuttons-@(moduleData.ModuleId)').hide();" class="w3-button w3-round w3-border w3-text-black">
-            <span class="material-icons">
-                close
-            </span>
+        <span onclick="$('#a-editbuttons-@(moduleData.ModuleId)').hide();$('#a-editbuttons-@(moduleData.ModuleId)').addClass('w3-hide');" class="w3-button w3-round w3-border w3-text-black">
+            <img src="/DesktopModules/DNNrocket/API/images/close.svg" alt="close" />
         </span>
 
     </div>
