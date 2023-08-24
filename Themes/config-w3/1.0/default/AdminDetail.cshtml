@@ -20,7 +20,7 @@
     var info = articleData.Info;
     var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
     var sessionParams = Model.SessionParamsData;
-    var userParams = new UserParams(_sessionParam.BrowserSessionId);
+    var userParams = new UserParams("ModuleID:" + sessionParams.ModuleId);
     var rtnUrl = userParams.Get("viewurl");
 }
 
