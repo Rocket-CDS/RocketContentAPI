@@ -1,0 +1,32 @@
+﻿@inherits RocketForms.Components.RocketFormsTokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketContentAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using RocketPortal.Components;
+
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContent/App_LocalResources")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketForms/App_LocalResources")
+
+@{
+    var portalData = new PortalLimpet(PortalUtils.GetCurrentPortalId());
+}
+
+<link rel="stylesheet" href="@DNNrocketUtils.AppendFileModifiedDate("/DesktopModules/DNNrocket/css/w3.css")">
+<script type="text/javascript" src="@DNNrocketUtils.AppendFileModifiedDate("/DesktopModules/DNNrocket/Simplisity/js/simplisity.js")"></script>
+<link rel="stylesheet" href="@DNNrocketUtils.AppendFileModifiedDate("/DesktopModules/DNNrocket/Simplisity/css/simplisity.css")">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="@DNNrocketUtils.AppendFileModifiedDate("/DesktopModules/DNNrocket/API/Themes/config-w3/1.0/css/" + portalData.ColorAdminTheme)">
+
+<script src="https://cdn.ckeditor.com/4.17.2/standard-all/ckeditor.js"></script>
+
+<style>
+    body, h1, h2, h3, h4, h5, h6 { font-family: Roboto, sans-serif; }
+    #editBarContainer { display: none !important }
+    .personalBarContainer { display: none !important }
+    #Body { margin-left: 0px !important }
+    .material-icons { vertical-align: middle; }
+    iframe.editBar-iframe { display: none !important; }
+</style>

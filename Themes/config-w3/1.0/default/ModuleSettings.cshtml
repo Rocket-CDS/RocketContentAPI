@@ -26,6 +26,13 @@
 <div id="a-datasection" class="w3-container w3-margin w3-padding">
 
     <div class="w3-row w3-padding">
+        <div id="postsettings" class="w3-right w3-button w3-round w3-theme-action w3-padding simplisity_click" s-cmd="rocketcontentapi_savesettings" s-post="#a-datasection" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@(Model.SessionParamsData.TabId)"}'>
+            @ButtonIcon(ButtonTypes.save)
+        </div>
+    </div>
+
+
+    <div class="w3-row w3-padding">
         <div class="w3-quarter">
             @CheckBox(info,"genxml/settings/disablecache", ResourceKey("DNNrocket.disablecache").ToString(),"class='w3-check'")
         </div>
@@ -56,7 +63,7 @@
     {
         <div class="w3-row w3-padding">
             <div class="w3-half">
-                <span class="w3-button w3-theme w3-round-xxlarge simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.edit")?" s-cmd="rocketcontentapi_resetapptheme" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'>
+                <span class="w3-button w3-theme w3-round simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.edit")?" s-cmd="rocketcontentapi_resetapptheme" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'>
                     @ButtonIcon(ButtonTypes.edit)
                 </span>
                 &nbsp;
@@ -65,7 +72,7 @@
         </div>        
     }
         <div class="w3-row w3-padding">
-            <span class="w3-button w3-theme w3-round-xxlarge simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.edit")?" s-cmd="rocketcontentapi_resetappthemeview" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'>
+            <span class="w3-button w3-theme w3-round simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.edit")?" s-cmd="rocketcontentapi_resetappthemeview" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'>
                 @ButtonIcon(ButtonTypes.edit)
             </span>
             &nbsp;
@@ -82,9 +89,6 @@
 <div class="w3-row w3-padding w3-tiny">
     <span>ModuleRef: @moduleData.ModuleRef TabId: @(Model.SessionParamsData.TabId)</span>
 </div>
-
-<!-- create element to update settings via API when the DNN update is clicked. -->
-<span id="postsettings" class="w3-hide" s-cmd="rocketcontentapi_savesettings" s-post="#a-datasection" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@(Model.SessionParamsData.TabId)"}'></span>
 
 
 

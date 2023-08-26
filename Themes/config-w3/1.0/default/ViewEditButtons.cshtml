@@ -11,16 +11,8 @@
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
 
 @{
-    var sessionParams = Model.SessionParamsData;
-    var appThemeList = (AppThemeDataList)Model.GetDataObject("appthemedatalist");
-    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
-    var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
-    var appThemeAdmin = (AppThemeLimpet)Model.GetDataObject("appthemeadmin");
     var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
-    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
-    var info = new SimplisityInfo(moduleData.Record);
-    var projectAppThemeData = new AppThemeProjectLimpet();
-    var userParams = new UserParams("ModuleID:" + sessionParams.ModuleId, true);
+    var userParams = new UserParams("ModuleID:" + moduleData.ModuleId, true);
 }
 
 <style>

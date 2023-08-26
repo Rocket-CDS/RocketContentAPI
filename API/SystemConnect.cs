@@ -32,9 +32,6 @@ namespace RocketContentAPI.API
             if (portalId >= 0)
             {
                 _dataObject.PortalContent.Save(_postInfo);
-                _dataObject.PortalData.Record.SetXmlProperty("genxml/systems/" + _dataObject.SystemKey + "setup", "True");
-                _dataObject.PortalData.Record.SetXmlProperty("genxml/systems/" + _dataObject.SystemKey, "True");
-                _dataObject.PortalData.Update();
                 return RocketSystem();
             }
             return "Invalid PortalId";
