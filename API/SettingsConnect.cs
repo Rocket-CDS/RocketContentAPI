@@ -1,6 +1,7 @@
 ﻿using DNNrocketAPI.Components;
 using Rocket.AppThemes.Components;
 using RocketContentAPI.Components;
+using RocketPortal.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -77,6 +78,15 @@ namespace RocketContentAPI.API
         private string DisplaySettings()
         {
             var moduleData = _dataObject.ModuleSettings;
+
+            // if we have no appThemes download the default
+            var appThemeProjectData = new AppThemeProjectLimpet();
+            var appThemeList = new AppThemeDataList(_dataObject.PortalId, appThemeProjectData.DefaultProjectName());
+            if (appThemeList != null && appThemeList.List.Count == 0)
+            {
+                appThemeProjectData.DownloadGitHubProject(appThemeProjectData.DefaultProjectName());
+            }
+
             if (!moduleData.HasProject) return RenderSystemTemplate("SelectProject.cshtml");
             if (!moduleData.HasAppThemeAdmin) return RenderSystemTemplate("SelectAppTheme.cshtml");
             if (!moduleData.HasAppThemeAdminVersion) return RenderSystemTemplate("SelectAppThemeVersion.cshtml");

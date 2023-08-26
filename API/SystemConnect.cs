@@ -86,7 +86,7 @@ namespace RocketContentAPI.API
         {
             // check the scheduler initiated the call.
             var rtn = "";
-            var securityKey = DNNrocketUtils.GetTempStorage(_paramInfo.GetXmlProperty("genxml/hidden/securitykey"));
+            var securityKey = DNNrocketUtils.GetTempStorage(_paramInfo.GetXmlProperty("genxml/hidden/securitykey"), true);
             if (securityKey != null) // if it exists in the temp table, it was created by the scheduler.
             {
                 var moduleId = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
@@ -253,7 +253,7 @@ namespace RocketContentAPI.API
         private void ImportData()
         {
             // check the scheduler initiated the call.
-            var securityKey = DNNrocketUtils.GetTempStorage(_paramInfo.GetXmlProperty("genxml/hidden/securitykey"));
+            var securityKey = DNNrocketUtils.GetTempStorage(_paramInfo.GetXmlProperty("genxml/hidden/securitykey"), true);
             if (securityKey != null) // if it exists in the temp table, it was created by the scheduler.
             {
 

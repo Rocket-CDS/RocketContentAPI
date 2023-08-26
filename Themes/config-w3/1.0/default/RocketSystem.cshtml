@@ -20,9 +20,7 @@
     AddProcessData("resourcepath", "/DesktopModules/DNNrocket/AppThemes/App_LocalResources/");
     AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/");
 }
-
-<div id="a-setupbuttons" class="w3-bar" style="display:none;">
-    <button class="w3-button simplisity_click" s-cmd="portal_detail" s-fields='{"portalid":"@portalContent.PortalId","track":"false"}'>@ButtonIcon(ButtonTypes.back)</button>
+<div id="" class="w3-bar">
     <button class="w3-padding w3-button w3-theme-action simplisity_click"  s-return="#setupdata" s-cmd="rocketsystem_save" s-list=".sqlorderbyproduct,.settingsdata,.linklist" s-post="#servicesettings" s-fields='{"systemkey":"@systemData.SystemKey","portalid":"@portalContent.PortalId"}'>@ButtonText(ButtonTypes.save)</button>
 </div>
 
