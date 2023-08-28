@@ -13,6 +13,7 @@ using RocketContentAPI.Components;
 using System.Xml.XPath;
 using System.Xml.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace RocketContentAPI.Components
 {
@@ -77,6 +78,17 @@ namespace RocketContentAPI.Components
         public void Delete()
         {
             _objCtrl.Delete(_info.ItemID, _tableName);
+        }
+        public void ClearCache()
+        {
+            CacheUtils.ClearAllCache(_info.GUIDKey);
+            // clear cache for satilite modules.
+            var filter = " and [XMLdata].value('(genxml/settings/dataref)[1]','nvarchar(max)') = '" + _info.GUIDKey + "' ";
+            var l = _objCtrl.GetList(_info.PortalId, -1, "MODSETTINGS", filter);
+            foreach (var m in l)
+            {
+                CacheUtils.ClearAllCache(m.GUIDKey);
+            }
         }
 
         private SimplisityInfo ReplaceInfoFields(SimplisityInfo newInfo, SimplisityInfo postInfo, string xpathListSelect)

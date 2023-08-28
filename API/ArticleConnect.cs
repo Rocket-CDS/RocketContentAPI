@@ -82,8 +82,8 @@ namespace RocketContentAPI.API
             var articleData = _dataObject.ArticleData;
             articleData.ModuleId = _dataObject.ModuleSettings.ModuleId;
             articleData.UpdateRow(_rowKey, _postInfo, _dataObject.ModuleSettings.SecureSave);
+            articleData.ClearCache();
             _dataObject.SetDataObject("articledata", articleData);
-            CacheUtils.ClearAllCache(_dataObject.ModuleSettings.ModuleRef);
             return AdminDetailDisplay();
         }
         public void DeleteArticle()
