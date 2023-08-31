@@ -41,7 +41,10 @@ namespace RocketContentAPI.Components
 
                     // create folder on first load.
                     PortalUtils.CreateRocketDirectories(PortalId);
-
+                }
+                else
+                {
+                    CacheUtils.SetCache(_cacheKey, Record);
                 }
             }
             if (PortalUtils.PortalExists(portalId)) // check we have a portal, could be deleted
@@ -77,7 +80,7 @@ namespace RocketContentAPI.Components
         public void Update()
         {
             Record = _objCtrl.SaveRecord(Record, _tableName); // you must cache what comes back.  that is the copy of the DB.
-            CacheUtils.SetCache(_cacheKey, Record);
+            CacheUtils.RemoveCache(_cacheKey);
         }
         public void Validate()
         {

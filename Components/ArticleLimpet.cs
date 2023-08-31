@@ -24,6 +24,7 @@ namespace RocketContentAPI.Components
         private DNNrocketController _objCtrl;
         private int _articleId;
         private SimplisityInfo _info;
+        private string _cacheKey;
 
         /// <summary>
         /// Should be used to create an article, the portalId is required on creation
@@ -34,16 +35,8 @@ namespace RocketContentAPI.Components
         public ArticleLimpet(int portalId, string dataRef, string langRequired, int moduleid)
         {
             PortalId = portalId;
-            _info = new SimplisityInfo();
-            _info.ItemID = -1;
-            _info.TypeCode = _entityTypeCode;
-            _info.ModuleId = moduleid;
-            _info.UserId = -1;
-            _info.GUIDKey = dataRef;
-            _info.PortalId = PortalId;
-
             SecureSave = true;
-
+            _cacheKey = dataRef;
             Populate(langRequired);
         }
         /// <summary>
@@ -61,33 +54,43 @@ namespace RocketContentAPI.Components
         {
             _objCtrl = new DNNrocketController();
             CultureCode = cultureCode;
+            if (_cacheKey == "") _cacheKey = PortalId + "_ModuleId_" + ModuleId;
 
-            var info = _objCtrl.GetByGuidKey(PortalId, -1, _entityTypeCode, DataRef, "", _tableName, cultureCode);
-            if (info != null && info.ItemID > 0) _info = info; // check if we have a real record, or a dummy being created and not saved yet.
+            _info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            if (_info == null)
+            {
+                _info = _objCtrl.GetByGuidKey(PortalId, -1, _entityTypeCode, _cacheKey, "", _tableName, cultureCode);
+                if (_info == null)
+                {
+                    _info = new SimplisityInfo();
+                    _info.ItemID = -1;
+                    _info.TypeCode = _entityTypeCode;
+                    _info.ModuleId = ModuleId;
+                    _info.UserId = -1;
+                    _info.GUIDKey = _cacheKey;
+                    _info.PortalId = PortalId;
+                }
+                else
+                {
+                    CacheUtils.SetCache(_cacheKey, _info);
+                }
+            }
             _info.Lang = CultureCode;
-            PortalId = _info.PortalId;
-            if (DataRef == "") DataRef = PortalId + "_ModuleId_" + ModuleId;
-            
-            // ** This line creates phantom records. **
-            //if (GetRowList().Count  == 0) AddRow(); // create first row automatically
-
-            // Add namespace and json convert to lists. (for handlebars)
-            //GeneralUtils.AddJsonNetRootAttribute(ref _info); //dropped supported
-
         }
         public void Delete()
         {
             _objCtrl.Delete(_info.ItemID, _tableName);
+            ClearCache();
         }
         public void ClearCache()
         {
-            CacheUtils.ClearAllCache(_info.GUIDKey);
+            CacheUtils.RemoveCache(_info.GUIDKey);
             // clear cache for satilite modules.
             var filter = " and [XMLdata].value('(genxml/settings/dataref)[1]','nvarchar(max)') = '" + _info.GUIDKey + "' ";
             var l = _objCtrl.GetList(_info.PortalId, -1, "MODSETTINGS", filter);
             foreach (var m in l)
             {
-                CacheUtils.ClearAllCache(m.GUIDKey);
+                CacheUtils.RemoveCache(m.GUIDKey);
             }
         }
 
@@ -114,6 +117,7 @@ namespace RocketContentAPI.Components
                 _info.GUIDKey = PortalId + "_ModuleId_" + ModuleId;
                 _info = _objCtrl.SaveData(_info, _tableName);
             }
+            ClearCache();
             return _info.ItemID;
         }
         public void RebuildLangIndex()
