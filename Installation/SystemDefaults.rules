@@ -93,8 +93,17 @@
       <cmd>article_addlistitem</cmd>
       <action>true</action>
     </command>
+	  <command>
+		  <cmd>article_restore</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>article_emptyrecyclebin</cmd>
+		  <action>true</action>
+	  </command>
+	  
 
-    <command>
+	  <command>
       <cmd>rocketcontentapi_settings</cmd>
       <action>true</action>
     </command>
@@ -108,10 +117,6 @@
 	</command>
 	  <command>
 		  <cmd>rocketcontentapi_resetapptheme</cmd>
-		  <action>true</action>
-	  </command>
-	  <command>
-		  <cmd>rocketcontentapi_resetappthemeview</cmd>
 		  <action>true</action>
 	  </command>
 	  <command>

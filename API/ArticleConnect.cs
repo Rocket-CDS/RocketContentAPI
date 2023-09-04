@@ -198,6 +198,24 @@ namespace RocketContentAPI.API
             }
             return AdminDetailDisplay();
         }
+        public string RestoreArticle()
+        {
+            var recycleref = _paramInfo.GetXmlProperty("genxml/hidden/recycleref");
+            _dataObject.ArticleData.RestoreArticle(recycleref);
+            _dataObject.Settings.Add("restoredarticle", "true");
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("recyclebin.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.ArticleData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
+        public string EmptyRecycleBin()
+        {
+            _dataObject.ArticleData.EmptyRecycleBin();
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("recyclebin.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.ArticleData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
         public string AddArticleLink()
         {
             var articleData = _dataObject.ArticleData;

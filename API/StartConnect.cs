@@ -108,6 +108,12 @@ namespace RocketContentAPI.API
                 case "article_addlistitem":
                     strOut = AddArticleListItem();
                     break;
+                case "article_restore":
+                    strOut = RestoreArticle();
+                    break;
+                case "article_emptyrecyclebin":
+                    strOut = EmptyRecycleBin();
+                    break;                    
 
 
                 case "rocketcontentapi_settings":
@@ -133,9 +139,6 @@ namespace RocketContentAPI.API
                     break;
                 case "rocketcontentapi_resetapptheme":
                     strOut = ResetAppTheme();
-                    break;
-                case "rocketcontentapi_resetappthemeview":
-                    strOut = ResetAppThemeView();
                     break;
                 case "rocketcontentapi_exportmodule":
                     strOut = ExportData();

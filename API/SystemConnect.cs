@@ -97,10 +97,7 @@ namespace RocketContentAPI.API
                 if (moduleSettings.HasProject)
                 {
                     appThemeAdmin = new AppThemeLimpet(moduleSettings.PortalId, moduleSettings.AppThemeAdminFolder, moduleSettings.AppThemeAdminVersion, moduleSettings.ProjectName);
-                    if (moduleSettings.HasAppThemeView)
-                        appThemeView = new AppThemeLimpet(moduleSettings.PortalId, moduleSettings.AppThemeViewFolder, moduleSettings.AppThemeViewVersion, moduleSettings.ProjectName);
-                    else
-                        appThemeView = appThemeAdmin;
+                    appThemeView = appThemeAdmin;
 
                     var portalContent = new PortalContentLimpet(portalId, "en-US");
 
@@ -140,34 +137,6 @@ namespace RocketContentAPI.API
 
                     rtn += "</admin>";
 
-                    if (moduleSettings.HasAppThemeView)
-                    {
-                        rtn += "<view>";
-
-                        zipMapPath = appThemeView.ExportZipFile(portalId, _moduleRef);
-                        if (File.Exists(zipMapPath))
-                        {
-                            var systemByte = File.ReadAllBytes(zipMapPath);
-                            var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
-                            rtn += "<systembase64 filetype='zip'><![CDATA[";
-                            rtn += systemBase64;
-                            rtn += "]]></systembase64>";
-                            File.Delete(zipMapPath);
-                        }
-
-                        zipMapPath = appThemeView.ExportPortalZipFile(portalId, _moduleRef);
-                        if (File.Exists(zipMapPath))
-                        {
-                            var systemByte = File.ReadAllBytes(zipMapPath);
-                            var systemBase64 = Convert.ToBase64String(systemByte, Base64FormattingOptions.None);
-                            rtn += "<portalbase64 filetype='zip'><![CDATA[";
-                            rtn += systemBase64;
-                            rtn += "]]></portalbase64>";
-                            File.Delete(zipMapPath);
-                        }
-
-                        rtn += "</view>";
-                    }
                     rtn += "</appthemes>";
 
                     rtn += "<art>";
@@ -312,21 +281,14 @@ namespace RocketContentAPI.API
                     if (moduleSettings.HasProject)
                     {
                         AppThemeLimpet appThemeAdmin = null;
-                        AppThemeLimpet appThemeView = null;
                         if (moduleSettings.HasAppThemeAdmin)
                         {
                             appThemeAdmin = new AppThemeLimpet(moduleSettings.PortalId, moduleSettings.AppThemeAdminFolder, moduleSettings.AppThemeAdminVersion, moduleSettings.ProjectName);
                         }
-                        if (moduleSettings.HasAppThemeView)
-                        { 
-                            appThemeView = new AppThemeLimpet(moduleSettings.PortalId, moduleSettings.AppThemeViewFolder, moduleSettings.AppThemeViewVersion, moduleSettings.ProjectName);
-                        }
 
                         // Import AppTheme
                         ImportAppTheme(portalId, appThemeAdmin, xmlDoc.SelectSingleNode("export/appthemes/admin/systembase64"), moduleRef + "adminsystem");
-                        ImportAppTheme(portalId, appThemeView, xmlDoc.SelectSingleNode("export/appthemes/view/systembase64"), moduleRef + "viewsystem");
                         ImportPortalAppTheme(portalId, appThemeAdmin, xmlDoc.SelectSingleNode("export/appthemes/admin/portalbase64"), moduleRef + "adminportal", legacymoduleref, moduleRef);
-                        ImportPortalAppTheme(portalId, appThemeView, xmlDoc.SelectSingleNode("export/appthemes/view/portalbase64"), moduleRef + "viewportal", legacymoduleref, moduleRef);
                     }
                 }
 

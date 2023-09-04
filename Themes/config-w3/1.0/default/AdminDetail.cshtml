@@ -74,6 +74,8 @@
         </div>
     </div>
 
+
+
     @RenderTemplate("AdminDetail.cshtml", appThemeAdmin, Model, true)
 
     @if (UserUtils.IsAdministrator())
@@ -81,6 +83,7 @@
         @RenderXml(info)
     }
 
+    @HiddenField(info,"genxml/isdirty","","false")
 </div>
 
 <div class="w3-row w3-tiny w3-padding">
@@ -96,5 +99,12 @@
 
         $('.simplisity_loader').hide();
 
+        $('#isdirty').val('false');
+        $('#a-articledata input').on('input', function () {
+            $('#isdirty').val('true');
+        });
+        $('#a-articledata select').on('change', function () {
+            $('#isdirty').val('true');
+        });
     });
 </script>

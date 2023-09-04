@@ -22,9 +22,11 @@ namespace RocketContentAPI.Components
         public const string _tableName = "RocketContentAPI";
         public const string _entityTypeCode = "ART";
         private DNNrocketController _objCtrl;
-        private int _articleId;
+        private int _moduleId;
         private SimplisityInfo _info;
+        private SimplisityInfo _oldinfo;
         private string _cacheKey;
+        private bool _isDirty;
 
         /// <summary>
         /// Should be used to create an article, the portalId is required on creation
@@ -34,10 +36,12 @@ namespace RocketContentAPI.Components
         /// <param name="langRequired"></param>
         public ArticleLimpet(int portalId, string dataRef, string langRequired, int moduleid)
         {
+            _moduleId = moduleid;
             PortalId = portalId;
             SecureSave = true;
             _cacheKey = dataRef;
             Populate(langRequired);
+            _oldinfo = (SimplisityInfo)_info.Clone();
         }
         /// <summary>
         /// When we populate with a child article row.
@@ -46,15 +50,16 @@ namespace RocketContentAPI.Components
         public ArticleLimpet(ArticleLimpet articleData)
         {
             _info = articleData.Info;
-            _articleId = articleData.ArticleId;
             CultureCode = articleData.CultureCode;
             PortalId = _info.PortalId;
+            _oldinfo = (SimplisityInfo)_info.Clone();
         }
         private void Populate(string cultureCode)
         {
+            _isDirty = false;
             _objCtrl = new DNNrocketController();
             CultureCode = cultureCode;
-            if (_cacheKey == "") _cacheKey = PortalId + "_ModuleId_" + ModuleId;
+            if (_cacheKey == "") _cacheKey = PortalId + "_ModuleId_" + _moduleId;
 
             _info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
             if (_info == null)
@@ -65,7 +70,7 @@ namespace RocketContentAPI.Components
                     _info = new SimplisityInfo();
                     _info.ItemID = -1;
                     _info.TypeCode = _entityTypeCode;
-                    _info.ModuleId = ModuleId;
+                    _info.ModuleId = _moduleId;
                     _info.UserId = -1;
                     _info.GUIDKey = _cacheKey;
                     _info.PortalId = PortalId;
@@ -117,6 +122,7 @@ namespace RocketContentAPI.Components
                 _info.GUIDKey = PortalId + "_ModuleId_" + ModuleId;
                 _info = _objCtrl.SaveData(_info, _tableName);
             }
+            AddToRecycleBin();
             ClearCache();
             return _info.ItemID;
         }
@@ -153,6 +159,7 @@ namespace RocketContentAPI.Components
             {                
                 if (sInfo.GetXmlProperty("genxml/config/rowkey") == rowKey)
                 {
+                    _isDirty = postInfo.GetXmlPropertyBool("genxml/isdirty");
                     var newInfo = ReplaceInfoFields(new SimplisityInfo(), postInfo, "genxml/textbox/*");
                     newInfo = ReplaceInfoFields(newInfo, postInfo, "genxml/lang/genxml/textbox/*");
                     newInfo = ReplaceInfoFields(newInfo, postInfo, "genxml/checkbox/*");
@@ -241,6 +248,92 @@ namespace RocketContentAPI.Components
                 rtn.Add(new ArticleRowLimpet(ArticleId, i.XMLData, _info.GUIDKey));
             }
             return rtn;
+        }
+        #endregion
+
+        #region "recycle bin"
+        private void AddToRecycleBin()
+        {
+            var guidKey = ModuleId.ToString() + "_" + CultureCode;
+            var recyleInfo = _objCtrl.GetByGuidKey(PortalId, ModuleId, "ARTHISTORY", guidKey, "", _tableName, CultureCode);
+            if (recyleInfo == null) recyleInfo = new SimplisityInfo();
+            if (_isDirty)
+            {
+                recyleInfo.PortalId = PortalId;
+                recyleInfo.ModuleId = ModuleId;
+                recyleInfo.GUIDKey = guidKey;
+                recyleInfo.TypeCode = "ARTHISTORY";
+                _oldinfo.SetXmlProperty("genxml/historydate", DateTime.Now.ToString("O"), TypeCode.DateTime);
+                _oldinfo.SetXmlProperty("genxml/recycleref", GeneralUtils.GetGuidKey());
+                _oldinfo.SetXmlProperty("genxml/editedby", UserUtils.GetCurrentUserName());
+                _oldinfo.SetXmlProperty("genxml/editedbyemail", UserUtils.GetCurrentUserEmail());
+                var hInfo = new SimplisityRecord();
+                hInfo.XMLData = _oldinfo.ToXmlItem();
+                recyleInfo.AddRecordListItem("history", hInfo);
+                _objCtrl.Update(recyleInfo, _tableName);
+                PurgeRecycleBin();
+            }
+        }
+        public SimplisityRecord GetNewestRecycleBinEntry(SimplisityInfo recyleInfo)
+        {
+            var recycleList = recyleInfo.GetRecordList("history");
+            recycleList = recycleList.OrderByDescending(o => o.GetXmlPropertyDate("item/genxml/historydate")).ToList();
+            return recycleList.First();
+        }
+        public void PurgeRecycleBin(int maxcount = 20)
+        {
+            var guidKey = ModuleId.ToString() + "_" + CultureCode;
+            var recyleInfo = _objCtrl.GetByGuidKey(PortalId, ModuleId, "ARTHISTORY", guidKey, "", _tableName, CultureCode);
+            if (recyleInfo.GetRecordList("history").Count > maxcount)
+            {
+                var lp = 1;
+                var recycleList = recyleInfo.GetRecordList("history");
+                recycleList = recycleList.OrderByDescending(o => o.GetXmlPropertyDate("item/genxml/historydate")).ToList();
+                recyleInfo.RemoveRecordList("history");
+                foreach (var h in recycleList)
+                {
+                    if (lp <= maxcount) recyleInfo.AddRecordListItem("history", h);
+                    lp += 1;
+                }
+                _objCtrl.Update(recyleInfo, _tableName);
+            }
+        }
+        public List<SimplisityInfo> GetRecycleBin()
+        {
+            var rtn = new List<SimplisityInfo>();
+            var recyleInfo = _objCtrl.GetByGuidKey(PortalId, ModuleId, "ARTHISTORY", ModuleId.ToString() + "_" + CultureCode, "", _tableName, CultureCode);
+            if (recyleInfo != null)
+            {
+                var hList = recyleInfo.GetList("history");
+                if (hList != null)
+                {
+                    hList = hList.OrderByDescending(o => o.GetXmlPropertyDate("item/genxml/historydate")).ToList();
+                    foreach (var h in hList)
+                    {
+                        var info = new SimplisityInfo();
+                        info.FromXmlItem(h.XMLData);
+                        rtn.Add(info);
+                    }
+                }
+            }
+            return rtn;
+        }
+        public void RestoreArticle(string recycleref)
+        {
+            var recyleInfo = _objCtrl.GetByGuidKey(PortalId, ModuleId, "ARTHISTORY", ModuleId.ToString() + "_" + CultureCode, "", _tableName, CultureCode);
+            var itemRec = recyleInfo.GetRecordListItem("history", "item/genxml/recycleref", recycleref);
+            if (itemRec != null)
+            {
+                _info.FromXmlItem(itemRec.XMLData);
+                _info = _objCtrl.SaveData(_info, _tableName);
+                ClearCache();
+            }
+        }
+        public void EmptyRecycleBin()
+        {
+            var recyleInfo = _objCtrl.GetByGuidKey(PortalId, ModuleId, "ARTHISTORY", ModuleId.ToString() + "_" + CultureCode, "", _tableName, CultureCode);
+            recyleInfo.RemoveRecordList("history");
+            _objCtrl.Update(recyleInfo, _tableName);
         }
         #endregion
 

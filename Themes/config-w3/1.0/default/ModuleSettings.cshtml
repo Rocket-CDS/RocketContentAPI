@@ -26,7 +26,7 @@
 <div id="a-datasection" class="w3-container w3-margin w3-padding">
 
     <div class="w3-row w3-padding">
-        <div id="postsettings" class="w3-right w3-button w3-round w3-theme-action w3-padding simplisity_click" s-cmd="rocketcontentapi_savesettings" s-post="#a-datasection" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@(Model.SessionParamsData.TabId)"}'>
+        <div id="postsettings" class="w3-right w3-button w3-round w3-theme-action w3-padding a-savebutton simplisity_click" s-cmd="rocketcontentapi_savesettings" s-post="#a-datasection" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@(Model.SessionParamsData.TabId)"}'>
             @ButtonIcon(ButtonTypes.save)
         </div>
     </div>
@@ -58,31 +58,20 @@
     </div>
 
 
-        <div class="w3-xlarge">@moduleData.ProjectName</div>
-    @if (!moduleData.IsSatellite)
-    {
-        <div class="w3-row w3-padding">
-            <div class="w3-half">
-                <span class="w3-button w3-theme w3-round simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.edit")?" s-cmd="rocketcontentapi_resetapptheme" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'>
-                    @ButtonIcon(ButtonTypes.edit)
-                </span>
-                &nbsp;
-                <span><b>@appThemeAdmin.Name &nbsp; @moduleData.AppThemeAdminVersion &nbsp; [@ResourceKey("DNNrocket.admin")]</b></span>
-            </div>
-        </div>        
-    }
-        <div class="w3-row w3-padding">
-            <span class="w3-button w3-theme w3-round simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.edit")?" s-cmd="rocketcontentapi_resetappthemeview" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'>
-                @ButtonIcon(ButtonTypes.edit)
-            </span>
-            &nbsp;
-            <span><b>@appThemeView.Name &nbsp; @moduleData.AppThemeViewVersion &nbsp; [@ResourceKey("DNNrocket.view")]</b></span>
-        </div>
+    <div class="w3-xlarge w3-padding">@moduleData.ProjectName</div>
 
-        <hr/>
-        <div class="w3-row">
-            @RenderTemplate("ThemeSettings.cshtml", appThemeAdmin, Model, true)
-        </div>
+    <div class="w3-row w3-padding a-adminapptheme">
+        <span class="w3-button w3-theme w3-round simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.edit")?" s-cmd="rocketcontentapi_resetapptheme" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId"}'>
+            @ButtonIcon(ButtonTypes.edit)
+        </span>
+        &nbsp;
+        <span><b>@appThemeAdmin.Name &nbsp; @moduleData.AppThemeAdminVersion</b></span>
+    </div>
+
+    <hr/>
+    <div class="w3-row">
+        @RenderTemplate("ThemeSettings.cshtml", appThemeAdmin, Model, true)
+    </div>
 
 </div>
 
@@ -101,7 +90,6 @@
         $('a[id*="_cmdUpdate"]').click(function () {
             simplisity_callserver($('#postsettings'));
         });
-
     });
 </script>
 

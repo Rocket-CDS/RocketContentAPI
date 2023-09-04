@@ -1,0 +1,100 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketContentAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using Rocket.AppThemes.Components;
+@using RocketPortal.Components;
+@using System.IO;
+
+@{
+    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
+    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
+    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
+    var portalShop = (PortalLimpet)Model.GetDataObject("portalshop");
+    var systemAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
+    var appThemeView = new AppThemeLimpet(moduleData.PortalId, moduleData.AppThemeViewFolder, moduleData.AppThemeViewVersion, moduleData.ProjectName);
+    var appThemeAdmin = new AppThemeLimpet(moduleData.PortalId, moduleData.AppThemeAdminFolder, moduleData.AppThemeAdminVersion, moduleData.ProjectName);
+    var recycleList = articleData.GetRecycleBin();
+}
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
+@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
+
+
+<div class="w3-row">
+    <div class="w3-bar w3-padding w3-margin-bottom">
+        <a href="@DNNrocketUtils.NavigateURL(moduleData.TabId)" class="w3-button w3-black">@ButtonIconText(ButtonTypes.back)</a>
+
+        <span class="w3-padding w3-button w3-theme-action a-savebutton simplisity_confirmclick" s-confirm="@ResourceKey("RCT.emptyrecyclebin")?" s-cmd="article_emptyrecyclebin" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>
+            <span class="material-icons">
+                delete_sweep
+            </span>
+            &nbsp;@ResourceKey("RCT.emptyrecyclebin")
+        </span>
+    </div>
+
+    @if (Model.GetSettingBool("restoredarticle"))
+    {
+        <div class="w3-panel w3-pale-blue w3-padding w3-border w3-border-blue w3-margin">
+            <span class="material-icons w3-text-black" style="font-size:32px;">
+                done
+            </span>
+            <span class="">@ResourceKey("DNNrocket.restoredonemsg")&nbsp;@DateOf(articleData.Info,"genxml/historydate",Model.SessionParamsData.CultureCode, "d")&nbsp;<span class="w3-tiny">@DateOf(articleData.Info,"genxml/historydate",Model.SessionParamsData.CultureCode, "hh:mm:ss")</span>&nbsp;<span class="w3-tiny">ref: @articleData.Info.GetXmlProperty("genxml/recycleref")</span></span>
+        </div>
+    }
+
+    <div class="w3-row">
+
+        @if (recycleList.Count > 0)
+        {
+            var xmlidx = 1;
+            <table class="w3-table w3-bordered w3-card">
+                @foreach (var h in recycleList)
+                {
+                    <tr>
+                        <td class="material-icons w3-bar-item w3-circle w3-xlarge w3-hide-small" style="width:85px">
+                            article
+                        </td>
+                        <td class="w3-bar-item">
+                            @RenderXml(h, xmlidx.ToString())
+                        </td>
+                        <td class="w3-bar-item">
+                            <div class="w3-large">@DateOf(h,"genxml/historydate",Model.SessionParamsData.CultureCode, "d")&nbsp;<span class="w3-tiny">@DateOf(h,"genxml/historydate",Model.SessionParamsData.CultureCode, "hh:mm:ss")</span></div>
+                            <div class="w3-bar-item w3-tiny">
+                                @ResourceKey("DNNrocket.ref")&nbsp;@h.GetXmlProperty("genxml/recycleref")
+                            </div>
+                        </td>
+                        <td class="w3-bar-item">
+                            <div class="w3-large">@h.Lang</div><br>
+                        </td>
+                        <td class="w3-bar-item w3-small">
+                            <div>
+                                @h.GetXmlProperty("genxml/editedby")
+                            </div>
+                            <div>
+                                @h.GetXmlProperty("genxml/editedbyemail")
+                            </div>
+                        </td>
+                        <td style="width:85px">
+                            <div class="w3-bar-item w3-button w3-white simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.restoremsg") ?" s-cmd="article_restore" s-fields='{"recycleref":"@(h.GetXmlProperty("genxml/recycleref"))","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@(Model.SessionParamsData.TabId)"}' title="@ResourceKey("DNNrocket.restore")">
+                                <span class="material-icons">
+                                    restore_page
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    xmlidx = xmlidx + 1;
+                }
+            </table>
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+       $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketcontentapi', debug: false });
+       $('.simplisity_loader').hide();
+    });
+</script>
+
+

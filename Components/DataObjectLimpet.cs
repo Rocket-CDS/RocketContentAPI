@@ -61,11 +61,9 @@ namespace RocketContentAPI.Components
                     if (ModuleSettings.HasAppThemeAdmin)
                     {
                         SetDataObject("appthemeadmin", new AppThemeLimpet(ModuleSettings.PortalId, ModuleSettings.AppThemeAdminFolder, ModuleSettings.AppThemeAdminVersion, ModuleSettings.ProjectName));
-                    }
-                    if (ModuleSettings.HasAppThemeView)
-                        SetDataObject("appthemeview", new AppThemeLimpet(ModuleSettings.PortalId, ModuleSettings.AppThemeViewFolder, ModuleSettings.AppThemeViewVersion, ModuleSettings.ProjectName));
-                    else
+                        //appthemeview is Legacy
                         SetDataObject("appthemeview", new AppThemeLimpet(ModuleSettings.PortalId, ModuleSettings.AppThemeAdminFolder, ModuleSettings.AppThemeAdminVersion, ModuleSettings.ProjectName));
+                    }
                 }
             }
         }

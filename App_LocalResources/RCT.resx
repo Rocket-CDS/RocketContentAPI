@@ -144,6 +144,12 @@
   <data name="editappthemeview.Text" xml:space="preserve">
     <value>Edit View AppTheme</value>
   </data>
+  <data name="editedby.Text" xml:space="preserve">
+    <value>Edited By</value>
+  </data>
+  <data name="emptyrecyclebin.Text" xml:space="preserve">
+    <value>Empty Recycle Bin</value>
+  </data>
   <data name="invalidcatalog.Text" xml:space="preserve">
     <value>Setup has not been completed.  </value>
   </data>
