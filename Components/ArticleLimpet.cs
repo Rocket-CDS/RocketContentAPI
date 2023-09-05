@@ -89,13 +89,13 @@ namespace RocketContentAPI.Components
         }
         public void ClearCache()
         {
-            CacheUtils.RemoveCache(_info.GUIDKey);
+            CacheUtils.ClearAllCache(_info.GUIDKey);
             // clear cache for satilite modules.
             var filter = " and [XMLdata].value('(genxml/settings/dataref)[1]','nvarchar(max)') = '" + _info.GUIDKey + "' ";
             var l = _objCtrl.GetList(_info.PortalId, -1, "MODSETTINGS", filter);
             foreach (var m in l)
             {
-                CacheUtils.RemoveCache(m.GUIDKey);
+                CacheUtils.ClearAllCache(m.GUIDKey);
             }
         }
 
