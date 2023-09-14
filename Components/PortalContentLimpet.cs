@@ -88,7 +88,7 @@ namespace RocketContentAPI.Components
             var tabid = PagesUtils.CreatePage(PortalId, _systemkey);
             PagesUtils.AddPagePermissions(PortalId, tabid, DNNrocketRoles.Manager);
             PagesUtils.AddPagePermissions(PortalId, tabid, DNNrocketRoles.Editor);
-            PagesUtils.AddPagePermissions(PortalId, tabid, DNNrocketRoles.ClientEditor);
+            PagesUtils.AddPagePermissions(PortalId, tabid, DNNrocketRoles.Collaborator);
             PagesUtils.AddPageSkin(PortalId, tabid, "rocketportal", "rocketadmin.ascx");
         }
         public void Delete()
