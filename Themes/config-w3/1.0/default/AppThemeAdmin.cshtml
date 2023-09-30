@@ -24,25 +24,16 @@
 <div class="w3-row">
     <a href="@DNNrocketUtils.NavigateURL(moduleData.TabId)" class="w3-button w3-black">@ButtonIconText(ButtonTypes.back)</a>
 
-    <div class="w3-row w3-right">
-        <div class="w3-padding">
-            <label>Ref</label><br />
-            <b>@moduleData.ModuleRef</b>
+    <div class="w3-row w3-right w3-small">
+        <div class="">
+            @moduleData.ModuleRef
         </div>
-        @if (moduleData.AppThemeAdminFolder != "")
-        {
-        <div class="w3-padding">
-            <label>Admin</label><br/>
-            <b>@moduleData.AppThemeAdminFolder</b>
+        <div class="">
+            @moduleData.ProjectName
         </div>            
-        }
-        @if (moduleData.AppThemeViewFolder != "")
-        {
-            <div class="w3-padding">
-                <label>View</label><br />
-                <b>@moduleData.AppThemeViewFolder</b>
-            </div>
-        }
+        <div class="">
+            @moduleData.AppThemeViewFolder
+        </div>
     </div>
 
 </div>
