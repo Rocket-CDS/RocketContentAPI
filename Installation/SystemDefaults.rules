@@ -101,7 +101,11 @@
 		  <cmd>article_emptyrecyclebin</cmd>
 		  <action>true</action>
 	  </command>
-	  
+	  <command>
+		  <cmd>article_search</cmd>
+		  <action>false</action>
+	  </command>	  
+
 
 	  <command>
       <cmd>rocketcontentapi_settings</cmd>

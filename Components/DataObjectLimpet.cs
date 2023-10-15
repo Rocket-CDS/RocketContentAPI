@@ -30,6 +30,10 @@ namespace RocketContentAPI.Components
         {
             _passSettings = new Dictionary<string, string>();
             _dataObjects = new Dictionary<string, object>();
+
+            // could be scheduler with only the moduleid.
+            if (moduleRef == "")  moduleRef = portalid + "_ModuleID_" + moduleId;
+
             var moduleSettings = new ModuleContentLimpet(portalid, moduleRef, SystemKey, moduleId, tabId);
             var articleData = new ArticleLimpet(portalid, moduleSettings.DataRef, cultureCode, moduleId);
             SetDataObject("modulesettings", moduleSettings);

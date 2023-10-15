@@ -1,4 +1,5 @@
-﻿using DNNrocketAPI.Components;
+﻿using DNNrocketAPI;
+using DNNrocketAPI.Components;
 using Rocket.AppThemes.Components;
 using RocketContentAPI.Components;
 using Simplisity;
@@ -8,6 +9,7 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Xml.Linq;
 
 namespace RocketContentAPI.API
 {
@@ -83,6 +85,7 @@ namespace RocketContentAPI.API
             articleData.ModuleId = _dataObject.ModuleSettings.ModuleId;
             articleData.UpdateRow(_rowKey, _postInfo, _dataObject.ModuleSettings.SecureSave);
             articleData.ClearCache();
+            DNNrocketUtils.SynchronizeModule(articleData.ModuleId); // module search
             _dataObject.SetDataObject("articledata", articleData);
             return AdminDetailDisplay();
         }
@@ -237,10 +240,52 @@ namespace RocketContentAPI.API
             _dataObject.SetDataObject("articledata", articleData2);
             return AdminDetailDisplay();
         }
+        public Dictionary<string, object> ArticleSearch()
+        {
+            var bodyXpathList = _dataObject.ModuleSettings.GetSetting("searchbody").Split(',');
+            var descriptionXpathList = _dataObject.ModuleSettings.GetSetting("searchdescription").Split(',');
+            var titleXpathList = _dataObject.ModuleSettings.GetSetting("searchtitle").Split(',');
+            var rtn = new Dictionary<string, object>();
+
+            var infoDict = _dataObject.ArticleData.Info.ToDictionary();
+            foreach (var articleRowInfo in _dataObject.ArticleData.GetRowList())
+            {
+                var rowDict = articleRowInfo.ToDictionary();
+                var bodydata = "";
+                var descriptiondata = "";
+                var titledata = "";
+                foreach (var fname in bodyXpathList)
+                {
+                    if (infoDict.ContainsKey(fname))
+                        bodydata += infoDict[fname] + " ";
+                    else
+                        if (rowDict.ContainsKey(fname)) bodydata += rowDict[fname] + " ";
+                }
+                foreach (var fname in descriptionXpathList)
+                {
+                    if (infoDict.ContainsKey(fname))
+                        descriptiondata += infoDict[fname] + " ";
+                    else
+                        if (rowDict.ContainsKey(fname)) descriptiondata += rowDict[fname] + " ";
+                }
+                foreach (var fname in titleXpathList)
+                {
+                    if (infoDict.ContainsKey(fname))
+                        titledata += infoDict[fname] + " ";
+                    else
+                        if (rowDict.ContainsKey(fname)) titledata += rowDict[fname] + " ";
+                }
+                rtn.Add("body", bodydata.TrimEnd(' '));
+                rtn.Add("description", descriptiondata);
+                rtn.Add("modifieddate", _dataObject.ArticleData.Info.ModifiedDate.ToString("O"));
+                rtn.Add("title", titledata);                
+            }
+            return rtn;
+        }
         public String AdminDetailDisplay()
         {
             // rowKey can come from the sessionParams or paramInfo.  (Because on no rowkey on the language change)
-            if (_dataObject.ArticleData.GetRowList().Count  == 0) AddRow(); // create first row automatically
+            if (_dataObject.ArticleData.GetRowList().Count == 0) AddRow(); // create first row automatically
             var articleRow = _dataObject.ArticleData.GetRow(0);
             if (_rowKey != "") articleRow = _dataObject.ArticleData.GetRow(_rowKey);
             if (articleRow == null) articleRow = _dataObject.ArticleData.GetRow(0);  // row removed and still in sessionparams

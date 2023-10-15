@@ -113,7 +113,10 @@ namespace RocketContentAPI.API
                     break;
                 case "article_emptyrecyclebin":
                     strOut = EmptyRecycleBin();
-                    break;                    
+                    break;
+                case "article_search":
+                    rtnDic = ArticleSearch();
+                    break;
 
 
                 case "rocketcontentapi_settings":
@@ -223,7 +226,7 @@ namespace RocketContentAPI.API
             
             if (!_dataObject.ModuleSettings.HasAppThemeAdmin) // Check if we have an AppTheme
             {
-                if (!paramCmd.StartsWith("rocketcontentapi_") && !paramCmd.StartsWith("rocketsystem_")) return "rocketcontentapi_settings";
+                if (paramCmd != "article_search" && !paramCmd.StartsWith("rocketcontentapi_") && !paramCmd.StartsWith("rocketsystem_")) return "rocketcontentapi_settings";
             }
 
             var securityData = new SecurityLimpet(_dataObject.PortalId, _dataObject.SystemKey, _rocketInterface, _sessionParams.TabId, _sessionParams.ModuleId);

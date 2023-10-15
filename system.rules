@@ -102,6 +102,35 @@
 			</radio>
 		</genxml>
 
+		<genxml>
+			<textbox>
+				<interfacekey>searchindex</interfacekey>
+				<namespaceclass>RocketContentAPI.API.StartConnect</namespaceclass>
+				<assembly>RocketContentAPI</assembly>
+				<interfaceicon></interfaceicon>
+				<defaultcommand>article_search</defaultcommand>
+				<relpath></relpath>
+			</textbox>
+			<providertype>searchindex</providertype>
+			<dropdownlist>
+				<group></group>
+			</dropdownlist>
+			<checkbox>
+				<onmenu>false</onmenu>
+				<active>true</active>
+			</checkbox>
+			<radio>
+				<securityrolesadministrators>1</securityrolesadministrators>
+				<securityrolesmanager>0</securityrolesmanager>
+				<securityroleseditor>0</securityroleseditor>
+				<securityrolesclienteditor>0</securityrolesclienteditor>
+				<securityrolesregisteredusers>0</securityrolesregisteredusers>
+				<securityrolessubscribers>0</securityrolessubscribers>
+				<securityrolesall>0</securityrolesall>
+			</radio>
+		</genxml>
+
+
 	</providerdata>
 
 
@@ -309,6 +338,5 @@
         </radio>
       </genxml>
 
-
-    </interfacedata>
+	</interfacedata>
   </genxml>
