@@ -1,0 +1,24 @@
+﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@using RocketContentAPI.Components;
+@using Simplisity;
+@using RazorEngine.Text;
+@using Rocket.AppThemes.Components;
+@using RocketPortal.Components;
+
+@{
+    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
+    var sessionParams = Model.SessionParamsData;
+}
+
+<div class="w3-bar-item">
+@foreach (var l in enabledlanguages)
+{
+    var selectedcolor = "w3-theme-l5";
+    if (sessionParams.CultureCodeEdit == l)
+    {
+        selectedcolor = "w3-theme-l3";
+    }
+    <div class="w3-button w3-padding-small w3-round @(selectedcolor) simplisity_click" s-cmd="@(Model.GetSetting("scmd"))" s-fields='@(Model.GetSetting("sfields").Replace("[LANGUAGE]", l))' language="@(l)"><img src="/DesktopModules/DNNrocket/API/images/flags/24/@(l).png" class="w3-round" /></div>
+}
+</div>

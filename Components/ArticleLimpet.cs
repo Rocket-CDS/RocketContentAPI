@@ -27,6 +27,7 @@ namespace RocketContentAPI.Components
         private SimplisityInfo _oldinfo;
         private string _cacheKey;
         private bool _isDirty;
+        private string _moduleRef;
 
         /// <summary>
         /// Should be used to create an article, the portalId is required on creation
@@ -39,7 +40,7 @@ namespace RocketContentAPI.Components
             _moduleId = moduleid;
             PortalId = portalId;
             SecureSave = true;
-            _cacheKey = dataRef;
+            _moduleRef = dataRef;
             Populate(langRequired);
             _oldinfo = (SimplisityInfo)_info.Clone();
         }
@@ -52,6 +53,7 @@ namespace RocketContentAPI.Components
             _info = articleData.Info;
             CultureCode = articleData.CultureCode;
             PortalId = _info.PortalId;
+            _moduleRef = _info.GUIDKey;
             _oldinfo = (SimplisityInfo)_info.Clone();
         }
         private void Populate(string cultureCode)
@@ -59,12 +61,13 @@ namespace RocketContentAPI.Components
             _isDirty = false;
             _objCtrl = new DNNrocketController();
             CultureCode = cultureCode;
-            if (_cacheKey == "") _cacheKey = PortalId + "_ModuleId_" + _moduleId;
+            if (_cacheKey == "") _cacheKey = PortalId + "_ModuleId_" + _moduleId + "_" + cultureCode;
+            if (_moduleRef == "") _moduleRef = PortalId + "_ModuleId_" + _moduleId;
 
             _info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
             if (_info == null)
             {
-                _info = _objCtrl.GetByGuidKey(PortalId, -1, _entityTypeCode, _cacheKey, "", _tableName, cultureCode);
+                _info = _objCtrl.GetByGuidKey(PortalId, -1, _entityTypeCode, _moduleRef, "", _tableName, cultureCode);
                 if (_info == null)
                 {
                     _info = new SimplisityInfo();
@@ -72,7 +75,7 @@ namespace RocketContentAPI.Components
                     _info.TypeCode = _entityTypeCode;
                     _info.ModuleId = _moduleId;
                     _info.UserId = -1;
-                    _info.GUIDKey = _cacheKey;
+                    _info.GUIDKey = _moduleRef;
                     _info.PortalId = PortalId;
                 }
                 else

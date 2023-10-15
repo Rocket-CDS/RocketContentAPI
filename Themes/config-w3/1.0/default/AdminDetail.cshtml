@@ -24,21 +24,14 @@
     var rtnUrl = userParams.Get("viewurl");
 }
 
-<div class="w3-row">
-
-    @foreach (var l in enabledlanguages)
-    {
-        var selectedcolor = "";
-        if (sessionParams.CultureCodeEdit == l)
-        {
-            selectedcolor = "w3-border";
-        }
-        <div class="w3-button w3-round @(selectedcolor) editlanguage simplisity_click" s-cmd="changeeditculture" s-reload="true" s-return="#languagereturn" s-fields='{"selectedculturecode":"@l"}' style="cursor:pointer;" editlang='@l'>
-            <img class='' src='/DesktopModules/DNNrocket/API/images/flags/24/@(l).png' style="" alt='@(l)' />
-        </div>
-    }
-
-</div>
+@{
+    var sFieldDict = new Dictionary<string, string>();
+    sFieldDict.Add("systemkey", "rocketcontentapi");
+    sFieldDict.Add("moduleref", moduleData.ModuleRef);
+    sFieldDict.Add("moduleid", moduleData.ModuleId.ToString());
+    sFieldDict.Add("tabid", moduleData.TabId.ToString());
+}
+@RenderLanguageSelector("article_admindetail", sFieldDict, appThemeSystem, Model)
 
 <div id="a-articledata" class=" w3-padding">
 
