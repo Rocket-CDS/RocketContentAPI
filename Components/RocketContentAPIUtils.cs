@@ -45,14 +45,15 @@ namespace RocketContentAPI.Components
         public static string DisplayView(int portalId, string systemKey, string moduleRef, string rowKey, SessionParams sessionParam, string template = "view.cshtml", string noAppThemeReturn= "")
         {
             var moduleSettings = new ModuleContentLimpet(portalId, moduleRef, systemKey, sessionParam.ModuleId, sessionParam.TabId);
-            var pr = (RazorProcessResult)CacheUtils.GetCache(moduleRef + template, moduleRef);
+            var cacheKey = moduleRef + sessionParam.CultureCode + template;
+            var pr = (RazorProcessResult)CacheUtils.GetCache(cacheKey, moduleRef);
             if (moduleSettings.DisableCache || pr == null)
             {
                 var dataObject = new DataObjectLimpet(portalId, moduleRef, rowKey, sessionParam, false);
                 if (!dataObject.ModuleSettings.HasAppThemeAdmin) return noAppThemeReturn; // test on Admin Theme.
                 var razorTempl = dataObject.AppThemeView.GetTemplate(template, moduleRef);
                 pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
-                CacheUtils.SetCache(moduleRef + template, pr, moduleRef);
+                CacheUtils.SetCache(cacheKey, pr, moduleRef);
             }
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
