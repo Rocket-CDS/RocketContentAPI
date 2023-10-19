@@ -43,6 +43,7 @@ namespace RocketContentAPI.Components
             SetDataObject("systemdata", SystemSingleton.Instance(SystemKey));
             SetDataObject("appthemeprojects", AppThemeUtils.AppThemeProjects());
             SetDataObject("articledata", articleData);
+            SetDataObject("userparams", new UserParams("ModuleID:" + moduleId, true));
 
             if (articleData != null)
             {

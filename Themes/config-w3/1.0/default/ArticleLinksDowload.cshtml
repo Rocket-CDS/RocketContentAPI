@@ -1,25 +1,10 @@
 ﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI.Components;
-@using Simplisity;
-@using RocketContentAPI.Components;
-@using RocketPortal.Components;
-
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
-
+@AssigDataModel(Model)
+@AddProcessDataResx(appThemeView, true)
+<!--inject-->
 @{
-    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
-    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
     var linkLP = 0;
-
-    var datalist = articleRowData.GetLinkList();
-    var globalSettings = new SystemGlobalData();
-    var sessionParams = Model.SessionParamsData;
     var fieldId = "articlelink";
-    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
-    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
-
 }
 
 <div class="w3-row linklistdatasection">
@@ -30,7 +15,7 @@
     </div>
 
     <ul id="linklistdata" class="w3-ul">
-        @foreach (var linkInfo in datalist)
+        @foreach (var linkInfo in articleRowData.GetLinkList())
         {
             <li class="linklist w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
                 @SortableListIndex(linkInfo, linkLP)

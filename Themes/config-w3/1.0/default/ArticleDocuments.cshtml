@@ -1,22 +1,9 @@
 ﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI.Components;
-@using Simplisity;
-@using RocketContentAPI.Components;
-@using RocketPortal.Components;
-
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
-
+@AssigDataModel(Model)
+@AddProcessDataResx(appThemeView, true)
+<!--inject-->
 @{
-    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
-    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
-    var docLP = 1;
-    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
-
-    var datalist = articleRowData.GetDocList();
-    var globalSettings = new SystemGlobalData();
-    var sessionParams = Model.SessionParamsData;
+    var articledocumentsLP = 1;
 }
 
 <div class="w3-row documentlistdatasection">
@@ -27,28 +14,28 @@
     </div>
 
     <ul id="documentlistdata" class="w3-ul">
-        @foreach (var docInfo in datalist)
+        @foreach (var docInfo in articleRowData.GetDocList())
         {
             <li class="documentlist w3-display-container w3-padding w3-border-0" style="list-style-type:none;">
-                @SortableListIndex(docInfo, docLP)
+                @SortableListIndex(docInfo, articledocumentsLP)
 
                 <div class="w3-display-container w3-padding w3-card">
                     <div class="w3-row">
-                        <span id="deletebutton@(docLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".documentlist" s-recylebin="documentlistbin">
+                        <span id="deletebutton@(articledocumentsLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".documentlist" s-recylebin="documentlistbin">
                             @ButtonIcon(ButtonTypes.remove)
                         </span>
                         <div class="w3-padding">
-                            @HiddenField(docInfo, "genxml/hidden/documentpatharticledoc", "", "", false, docLP)
+                            @HiddenField(docInfo, "genxml/hidden/documentpatharticledoc", "", "", false, articledocumentsLP)
                             <label>@ResourceKey("DNNrocket.name")</label>&nbsp;@EditFlag(sessionParams)
-                            @TextBox(docInfo, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' ", "", false, docLP)
+                            @TextBox(docInfo, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' ", "", false, articledocumentsLP)
                             <label>@ResourceKey("DNNrocket.document")</label>
-                            @TextBox(docInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border w3-light-grey' disabled ", "", false, docLP)
-                            @CheckBox(docInfo, "genxml/checkbox/forcedownload", "", "class='w3-check' style='margin-right:6px' ", false, false, docLP)<label>@ResourceKey("DNNrocket.forcedownload")</label>
+                            @TextBox(docInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border w3-light-grey' disabled ", "", false, articledocumentsLP)
+                            @CheckBox(docInfo, "genxml/checkbox/forcedownload", "", "class='w3-check' style='margin-right:6px' ", false, false, articledocumentsLP)<label>@ResourceKey("DNNrocket.forcedownload")</label>
                         </div>
                     </div>
                 </div>
             </li>
-            docLP += 1;
+            articledocumentsLP += 1;
         }
     </ul>
 
@@ -59,7 +46,5 @@
         $("#documentlistdata").sortable();
         $("#documentlistdata").disableSelection();
     });
-
 </script>
 
-@RenderTemplate("ArticleDocumentSelect.cshtml", appThemeSystem, Model, true)

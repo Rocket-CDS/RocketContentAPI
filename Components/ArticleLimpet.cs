@@ -342,6 +342,32 @@ namespace RocketContentAPI.Components
 
         #region "properties"
 
+        public string Get(string xpath, string defaultvalue = "")
+        {
+            var val = Info.GetXmlProperty(xpath);
+            if (val == "") val = defaultvalue;
+            return val;
+        }
+        public int GetInt(string xpath, int defaultvalue = 0)
+        {
+            var val = Info.GetXmlPropertyInt(xpath);
+            if (val == 0 && defaultvalue != 0) val = defaultvalue;
+            return val;
+        }
+        public DateTime GetDate(string xpath)
+        {
+            return GetDate(xpath,DateTime.MinValue);
+        }
+        public DateTime GetDate(string xpath, DateTime defaultvalue)
+        {
+            var val = Info.GetXmlPropertyDate(xpath);
+            if (val == DateTime.MinValue) val = defaultvalue;
+            return val;
+        }
+        public bool GetBool(string xpath)
+        {
+            return Info.GetXmlPropertyBool(xpath);
+        }
         public string CultureCode { get; private set; }
         public bool SecureSave { get; private set; }
         public string EntityTypeCode { get { return _entityTypeCode; } }

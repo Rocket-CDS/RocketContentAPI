@@ -1,27 +1,10 @@
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI.Components;
-@using RocketContentAPI.Components;
-@using Simplisity;
-@using RazorEngine.Text;
-@using RocketPortal.Components;
-
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/RocketPortal/App_LocalResources/")
-
 @{
-    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
-    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
-    var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
-    var appThemeAdmin = (AppThemeLimpet)Model.GetDataObject("appthemeadmin");
-    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
-    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
-    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
-    var globalSettings = new SystemGlobalData();
-    var info = articleData.Info;
-    var enabledlanguages = DNNrocketUtils.GetCultureCodeList();
-    var sessionParams = Model.SessionParamsData;
-    var userParams = new UserParams("ModuleID:" + sessionParams.ModuleId, true);
+    AssigDataModel(Model);
     var rtnUrl = userParams.Get("viewurl");
+    AddProcessDataResx(appThemeView, true);
+    AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/");
 }
 
 @{
@@ -68,8 +51,7 @@
     </div>
 
 
-
-    @RenderTemplate("AdminDetail.cshtml", appThemeAdmin, Model, true)
+    [INJECT:appthemeadmin,AdminDetail.cshtml]
 
     @if (UserUtils.IsAdministrator())
     {

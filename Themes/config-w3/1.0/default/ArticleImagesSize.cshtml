@@ -1,25 +1,9 @@
 ﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI.Components;
-@using Simplisity;
-@using RocketContentAPI.Components;
-@using RocketPortal.Components;
-
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/Images/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
-
+@AssigDataModel(Model)
+@AddProcessDataResx(appThemeView, true)
+<!--inject-->
 @{
-    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
-    var articleRowData = (ArticleRowLimpet)Model.GetDataObject("articlerow");
-    var imgLP = 0;
-    var appThemeSystem = (AppThemeSystemLimpet)Model.GetDataObject("appthemesystem");
-
-    var datalist = articleRowData.GetImageList();
-    var globalSettings = new SystemGlobalData();
-    var sessionParams = Model.SessionParamsData;
-    var portalData = new PortalLimpet(articleData.PortalId);
-    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
-    Model.SetSetting("scmd", "article_addimage");
+    var articleimagessizeLP = 0;
 }
 
 <div class="w3-row imagelistdatasection">
@@ -31,18 +15,18 @@
 
     <ul id="imagelistdata" class="w3-ul">
 
-        @foreach (var imgInfo in datalist)
+        @foreach (var imgInfo in articleRowData.GetImageList())
         {
-            imgLP += 1;
+            articleimagessizeLP += 1;
             var articleImage = new ArticleImage(imgInfo, "articleimage");
 
             <li class="@articleData.ImageListName w3-row w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
 
-                @SortableListIndex(imgInfo, imgLP)
+                @SortableListIndex(imgInfo, articleimagessizeLP)
 
                 <div class="w3-display-container w3-padding w3-card">
                     <div class="w3-row">
-                        <span id="deletebutton@(imgLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin">
+                        <span id="deletebutton@(articleimagessizeLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin">
                             @ButtonIcon(ButtonTypes.remove)
                         </span>
                         <div class="w3-col m2 w3-padding" style="width:100px;">
@@ -50,17 +34,17 @@
                         </div>
                         <div class="w3-col m10 w3-padding">
                             <label>@ResourceKey("DNNrocket.imagealt")</label>&nbsp;@EditFlag(sessionParams)
-                            @TextBox(imgInfo, "genxml/lang/genxml/textbox/imagealtarticleimage", "class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", true, imgLP)
-                            @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, imgLP)
+                            @TextBox(imgInfo, "genxml/lang/genxml/textbox/imagealtarticleimage", "class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", true, articleimagessizeLP)
+                            @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, articleimagessizeLP)
                         </div>
                         <div class="w3-row">
                             <div class="w3-col m2 w3-padding">
                                 <label>@ResourceKey("DNNrocket.width")</label>
-                                @TextBox(imgInfo, "genxml/hidden/width", "type='number' class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", false, imgLP)
+                                @TextBox(imgInfo, "genxml/hidden/width", "type='number' class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", false, articleimagessizeLP)
                             </div>
                             <div class="w3-col m2 w3-padding">
                                 <label>@ResourceKey("DNNrocket.height")</label>
-                                @TextBox(imgInfo, "genxml/hidden/height", "type='number' class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", false, imgLP)
+                                @TextBox(imgInfo, "genxml/hidden/height", "type='number' class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", false, articleimagessizeLP)
                             </div>
                         </div>
                     </div>
@@ -79,4 +63,33 @@
     });
 </script>
 
-@RenderTemplate("ArticleImageSelect.cshtml", appThemeSystem, Model, true)
+<div id="articleimageselect" class="w3-modal">
+    <div class="w3-modal-content" style="width:40%;">
+
+        <div class="" style="height: 38.5px;">
+            <span onclick="$('#articleimageselect').hide();" class="w3-button w3-display-topright">&times;</span>
+        </div>
+        <div class="w3-margin-top" style="">
+            <div class="w3-container">
+
+                <h2>@ResourceKey("DNNrocket.imageupload")</h2>
+                <p>@ResourceKey("DNNrocket.imageupload", "", "Msg")</p>
+
+                <input id="imagefileupload" class="simplisity_base64upload" s-reload="false" s-cmd="article_addimage" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' type="file" name="file[]" multiple style="display:none;">
+                <div class="w3-row w3-margin-bottom">
+                    <span class="w3-col m12 w3-button w3-teal fileuploadaction" onclick="$('#imagefileupload').trigger('click');">@ButtonText(ButtonTypes.upload)</span>
+                </div>
+
+                <div id="simplisity-file-progress-bar" class="w3-modal w3-padding" style="z-index:9999;background-color:grey">
+                    <div class="w3-modal-content w3-card-4  w3-display-middle w3-padding" style="width: 60%;">
+                        <div id="progessaction">@ResourceKey("DNNrocket.imageupload")</div>
+                        <div class=" w3-row w3-light-grey">
+                            <div class="w3-blue simplisity-file-progress-bar" style="width:0%;height:24px;">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

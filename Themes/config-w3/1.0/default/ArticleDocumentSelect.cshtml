@@ -1,28 +1,7 @@
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
-@using DNNrocketAPI;
-@using DNNrocketAPI.Components;
-@using Simplisity;
-@using RocketContentAPI.Components;
-
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
-@AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
-
-@{
-    var info = new SimplisityInfo();
-    var globalSettings = new SystemGlobalData();
-    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
-    if (articleData.Info != null)
-    {
-        info = articleData.Info;
-    }
-    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
-    var cmd = Model.GetSetting("cmd");
-    if (cmd == "")
-    {
-        cmd = "article_adddoc";
-    }
-}
-
+@AssigDataModel(Model)
+@AddProcessDataResx(appThemeView, true)
+<!--inject-->
 <div id="articledocumentselect" class="w3-modal">
     <div class="w3-modal-content" style="width:40%;">
 
@@ -34,7 +13,7 @@
                     <h2>@ResourceKey("DNNrocket.documentupload")</h2>
                     <p>@ResourceKey("DNNrocket.documentupload", "", "Msg")</p>
 
-                <input id="documentfileupload" class="simplisity_base64upload" s-reload="false" s-cmd="@(cmd)" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' type="file" name="file[]" multiple style="display:none;">
+                <input id="documentfileupload" class="simplisity_base64upload" s-reload="false" s-cmd="article_adddoc" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' type="file" name="file[]" multiple style="display:none;">
                     <div class="w3-row w3-margin-bottom">
                         <span class="w3-col m12 w3-button w3-teal fileuploadaction" onclick="$('#documentfileupload').trigger('click');">@ButtonText(ButtonTypes.upload)</span>
                     </div>
@@ -51,11 +30,3 @@
         </div>
     </div>
 </div>
-
-<script>
-
-    $(document).ready(function () {
-
-    });
-
-</script>

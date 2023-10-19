@@ -162,6 +162,32 @@ namespace RocketContentAPI.Components
         #endregion
 
         #region "properties"
+        public string Get(string xpath, string defaultvalue = "")
+        {
+            var val = Info.GetXmlProperty(xpath);
+            if (val == "") val = defaultvalue;
+            return val;
+        }
+        public int GetInt(string xpath, int defaultvalue = 0)
+        {
+            var val = Info.GetXmlPropertyInt(xpath);
+            if (val == 0 && defaultvalue != 0) val = defaultvalue;
+            return val;
+        }
+        public DateTime GetDate(string xpath)
+        {
+            return GetDate(xpath, DateTime.MinValue);
+        }
+        public DateTime GetDate(string xpath, DateTime defaultvalue)
+        {
+            var val = Info.GetXmlPropertyDate(xpath);
+            if (val == DateTime.MinValue) val = defaultvalue;
+            return val;
+        }
+        public bool GetBool(string xpath)
+        {
+            return Info.GetXmlPropertyBool(xpath);
+        }
         public SimplisityInfo Info { get; set; }
         public int ArticleId { get; set; }
         public string LinkListName { get { return "linklist"; } }
