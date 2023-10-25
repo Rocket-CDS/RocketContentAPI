@@ -491,10 +491,11 @@ namespace RocketContentAPI.API
                             }
 
                             objCtrl.Update(prdDestLangRec, "RocketContentAPI");
+                            objCtrl.RebuildLangIndex(prdDestLangRec.PortalId, p.ItemID, "RocketContentAPI");
                         }
                     }
                 }
-
+                CacheUtils.ClearAllCache();
             }
             return "OK";
         }

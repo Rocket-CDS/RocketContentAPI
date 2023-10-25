@@ -140,6 +140,12 @@
 		  <action>true</action>
 	  </command>
 	  <command>
+		  <cmd>rocketcontentapi_copylanguage</cmd>
+		  <action>true</action>
+	  </command>
+	  
+
+	  <command>
 		  <cmd>rocketintra_activate</cmd>
 		  <action>true</action>
 	  </command>	  

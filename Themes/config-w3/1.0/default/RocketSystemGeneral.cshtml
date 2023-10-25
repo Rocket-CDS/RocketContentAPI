@@ -59,7 +59,7 @@
             <label>@ResourceKey("DNNrocket.overwrite")</label><br />
             @CheckBox(new SimplisityInfo(),"genxml/overwritelang", "","class='w3-check' style='width:80px;'")
             &nbsp;
-            <span class="w3-button w3-blue simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.copy") ?" s-return="#copyreturn" s-cmd="rocketcontentapi_copylanguage" s-post=".a-copylanguage" s-fields='{"portalid":"@portalContent.PortalId"}'>@ResourceKey("DNNrocket.copy")</span>
+            <span class="w3-button w3-blue simplisity_confirmclick" s-confirm="@ResourceKey("DNNrocket.copy") ?" s-return="#copyreturn" s-cmd="rocketcontentapi_copylanguage" s-post=".a-copylanguage" s-fields='{"portalid":"@portalContent.PortalId","systemkey":"rocketcontentapi"}'>@ResourceKey("DNNrocket.copy")</span>
         </div>
     </div>
     <div id="copyreturn" class="w3-xlarge w3-pale-blue w3-center">
