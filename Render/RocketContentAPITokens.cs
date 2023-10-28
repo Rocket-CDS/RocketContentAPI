@@ -19,6 +19,7 @@ namespace RocketContentAPI.Components
         public ArticleRowLimpet articleRowData;
         public AppThemeLimpet appThemeView;
         public AppThemeLimpet appThemeAdmin;
+        public AppThemeLimpet appTheme;
         public AppThemeSystemLimpet appThemeSystem;
         public ModuleContentLimpet moduleData;
         public PortalLimpet portalData;
@@ -28,6 +29,8 @@ namespace RocketContentAPI.Components
         public UserParams userParams;
         public SimplisityInfo info;
         public SimplisityInfo infoArticle;
+        public SimplisityInfo rowData;
+        public SimplisityInfo headerData;
         public string AssigDataModel(SimplisityRazor sModel)
         {
             // use return of "string", so we don;t get error with converting void to object.
@@ -35,6 +38,7 @@ namespace RocketContentAPI.Components
             articleRowData = (ArticleRowLimpet)sModel.GetDataObject("articlerow");
             appThemeView = (AppThemeLimpet)sModel.GetDataObject("appthemeview");
             appThemeAdmin = (AppThemeLimpet)sModel.GetDataObject("appthemeadmin");
+            appTheme = appThemeAdmin;
             appThemeSystem = (AppThemeSystemLimpet)sModel.GetDataObject("appthemesystem");
             moduleData = (ModuleContentLimpet)sModel.GetDataObject("modulesettings");
             portalData = (PortalLimpet)sModel.GetDataObject("portaldata");
@@ -46,7 +50,15 @@ namespace RocketContentAPI.Components
             if (articleData != null && articleData.Info != null) infoArticle = articleData.Info;
             info = infoArticle;
             if (articleRowData != null && articleRowData.Info != null) info = articleRowData.Info;
+            rowData = info;
+            headerData = infoArticle;
             return "";
+        }
+        public IEncodedString RowKey(SimplisityInfo info)
+        {
+            var strOut = HiddenField(info, "genxml/config/rowkey").ToString();
+            strOut += HiddenField(info, "genxml/lang/genxml/config/rowkeylang", "", articleRowData.RowKey).ToString();
+            return new RawString(strOut);
         }
 
     }

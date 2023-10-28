@@ -162,7 +162,7 @@ namespace RocketContentAPI.API
                     var articleRow = articleData.GetRow(_rowKey);
                     if (articleRow != null)
                     {
-                        if (singleDoc) articleRow.Info.RemoveList(articleData.ImageListName);
+                        if (singleDoc) articleRow.Info.RemoveList(articleData.DocumentListName);
                         articleRow.AddDoc(Path.GetFileName(docFileMapPath), articleData.ModuleId);
                         articleData.UpdateRow(_rowKey, articleRow.Info);
                     }

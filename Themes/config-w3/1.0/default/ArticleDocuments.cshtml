@@ -16,24 +16,29 @@
     <ul id="documentlistdata" class="w3-ul">
         @foreach (var docInfo in articleRowData.GetDocList())
         {
-            <li class="documentlist w3-display-container w3-padding w3-border-0" style="list-style-type:none;">
+            <li class="documentlist w3-display-container w3-border-0" style="list-style-type:none;">
                 @SortableListIndex(docInfo, articledocumentsLP)
 
-                <div class="w3-display-container w3-padding w3-card">
+                <div class="w3-display-container w3-card">
+                    <span onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".documentlist" s-recylebin="documentlistbin">
+                        @ButtonIcon(ButtonTypes.remove)
+                    </span>
                     <div class="w3-row">
-                        <span id="deletebutton@(articledocumentsLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".documentlist" s-recylebin="documentlistbin">
-                            @ButtonIcon(ButtonTypes.remove)
-                        </span>
-                        <div class="w3-padding">
-                            @HiddenField(docInfo, "genxml/hidden/documentpatharticledoc", "", "", false, articledocumentsLP)
-                            <label>@ResourceKey("DNNrocket.name")</label>&nbsp;@EditFlag(sessionParams)
-                            @TextBox(docInfo, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' ", "", false, articledocumentsLP)
-                            <label>@ResourceKey("DNNrocket.document")</label>
-                            @TextBox(docInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border w3-light-grey' disabled ", "", false, articledocumentsLP)
-                            @CheckBox(docInfo, "genxml/checkbox/forcedownload", "", "class='w3-check' style='margin-right:6px' ", false, false, articledocumentsLP)<label>@ResourceKey("DNNrocket.forcedownload")</label>
+                        <div class="w3-col m9 w3-padding">
+                                @HiddenField(docInfo, "genxml/hidden/documentpatharticledoc", "", "", false, articledocumentsLP)
+                                @HiddenField(docInfo, "genxml/hidden/dockey", "", "", false, articledocumentsLP)
+                                @HiddenField(docInfo, "genxml/hidden/fileextensionarticledoc", "", "", false, articledocumentsLP)
+                                <label>@ResourceKey("DNNrocket.name")</label>&nbsp;@EditFlag(sessionParams)
+                                @TextBox(docInfo, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' ", "", false, articledocumentsLP)
+                                <label class="">@ResourceKey("DNNrocket.document")</label>
+                                @TextBox(docInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border w3-light-grey' disabled ", "", false, articledocumentsLP)
+                            </div>
+                        <div class="w3-col m3 w3-padding">
+                            @CheckBox(docInfo, "genxml/lang/genxml/checkbox/documenthiddenarticledoc", "&nbsp;" + EditFlag(sessionParams) + "&nbsp;" + ResourceKey("DNNrocket.hidden").ToString(), "class='w3-check w3-margin-top'", false, false, articledocumentsLP)
                         </div>
                     </div>
                 </div>
+
             </li>
             articledocumentsLP += 1;
         }
@@ -47,4 +52,33 @@
         $("#documentlistdata").disableSelection();
     });
 </script>
+
+<div id="articledocumentselect" class="w3-modal">
+    <div class="w3-modal-content" style="width:40%;">
+
+        <div class="" style="height: 38.5px;">
+            <span onclick="$('#articledocumentselect').hide();" class="w3-button w3-display-topright">&times;</span>
+        </div>
+        <div class="" style="">
+            <div class="w3-container">
+                <h2>@ResourceKey("DNNrocket.documentupload")</h2>
+                <p>@ResourceKey("DNNrocket.documentupload", "", "Msg")</p>
+
+                <input id="documentfileupload" class="simplisity_base64upload" s-reload="false" s-cmd="article_adddoc" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' type="file" name="file[]" multiple style="display:none;">
+                <div class="w3-row w3-margin-bottom">
+                    <span class="w3-col m12 w3-button w3-teal fileuploadaction" onclick="$('#documentfileupload').trigger('click');">@ButtonText(ButtonTypes.upload)</span>
+                </div>
+
+                <div id="simplisity-file-progress-bar" class="w3-modal w3-padding" style="z-index:9999;background-color:grey">
+                    <div class="w3-modal-content w3-card-4  w3-display-middle w3-padding" style="width: 60%;">
+                        <div id="progessaction">@ResourceKey("DNNrocket.documentupload")</div>
+                        <div class=" w3-row w3-light-grey">
+                            <div class="w3-blue simplisity-file-progress-bar" style="width:0%;height:24px;">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
