@@ -1,1 +1,1 @@
-# RocketContentAPI v1.0.8.3
+# RocketContentAPI v1.1.0.0
