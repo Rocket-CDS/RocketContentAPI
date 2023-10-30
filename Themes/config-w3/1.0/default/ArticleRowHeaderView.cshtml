@@ -1,0 +1,33 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@AssigDataModel(Model)
+@AddProcessDataResx(appThemeView, true)
+<!--inject-->
+@{  
+    var headingHide = rowData.GetXmlPropertyBool("genxml/checkbox/hideheading");
+}
+
+@if (!headingHide)
+{
+    var headerStyle = rowData.GetXmlProperty("genxml/select/headingstyle");
+    if (headerStyle == "")
+    {
+        headerStyle = "h2";
+    }
+    var title = rowData.GetXmlProperty("genxml/lang/genxml/textbox/title");
+    var headerAlignText = rowData.GetXmlProperty("genxml/select/headingalign");
+    if (headerAlignText == "")
+    {
+        headerAlignText = "start";
+    }
+    var headerAnchor = "";
+        if (rowData.GetXmlProperty("genxml/lang/genxml/textbox/anchor") != "")
+    {
+            headerAnchor = " id=" + rowData.GetXmlProperty("genxml/lang/genxml/textbox/anchor");
+    }
+
+    var headerElement = "<" + headerStyle + " " + headerAnchor + " style='text-align:" + headerAlignText + ";'>" + title + "</" + headerStyle + ">";
+
+    @HtmlOf(headerElement)
+
+}
+
