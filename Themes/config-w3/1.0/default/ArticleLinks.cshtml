@@ -19,82 +19,12 @@
             <li class="linklist w3-display-container w3-padding w3-border-0" style="list-style-type:none;">
                 @SortableListIndex(linkInfo, articlelinksLP)
 
-                @{
-                    var linktype = linkInfo.GetXmlPropertyInt("genxml/radio/linktypearticlelink");
-                    var internaldisplay = "";
-                    var externaldisplay = "";
-                    if (linktype == 1)
-                    {
-                        internaldisplay = "";
-                        externaldisplay = "display:none;";
-                    }
-                    if (linktype == 2)
-                    {
-                        internaldisplay = "display:none;";
-                        externaldisplay = "";
-                    }
-                }
-                <div class="w3-display-container w3-padding w3-card">
-                    <div class="w3-row">
-                        <div class="w3-col m6 w3-padding">
-                            @RadioButtonList(linkInfo, "genxml/radio/linktypearticlelink", "1,2", ResourceKey("DNNrocket.newspaperlinkrbl").ToString(), " class='linktypeclick' linkrow='" + articlelinksLP + "' ", "1", "", false, articlelinksLP)
-                        </div>
-                    </div>
-                    <div class="w3-row">
-                        <div class="w3-col m12 w3-padding">
-                            <label>@ResourceKey("DNNrocket.text")</label>&nbsp;@EditFlag(sessionParams)
-                            @TextBox(linkInfo, "genxml/lang/genxml/textbox/namearticlelink", " class='w3-input w3-border' autocomplete='off'", "", false, articlelinksLP)
-                        </div>
+                [INJECT:appthemesystem,ArticleLinkFields.cshtml]
 
-                        <!-- Internal Links -->
-                        <div class="w3-row m6 w3-padding internallink@(articlelinksLP)" style="@(internaldisplay);height:auto;">
-                            <div class="w3-row m8">
-                                <label>@ResourceKey("DNNrocket.page")</label>
-                                @TabSelectList(linkInfo, "genxml/select/internallinkarticlelink", " class='w3-input w3-border' ", false, false, articlelinksLP)
-                            </div>
-                            <div class="w3-row m2">
-                                <label>@ResourceKey("DNNrocket.anchor")</label>&nbsp;@EditFlag(sessionParams)
-                                @TextBox(linkInfo, "genxml/lang/genxml/textbox/anchorarticlelink", " class='w3-input w3-border' autocomplete='off'", "", false, articlelinksLP)
-                            </div>
-                        </div>
-
-                        <!-- External Links -->
-                        <div class="w3-row m6 w3-padding externallink@(articlelinksLP)" style="@(externaldisplay);height:auto;display:none;">
-                            <label>@ResourceKey("DNNrocket.manuallink")</label>
-                            @TextBox(linkInfo, "genxml/textbox/externallinkarticlelink", " class='w3-input w3-border' autocomplete='off'", "", false, articlelinksLP)
-                            <div class="w3-col m3">
-                                @CheckBox(linkInfo, "genxml/checkbox/blankarticlelink", ResourceKey("DNNrocket.blank").ToString(), " class='w3-check' ", false, false, articlelinksLP)
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
-                        @ButtonIcon(ButtonTypes.remove)
-                    </div>
-                </div>
             </li>
             articlelinksLP += 1;
         }
     </ul>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $("#linklistdata").sortable();
-        $("#linklistdata").disableSelection();
-
-        $('.linktypeclick').unbind('click');
-        $('.linktypeclick').click(function () {
-            var linkrow = $(this).attr("linkrow");
-            var selectedval = $(this).find(":checked").val();
-            if (selectedval === '1') {
-                $('.internallink' + linkrow).show();
-                $('.externallink' + linkrow).hide();
-            }
-            if (selectedval === '2') {
-                $('.internallink' + linkrow).hide();
-                $('.externallink' + linkrow).show();
-            }
-        });
-    });
-</script>
+[INJECT:appthemesystem,ArticleLinkFieldsJS.cshtml]

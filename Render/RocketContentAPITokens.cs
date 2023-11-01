@@ -57,8 +57,20 @@ namespace RocketContentAPI.Components
         public IEncodedString RowKey(SimplisityInfo info)
         {
             var strOut = HiddenField(info, "genxml/config/rowkey").ToString();
-            strOut += HiddenField(info, "genxml/lang/genxml/config/rowkeylang", "", articleRowData.RowKey).ToString();
+            strOut += HiddenField(info, "genxml/lang/genxml/config/rowkeylang", "", info.GetXmlProperty("genxml/config/rowkey")).ToString();
             return new RawString(strOut);
+        }
+        public IEncodedString ListUrl(int listpageid)
+        {
+            var listurl = PagesUtils.NavigateURL(listpageid);
+            return new RawString(listurl);
+        }
+        public IEncodedString DetailUrl(int detailpageid, string title, string rowkey)
+        {
+            var seotitle = DNNrocketUtils.UrlFriendly(title);
+            string[] urlparams = { "rowkey", rowkey, seotitle };
+            var detailurl = PagesUtils.NavigateURL(detailpageid, "", urlparams);
+            return new RawString(detailurl);
         }
 
     }

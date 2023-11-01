@@ -97,7 +97,7 @@ namespace RocketContentAPI.Components
             var articleDoc = new ArticleDoc(new SimplisityInfo(), "articledoc");
             var portalContent = new PortalContentLimpet(PortalUtils.GetCurrentPortalId(), DNNrocketUtils.GetCurrentCulture());
             articleDoc.RelPath = portalContent.DocFolderRel.TrimEnd('/') + "/" + moduleId + "/" + uniqueName;
-            articleDoc.Name = uniqueName;
+            articleDoc.FileName = uniqueName;
             Info.AddListItem(DocumentListName, articleDoc.Info);
             return articleDoc;
         }

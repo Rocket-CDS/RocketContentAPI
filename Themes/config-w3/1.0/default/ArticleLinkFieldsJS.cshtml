@@ -1,0 +1,25 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@AssigDataModel(Model)
+@AddProcessDataResx(appThemeView, true)
+<!--inject-->
+
+<script>
+    $(document).ready(function () {
+        $("#linklistdata").sortable();
+        $("#linklistdata").disableSelection();
+
+        $('.linktypeclick').unbind('click');
+        $('.linktypeclick').click(function () {
+            var linkrow = $(this).attr("linkrow");
+            var selectedval = $(this).find(":checked").val();
+            if (selectedval === '1') {
+                $('.internallink' + linkrow).show();
+                $('.externallink' + linkrow).hide();
+            }
+            if (selectedval === '2') {
+                $('.internallink' + linkrow).hide();
+                $('.externallink' + linkrow).show();
+            }
+        });
+    });
+</script>

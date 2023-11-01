@@ -25,16 +25,16 @@
                     </span>
                     <div class="w3-row">
                         <div class="w3-col m9 w3-padding">
-                                @HiddenField(docInfo, "genxml/hidden/documentpatharticledoc", "", "", false, articledocumentsLP)
-                                @HiddenField(docInfo, "genxml/hidden/dockey", "", "", false, articledocumentsLP)
-                                @HiddenField(docInfo, "genxml/hidden/fileextensionarticledoc", "", "", false, articledocumentsLP)
-                                <label>@ResourceKey("DNNrocket.name")</label>&nbsp;@EditFlag(sessionParams)
-                                @TextBox(docInfo, "genxml/lang/genxml/textbox/name", " class='w3-input w3-border' ", "", false, articledocumentsLP)
-                                <label class="">@ResourceKey("DNNrocket.document")</label>
-                                @TextBox(docInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border w3-light-grey' disabled ", "", false, articledocumentsLP)
+                            @HiddenField(docInfo, "genxml/hidden/documentpatharticledoc", "", "", false, articledocumentsLP)
+                            @HiddenField(docInfo, "genxml/hidden/dockey", "", "", false, articledocumentsLP)
+                            @HiddenField(docInfo, "genxml/hidden/fileextensionarticledoc", "", "", false, articledocumentsLP)
+                            <label>@ResourceKey("DNNrocket.name")</label>&nbsp;@EditFlag(sessionParams)
+                            @TextBox(docInfo, "genxml/lang/genxml/textbox/namearticledoc", " class='w3-input w3-border' ", "", false, articledocumentsLP)
+                            <label class="">@ResourceKey("DNNrocket.document")</label>
+                            @TextBox(docInfo, "genxml/textbox/documentnamearticledoc", " class='w3-input w3-border w3-light-grey' disabled ", "", false, articledocumentsLP)
                             </div>
                         <div class="w3-col m3 w3-padding">
-                            @CheckBox(docInfo, "genxml/lang/genxml/checkbox/documenthiddenarticledoc", "&nbsp;" + EditFlag(sessionParams) + "&nbsp;" + ResourceKey("DNNrocket.hidden").ToString(), "class='w3-check w3-margin-top'", false, false, articledocumentsLP)
+                            @CheckBox(docInfo, "genxml/lang/genxml/checkbox/documenthiddenarticledoc", "&nbsp;" + EditFlag(sessionParams) + "&nbsp;" + ResourceKey("DNNrocket.hidden").ToString(), "class='w3-check w3-margin-top'", false, true, articledocumentsLP)
                         </div>
                     </div>
                 </div>

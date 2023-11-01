@@ -1,0 +1,14 @@
+@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using DNNrocketAPI.Components;
+@AssigDataModel(Model)
+@AddProcessDataResx(appThemeView, true)
+<!--inject-->
+
+@foreach (var linkData in articleRowData.Getlinks())
+{    
+    if (!linkData.Hidden)
+    {
+        <a href="@(linkData.Url)" target="@(linkData.Target)">@linkData.Name</a>
+    }
+}
+
