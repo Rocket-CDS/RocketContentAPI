@@ -22,6 +22,7 @@ namespace RocketContentAPI.Components
         public AppThemeLimpet appTheme;
         public AppThemeSystemLimpet appThemeSystem;
         public ModuleContentLimpet moduleData;
+        public SimplisityInfo moduleDataInfo;
         public PortalLimpet portalData;
         public SystemGlobalData globalSettings = new SystemGlobalData();
         public List<string> enabledlanguages = DNNrocketUtils.GetCultureCodeList();
@@ -41,6 +42,7 @@ namespace RocketContentAPI.Components
             appTheme = appThemeAdmin;
             appThemeSystem = (AppThemeSystemLimpet)sModel.GetDataObject("appthemesystem");
             moduleData = (ModuleContentLimpet)sModel.GetDataObject("modulesettings");
+            moduleDataInfo = new SimplisityInfo(moduleData.Record);
             portalData = (PortalLimpet)sModel.GetDataObject("portaldata");
             sessionParams = sModel.SessionParamsData;
             userParams = (UserParams)sModel.GetDataObject("userparams");
