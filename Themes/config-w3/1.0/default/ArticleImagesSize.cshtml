@@ -40,11 +40,11 @@
                         <div class="w3-row">
                             <div class="w3-col m2 w3-padding">
                                 <label>@ResourceKey("DNNrocket.width")</label>
-                                @TextBox(imgInfo, "genxml/textbox/imagewidth", "type='number' class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", false, articleimagessizeLP)
+                                @TextBox(imgInfo, "genxml/textbox/imagewidth", "class='w3-input w3-border' autocomplete='off' MaxLength='200'", moduleData.GetSettingInt("imagewidth").ToString(), false, articleimagessizeLP,"","number")
                             </div>
                             <div class="w3-col m2 w3-padding">
                                 <label>@ResourceKey("DNNrocket.height")</label>
-                                @TextBox(imgInfo, "genxml/textbox/imageheight", "type='number' class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", false, articleimagessizeLP)
+                                @TextBox(imgInfo, "genxml/textbox/imageheight", "class='w3-input w3-border' autocomplete='off' MaxLength='200'", moduleData.GetSettingInt("imageheight").ToString(), false, articleimagessizeLP,"","number")
                             </div>
                         </div>
                     </div>

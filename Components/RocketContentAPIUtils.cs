@@ -42,12 +42,11 @@ namespace RocketContentAPI.Components
             }
             return rtn;
         }
-        public static string DisplayView(int portalId, string systemKey, string moduleRef, string rowKey, SessionParams sessionParam, string template = "view.cshtml", string noAppThemeReturn= "")
+        public static string DisplayView(int portalId, string systemkey, string moduleRef, string rowKey, SessionParams sessionParam, string template = "view.cshtml", string noAppThemeReturn= "", bool disableCache = false)
         {
-            var moduleSettings = new ModuleContentLimpet(portalId, moduleRef, systemKey, sessionParam.ModuleId, sessionParam.TabId);
             var cacheKey = moduleRef + sessionParam.CultureCode + template;
             var pr = (RazorProcessResult)CacheUtils.GetCache(cacheKey, moduleRef);
-            if (moduleSettings.DisableCache || pr == null)
+            if (disableCache || pr == null)
             {
                 var dataObject = new DataObjectLimpet(portalId, moduleRef, rowKey, sessionParam, false);
                 if (!dataObject.ModuleSettings.HasAppThemeAdmin) return noAppThemeReturn; // test on Admin Theme.
