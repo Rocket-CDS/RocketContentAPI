@@ -32,6 +32,11 @@ namespace RocketContentAPI.Components
         public SimplisityInfo infoArticle;
         public SimplisityInfo rowData;
         public SimplisityInfo headerData;
+        /// <summary>
+        /// Assigns the data model for razor, this makes the template easier to build.
+        /// </summary>
+        /// <param name="sModel">The s model.</param>
+        /// <returns></returns>
         public string AssigDataModel(SimplisityRazor sModel)
         {
             // use return of "string", so we don;t get error with converting void to object.
@@ -56,17 +61,34 @@ namespace RocketContentAPI.Components
             headerData = infoArticle;
             return "";
         }
+        /// <summary>
+        /// A row MUST have a rowkey to be saved to the DB.  This generates the rowkey.
+        /// </summary>
+        /// <param name="info">The information.</param>
+        /// <returns></returns>
         public IEncodedString RowKey(SimplisityInfo info)
         {
             var strOut = HiddenField(info, "genxml/config/rowkey").ToString();
             strOut += HiddenField(info, "genxml/lang/genxml/config/rowkeylang", "", info.GetXmlProperty("genxml/config/rowkey")).ToString();
             return new RawString(strOut);
         }
+        /// <summary>
+        /// For list and detail this token builds the List URL.
+        /// </summary>
+        /// <param name="listpageid">The listpageid.</param>
+        /// <returns></returns>
         public IEncodedString ListUrl(int listpageid)
         {
             var listurl = PagesUtils.NavigateURL(listpageid);
             return new RawString(listurl);
         }
+        /// <summary>
+        /// For list and detail this token builds the Detail URL.
+        /// </summary>
+        /// <param name="detailpageid">The detailpageid.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="rowkey">The rowkey.</param>
+        /// <returns></returns>
         public IEncodedString DetailUrl(int detailpageid, string title, string rowkey)
         {
             var seotitle = DNNrocketUtils.UrlFriendly(title);
@@ -74,10 +96,20 @@ namespace RocketContentAPI.Components
             var detailurl = PagesUtils.NavigateURL(detailpageid, "", urlparams);
             return new RawString(detailurl);
         }
+        /// <summary>
+        /// Creates a checkbox for the IsHidden property of a row.
+        /// </summary>
+        /// <param name="rowData">The row data.</param>
+        /// <returns></returns>
         public IEncodedString CheckBoxRowIsHidden(SimplisityInfo rowData)
         {
             return CheckBox(rowData, "genxml/checkbox/hiderow", "", "class='w3-check' ", false, false, 0);
         }
+        /// <summary>
+        /// Creates a textbox for the title, using a standard xpath.
+        /// </summary>
+        /// <param name="rowData">The row data.</param>
+        /// <returns></returns>
         public IEncodedString TextBoxRowTitle(SimplisityInfo rowData)
         {
             return TextBox(rowData, "genxml/lang/genxml/textbox/title", " id='title' class='w3-input w3-border' autocomplete='off' ", "", true, 0);
