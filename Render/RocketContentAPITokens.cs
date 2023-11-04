@@ -74,6 +74,14 @@ namespace RocketContentAPI.Components
             var detailurl = PagesUtils.NavigateURL(detailpageid, "", urlparams);
             return new RawString(detailurl);
         }
+        public IEncodedString CheckBoxRowIsHidden(SimplisityInfo rowData)
+        {
+            return CheckBox(rowData, "genxml/checkbox/hiderow", "", "class='w3-check' ", false, false, 0);
+        }
+        public IEncodedString TextBoxRowTitle(SimplisityInfo rowData)
+        {
+            return TextBox(rowData, "genxml/lang/genxml/textbox/title", " id='title' class='w3-input w3-border' autocomplete='off' ", "", true, 0);
+        }
 
     }
 }

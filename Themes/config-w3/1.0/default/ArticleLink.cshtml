@@ -6,6 +6,7 @@
     var articlelinksLP = 0; // Required for ArticleLinkFields.cshtml
     var linkData = articleRowData.Getlink(0);
     var linkInfo = linkData.Info;
+    moduleData.SetSetting("singlelink", "true");
 }
 <div class="linklist w3-row">
     [INJECT:appthemesystem,ArticleLinkFields.cshtml]
