@@ -16,13 +16,13 @@ The razor templates can use a defined set of data objects.  Some are auomaticall
     userParams = (UserParams)sModel.GetDataObject("userparams");
 ```
 
-## SimplsityInfo Data 
+## SimplisityInfo Data 
 ```
     rowData   (Can be used for single row AppThemes)  
     headerData  
 ```
 
-#### Legacy SimplsityInfo Data 
+#### Legacy SimplisityInfo Data 
 ```
     info
     infoArticle
