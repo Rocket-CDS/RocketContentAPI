@@ -12,8 +12,9 @@ The URL param name is always called "eid".
 *The "rowkey" param should not be used in the detail URL, it may cause a problem across modules.*
 
 ## Usage limitations
-This method of list and detail is limited to the administration of the RocketContentMod.  While this does not limit the amount of detail pages, it is recommanded not be used for lists of more than 100 records.  
-If larger lists are required the RocketDirectory system should be used.
+This method of list and detail is limited to the administration of the RocketContentMod.  While this does not limit the amount of detail pages it is recommanded not be used for lists of more than 100 records.  
+
+**If bigger lists are required the RocketDirectory system should be used.**
 
 ## view.cshtml
 The view.cshtml tests to see if we have a valid rowdetail for the "eid" in the URL.  
