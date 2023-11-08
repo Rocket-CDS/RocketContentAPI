@@ -194,6 +194,7 @@ namespace RocketContentAPI.Components
         public string DocumentListName { get { return "documentlist"; } }
         public string ImageListName { get { return "imagelist"; } }
         public string RowKey { get { return Info.GetXmlProperty("genxml/config/rowkey"); } }
+        public string eId { get { return Info.GetXmlProperty("genxml/config/eid"); } }
         public bool IsHidden { get { return Info.GetXmlPropertyBool("genxml/checkbox/hiderow"); } }
         
         #endregion

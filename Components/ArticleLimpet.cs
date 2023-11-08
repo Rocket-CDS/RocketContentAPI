@@ -227,6 +227,12 @@ namespace RocketContentAPI.Components
             _info.RemoveListItem("rows", "genxml/config/rowkey", rowKey);
             Update();
         }
+        public ArticleRowLimpet GetRowById(string eId)
+        {
+            var articleRow = _info.GetListItem("rows", "genxml/config/eid", eId);
+            if (articleRow == null) return null;
+            return new ArticleRowLimpet(ArticleId, articleRow.XMLData, _info.GUIDKey);
+        }
         public ArticleRowLimpet GetRow(string rowKey)
         {
             var articleRow = _info.GetListItem("rows", "genxml/config/rowkey", rowKey);

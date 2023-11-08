@@ -70,6 +70,7 @@ namespace RocketContentAPI.Components
         {
             var strOut = HiddenField(info, "genxml/config/rowkey").ToString();
             strOut += HiddenField(info, "genxml/lang/genxml/config/rowkeylang", "", info.GetXmlProperty("genxml/config/rowkey")).ToString();
+            strOut += HiddenField(info, "genxml/config/eid", "", GeneralUtils.Numeric(((int)(DateTime.Now.Ticks >> 23) + GeneralUtils.GetRandomKey(4,true)).ToString()) ).ToString();
             return new RawString(strOut);
         }
         /// <summary>
@@ -87,12 +88,12 @@ namespace RocketContentAPI.Components
         /// </summary>
         /// <param name="detailpageid">The detailpageid.</param>
         /// <param name="title">The title.</param>
-        /// <param name="rowkey">The rowkey.</param>
+        /// <param name="eId">The row eId.</param>
         /// <returns></returns>
-        public IEncodedString DetailUrl(int detailpageid, string title, string rowkey)
+        public IEncodedString DetailUrl(int detailpageid, string title, string eId)
         {
             var seotitle = DNNrocketUtils.UrlFriendly(title);
-            string[] urlparams = { "rowkey", rowkey, seotitle };
+            string[] urlparams = { "eid", eId, seotitle };
             var detailurl = PagesUtils.NavigateURL(detailpageid, "", urlparams);
             return new RawString(detailurl);
         }

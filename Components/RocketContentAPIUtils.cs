@@ -44,7 +44,7 @@ namespace RocketContentAPI.Components
         }
         public static string DisplayView(int portalId, string systemkey, string moduleRef, string rowKey, SessionParams sessionParam, string template = "view.cshtml", string noAppThemeReturn= "", bool disableCache = false)
         {
-            var cacheKey = moduleRef + sessionParam.CultureCode + template + rowKey;
+            var cacheKey = moduleRef + sessionParam.CultureCode + template + rowKey + sessionParam.Get("eid");
             var pr = (RazorProcessResult)CacheUtils.GetCache(cacheKey, moduleRef);
             if (disableCache || pr == null)
             {
