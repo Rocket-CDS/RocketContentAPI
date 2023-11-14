@@ -1,0 +1,139 @@
+﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@AssigDataModel(Model)
+@AddProcessDataResx(appThemeView, true)
+<!--inject-->
+@{
+    var articleimagesLP = 0;
+}
+<div class="w3-row imagelistdatasection">
+
+    <div class="w3-bar">
+        <div class="w3-button w3-bar-item w3-theme-action w3-padding" onclick="$('#articleimageselect').show();">@ButtonIcon(ButtonTypes.add)</div>
+        <div class="w3-button w3-bar-item w3-pale-yellow w3-padding simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".@articleData.ImageListName" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
+    </div>
+
+    <ul id="imagelistdata" class="w3-ul">
+
+        @foreach (var imgInfo in articleRowData.GetImageList())
+        {
+            var linktype = imgInfo.GetXmlPropertyInt("genxml/radio/linktypearticlelink");
+            var internaldisplay = "";
+            var externaldisplay = "display:none;";
+            if (linktype == 1)
+            {
+                internaldisplay = "";
+                externaldisplay = "display:none;";
+            }
+            if (linktype == 2)
+            {
+                internaldisplay = "display:none;";
+                externaldisplay = "";
+            }
+
+
+            articleimagesLP += 1;
+            var articleImage = new ArticleImage(imgInfo, "articleimage");
+
+            <li class="@articleData.ImageListName w3-row w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
+
+                @SortableListIndex(imgInfo, articleimagesLP)
+
+                <div class="w3-display-container w3-padding w3-card">
+                    <div class="w3-row">
+                        <span id="deletebutton@(articleimagesLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin">
+                            @ButtonIcon(ButtonTypes.remove)
+                        </span>
+                        <div class="w3-col m2 w3-padding" style="width:100px;">
+                            <img src="@ImageUrl(articleImage.RelPath, 80, 80)" style="height:80px;width:80px;" class="w3-round" />
+                        </div>
+                        <div class="w3-col m8 w3-padding">
+                            <div class="w3-row">
+                                @TextBox(imgInfo, "genxml/lang/genxml/textbox/imagealtarticleimage", "class='w3-input w3-border w3-margin-top w3-hide' autocomplete='off' MaxLength='200'", "", true, articleimagesLP)
+                                @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, articleimagesLP)
+                            </div>
+                            <div class="w3-row">
+                                <div class="w3-col m3 w3-padding">
+                                    @RadioButtonList(imgInfo, "genxml/radio/linktypearticlelink", "1,2", ResourceKey("DNNrocket.newspaperlinkrbl").ToString(), " class='linktypeclick' linkrow='" + articleimagesLP + "' ", "1", "", false, articleimagesLP)
+                                </div>
+                                <div class="w3-col m3 w3-padding">
+                                    <label>&nbsp;</label>
+                                    @CheckBox(imgInfo, "genxml/checkbox/blankarticlelink", "&nbsp;" + ResourceKey("DNNrocket.blank").ToString(), " class='w3-check' ", false, false, articleimagesLP)
+                                </div>
+                                <div class="w3-col m3 w3-padding">
+                                    <label>&nbsp;</label>
+                                    @CheckBox(imgInfo, "genxml/checkbox/hidearticlelink", "&nbsp;" + ResourceKey("DNNrocket.hidden").ToString(), "class='w3-check'", false, false, articleimagesLP)
+                                </div>
+                            </div>
+                            <div class="w3-row">
+                                <div class="w3-col m12 w3-padding">
+                                    <label>@ResourceKey("DNNrocket.text")</label>&nbsp;@EditFlag(sessionParams)
+                                    @TextBox(imgInfo, "genxml/lang/genxml/textbox/namearticlelink", " onkeyup='$(\"#imagealtarticleimage_" + articleimagesLP + "\").val($(this).val());' class='w3-input w3-border' autocomplete='off'", "", true, articleimagesLP)
+                                </div>
+
+                                <!-- Internal Links -->
+                                <div class="w3-row m6 w3-padding internallink@(articleimagesLP)" style="@(internaldisplay);height:auto;">
+                                    <div class="w3-row m8">
+                                        <label>@ResourceKey("DNNrocket.page")</label>
+                                        @TabSelectList(imgInfo, "genxml/select/internallinkarticlelink", " class='w3-input w3-border' ", true, false, articleimagesLP)
+                                    </div>
+                                    <div class="w3-row m2">
+                                        <label>@ResourceKey("DNNrocket.anchor")</label>&nbsp;@EditFlag(sessionParams)
+                                        @TextBox(imgInfo, "genxml/lang/genxml/textbox/anchorarticlelink", " class='w3-input w3-border' autocomplete='off'", "", true, articleimagesLP)
+                                    </div>
+                                </div>
+
+                                <!-- External Links -->
+                                <div class="w3-row m6 w3-padding externallink@(articleimagesLP)" style="@(externaldisplay);height:auto;">
+                                    <label>@ResourceKey("DNNrocket.manuallink")</label>&nbsp;@EditFlag(sessionParams)
+                                    @TextBox(imgInfo, "genxml/lang/genxml/textbox/externallinkarticlelink", " class='w3-input w3-border' autocomplete='off'", "", true, articleimagesLP)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        }
+    </ul>
+
+</div>
+
+[INJECT:appthemesystem,ArticleLinkFieldsJS.cshtml]
+
+<script>
+    $(document).ready(function () {
+        $("#imagelistdata").sortable();
+        $("#imagelistdata").disableSelection();
+    });
+</script>
+
+<div id="articleimageselect" class="w3-modal">
+    <div class="w3-modal-content" style="width:40%;">
+
+        <div class="" style="height: 38.5px;">
+            <span onclick="$('#articleimageselect').hide();" class="w3-button w3-display-topright">&times;</span>
+        </div>
+        <div class="w3-margin-top" style="">
+            <div class="w3-container">
+
+                <h2>@ResourceKey("DNNrocket.imageupload")</h2>
+                <p>@ResourceKey("DNNrocket.imageupload", "", "Msg")</p>
+
+                <input id="imagefileupload" class="simplisity_base64upload" s-reload="false" s-cmd="article_addimage" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}' type="file" name="file[]" multiple style="display:none;">
+                <div class="w3-row w3-margin-bottom">
+                    <span class="w3-col m12 w3-button w3-teal fileuploadaction" onclick="$('#imagefileupload').trigger('click');">@ButtonText(ButtonTypes.upload)</span>
+                </div>
+
+                <div id="simplisity-file-progress-bar" class="w3-modal w3-padding" style="z-index:9999;background-color:grey">
+                    <div class="w3-modal-content w3-card-4  w3-display-middle w3-padding" style="width: 60%;">
+                        <div id="progessaction">@ResourceKey("DNNrocket.imageupload")</div>
+                        <div class=" w3-row w3-light-grey">
+                            <div class="w3-blue simplisity-file-progress-bar" style="width:0%;height:24px;">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
