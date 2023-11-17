@@ -80,7 +80,7 @@ namespace RocketContentAPI.Components
         /// <returns></returns>
         public IEncodedString ListUrl(int listpageid)
         {
-            var listurl = PagesUtils.NavigateURL(listpageid);
+            var listurl = DNNrocketUtils.NavigateURL(listpageid);
             return new RawString(listurl);
         }
         /// <summary>
@@ -94,7 +94,7 @@ namespace RocketContentAPI.Components
         {
             var seotitle = DNNrocketUtils.UrlFriendly(title);
             string[] urlparams = { "eid", eId, seotitle };
-            var detailurl = PagesUtils.NavigateURL(detailpageid, "", urlparams);
+            var detailurl = DNNrocketUtils.NavigateURL(detailpageid, "", urlparams);
             return new RawString(detailurl);
         }
         /// <summary>
