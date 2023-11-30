@@ -26,17 +26,21 @@
     Model.SetSetting("scmd", "article_addimage1");
 }
 
-<div class="@articleData.ImageListName w3-row w3-display-container w3-padding">
+<div class="@articleData.ImageListName w3-row w3-padding w3-light-grey">
 
     @if (articleimage_Img.RelPath != "")
     {
-        <span class="w3-button w3-display-bottomleft simplisity_confirmclick" s-confirm="@ResourceKey("RCT.removeimage") ?" s-cmd="article_removeimage" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId", "rowkey":"@(articleRowData.RowKey)"}'>@ButtonIcon(ButtonTypes.remove)</span>
-        <img src="@ImageUrl(articleimage_Img.RelPath, imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
+        <div class="w3-display-container">
+            <span class="w3-button w3-display-bottomleft simplisity_confirmclick w3-theme-action" s-confirm="@ResourceKey("RCT.removeimage") ?" s-cmd="article_removeimage" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId", "rowkey":"@(articleRowData.RowKey)"}'>@ButtonIcon(ButtonTypes.remove)</span>
+            <img src="@ImageUrl(articleimage_Img.RelPath, imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
+        </div>
     }
     else
     {
-        <span onclick="simplisity_setParamField('imageresize', '@(resize)');$('#articleimageselect1').show();" class="w3-button w3-display-bottomleft">@ButtonIcon(ButtonTypes.photo)</span>
-        <img src="@ImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
+        <div class="w3-display-container">
+            <span onclick="simplisity_setParamField('imageresize', '@(resize)');$('#articleimageselect1').show();" class="w3-button w3-display-bottomleft w3-theme-action">@ButtonIcon(ButtonTypes.photo)</span>
+            <img src="@ImageUrl("/DesktopModules/DNNrocket/api/images/noimage2.png", imagesize, imagesize)" style="height:@(imagesize.ToString())px;width:@(imagesize.ToString())px;" class="w3-round" />
+        </div>
     }
 
     @HiddenField(articleimage_Info, "genxml/hidden/imagepatharticleimage", "", "", false, 0)

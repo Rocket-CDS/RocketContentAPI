@@ -7,7 +7,7 @@
 }
 <div class="w3-row imagelistdatasection">
 
-    <div class="w3-bar">
+    <div class="w3-bar w3-margin-bottom">
         <div class="w3-button w3-bar-item w3-theme-action w3-padding" onclick="$('#articleimageselect').show();">@ButtonIcon(ButtonTypes.add)</div>
         <div class="w3-button w3-bar-item w3-pale-yellow w3-padding simplisity_itemundo" s-recylebin="imagelistbin" s-return="#imagelistdata" s-removelist=".@articleData.ImageListName" style="display: none;">@ButtonIcon(ButtonTypes.undo)</div>
     </div>
@@ -19,20 +19,21 @@
             articleimagesLP += 1;
             var articleImage = new ArticleImage(imgInfo, "articleimage");
 
-            <li class="@articleData.ImageListName w3-row w3-display-container w3-padding w3-border-0" style="list-style-type: none;">
+            <li class="@articleData.ImageListName w3-row w3-padding w3-border-0" style="list-style-type: none;">
 
                 @SortableListIndex(imgInfo, articleimagesLP)
 
-                <div class="w3-display-container w3-padding w3-card">
+                <div class="w3-display-container w3-padding w3-card w3-light-grey">
                     <div class="w3-row">
-                        <span id="deletebutton@(articleimagesLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".imagelist" s-recylebin="imagelistbin">
+                        <span id="deletebutton@(articleimagesLP)" onclick="" class="w3-button w3-display-topright simplisity_removelistitem w3-theme-action" s-removelist=".imagelist" s-recylebin="imagelistbin">
                             @ButtonIcon(ButtonTypes.remove)
                         </span>
                         <div class="w3-col m2 w3-padding" style="width:100px;">
                             <img src="@ImageUrl(articleImage.RelPath, 80, 80)" style="height:80px;width:80px;" class="w3-round" />
                         </div>
                         <div class="w3-col m8 w3-padding">
-                            @TextBox(imgInfo, "genxml/lang/genxml/textbox/imagealtarticleimage", "class='w3-input w3-border w3-margin-top' autocomplete='off' MaxLength='200'", "", true, articleimagesLP)
+                            <label>@ResourceKey("DNNrocket.imagealt")</label>&nbsp;@EditFlag(sessionParams)
+                            @TextBox(imgInfo, "genxml/lang/genxml/textbox/imagealtarticleimage", "class='w3-input w3-border' autocomplete='off' MaxLength='200'", "", true, articleimagesLP)
                             @HiddenField(imgInfo, "genxml/hidden/imagepatharticleimage", "", "", false, articleimagesLP)
                         </div>
                     </div>
