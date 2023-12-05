@@ -42,40 +42,54 @@ namespace RocketContentAPI.Components
             }
             return rtn;
         }
-        public static string DisplayView(int portalId, string systemkey, string moduleRef, string rowKey, SessionParams sessionParam, string template = "view.cshtml", string noAppThemeReturn= "", bool disableCache = false)
+        public static string DisplayView(int portalId, string systemkey, string moduleRef, string rowKey, SessionParams sessionParam, string template = "view.cshtml", string noAppThemeReturn= "", bool disableCache = false, bool useCache = true)
         {
             var cacheKey = moduleRef + sessionParam.CultureCode + template + rowKey + sessionParam.Get("eid");
-            var pr = (RazorProcessResult)CacheUtils.GetCache(cacheKey, moduleRef);
-            if (disableCache || pr == null)
+            var rtnString = CacheFileUtils.GetCache(cacheKey, moduleRef);
+            if (!useCache || disableCache || String.IsNullOrEmpty(rtnString))
             {
                 var dataObject = new DataObjectLimpet(portalId, moduleRef, rowKey, sessionParam, false);
                 if (!dataObject.ModuleSettings.HasAppThemeAdmin) return noAppThemeReturn; // test on Admin Theme.
                 var razorTempl = dataObject.AppThemeView.GetTemplate(template, moduleRef);
-                pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
-                CacheUtils.SetCache(cacheKey, pr, moduleRef);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
+                if (pr.StatusCode == "00")
+                {
+                    if (useCache) CacheFileUtils.SetCache(cacheKey, pr.RenderedText, moduleRef);
+                    rtnString = pr.RenderedText;
+                }
+                else
+                    rtnString = pr.ErrorMsg;                
             }
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
+            return rtnString;
         }
         public static string DisplayAdminView(int portalId, string moduleRef, string rowKey, SessionParams sessionParam, string template = "AdminDetail.cshtml", string noAppThemeReturn = "")
         {
             var dataObject = new DataObjectLimpet(portalId, moduleRef, rowKey, sessionParam, true);
             if (!dataObject.ModuleSettings.HasAppThemeAdmin) return noAppThemeReturn;
-
             var razorTempl = dataObject.AppThemeAdmin.GetTemplate(template, moduleRef);
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, new Dictionary<string,string>(), sessionParam, true);
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, new Dictionary<string, string>(), sessionParam, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
-        public static string DisplaySystemView(int portalId, string moduleRef, SessionParams sessionParam, string template, bool editMode = true)
+        public static string DisplaySystemView(int portalId, string moduleRef, SessionParams sessionParam, string template, bool editMode = true, bool useCache = true)
         {
-            var dataObject = new DataObjectLimpet(portalId, moduleRef, "", sessionParam, editMode);
-            if (dataObject.AppThemeSystem == null) return "No System View";
-
-            var razorTempl = dataObject.AppThemeSystem.GetTemplate(template, moduleRef);
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
+            var cacheKey = moduleRef + sessionParam.CultureCode + template + "DisplaySystemView" + sessionParam.Get("eid");
+            var rtnString = CacheFileUtils.GetCache(cacheKey, moduleRef);
+            if (!useCache || String.IsNullOrEmpty(rtnString))
+            {
+                var dataObject = new DataObjectLimpet(portalId, moduleRef, "", sessionParam, editMode);
+                if (dataObject.AppThemeSystem == null) return "No System View";
+                var razorTempl = dataObject.AppThemeSystem.GetTemplate(template, moduleRef);
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
+                if (pr.StatusCode == "00")
+                {
+                    if (useCache) CacheFileUtils.SetCache(cacheKey, pr.RenderedText, moduleRef);
+                    rtnString = pr.RenderedText;
+                }
+                else
+                    rtnString = pr.ErrorMsg;
+            }
+            return rtnString;
         }
         public static string ResourceKey(string resourceKey, string resourceExt = "Text", string cultureCode = "")
         {

@@ -19,6 +19,7 @@ namespace RocketContentAPI.API
         private SessionParams _sessionParams;
         private string _moduleRef;
         private string _rowKey;
+        private string _selectKey;
         private DataObjectLimpet _dataObject;
         private int _moduleId;
         private int _tabId;
@@ -97,7 +98,8 @@ namespace RocketContentAPI.API
                     strOut = AddRow();
                     break;
                 case "article_editrow":
-                    strOut = AdminDetailDisplay();
+                    strOut = SaveArticleRow();
+                    //strOut = AdminDetailDisplay();
                     break;
                 case "article_removerow":
                     strOut = RemoveRow();
@@ -208,11 +210,8 @@ namespace RocketContentAPI.API
             _sessionParams.TabId = _tabId;
             _sessionParams.ModuleId = _moduleId;
 
-            // use a selectkey.  the selectkey is the same as the rowkey.
-            // we can not duplicate ID on simplisity_click in the s-fields, when the id is on the form. 
-            // The paramInfo field would contain the same as the form.  On load this may be empty.
-            var selectkey = _paramInfo.GetXmlProperty("genxml/hidden/selectkey");
-            if (selectkey != "") _rowKey = selectkey;
+            // use a selectkeyfor editing.  the selectkey is the rowkey of the next row.
+            _selectKey = _paramInfo.GetXmlProperty("genxml/hidden/selectkey");
 
             // Assign Langauge
             if (_sessionParams.CultureCode == "") _sessionParams.CultureCode = DNNrocketUtils.GetCurrentCulture();

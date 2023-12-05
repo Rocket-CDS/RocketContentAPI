@@ -55,10 +55,11 @@
                     <b>@articleRow.Info.GetXmlProperty("genxml/textbox/documentnamearticledoc")</b>
                 }
 
+                @RenderXml(articleRow.Info)
 
                 <hr />
                 <div class="w3-left">
-                    <span class="w3-button w3-circle w3-theme-action simplisity_click" style="width:40px;height:40px;padding:8px 0;" rowkey="@articleRow.RowKey" s-cmd="article_editrow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.edit)</span>
+                    <span class="w3-button w3-circle w3-theme-action simplisity_click" style="width:40px;height:40px;padding:8px 0;" rowkey="@articleRow.RowKey" s-cmd="article_editrow" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.edit)</span>
                     <span class="w3-button w3-circle w3-theme-action simplisity_confirmclick" style="width:40px;height:40px;padding:8px 0;" s-confirm="@ResourceKey("DNNrocket.removerow")" s-cmd="article_removerow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.delete)</span>
                 </div>
                 <div class="w3-right">

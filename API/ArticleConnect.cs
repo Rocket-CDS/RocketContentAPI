@@ -286,6 +286,7 @@ namespace RocketContentAPI.API
         public String AdminDetailDisplay()
         {
             // rowKey can come from the sessionParams or paramInfo.  (Because on no rowkey on the language change)
+            if (_selectKey != "") _rowKey = _selectKey;
             if (_dataObject.ArticleData.GetRowList().Count == 0) AddRow(); // create first row automatically
             var articleRow = _dataObject.ArticleData.GetRow(0);
             if (_rowKey != "") articleRow = _dataObject.ArticleData.GetRow(_rowKey);
