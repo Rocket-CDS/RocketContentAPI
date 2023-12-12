@@ -6,7 +6,7 @@ using DNNrocketAPI.Components;
 using RocketContentAPI.Components;
 using Simplisity;
 
-namespace RocketCatalog.Components
+namespace RocketContentAPI.Components
 {
     public class Scheduler : SchedulerInterface
     {
