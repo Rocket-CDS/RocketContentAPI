@@ -76,7 +76,7 @@ namespace RocketContentAPI.API
             var articleData2 = new ArticleLimpet(_dataObject.PortalId, _moduleRef, _sessionParams.CultureCodeEdit, _moduleId);
             _dataObject.SetDataObject("articledata", articleData2);
 
-            _rowKey = articleData.GetRow(0).Info.GetXmlProperty("genxml/config/rowkey");
+            _rowKey = articleData2.GetRow(0).Info.GetXmlProperty("genxml/config/rowkey");
             return AdminDetailDisplay();
         }
         public string SaveArticleRow()

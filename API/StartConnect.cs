@@ -206,6 +206,7 @@ namespace RocketContentAPI.API
             _moduleId = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
             _rowKey = _postInfo.GetXmlProperty("genxml/config/rowkey");
             if (_rowKey == "") _rowKey = _paramInfo.GetXmlProperty("genxml/hidden/rowkey");
+            if (_rowKey == "") _rowKey = _paramInfo.GetXmlProperty("genxml/hidden/selectkey");            
             _sessionParams.ModuleRef = _moduleRef; // we need this on the module view template, to stop clashes in modules that use the same dataref. 
             _sessionParams.TabId = _tabId;
             _sessionParams.ModuleId = _moduleId;
