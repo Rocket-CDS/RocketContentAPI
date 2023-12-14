@@ -85,14 +85,14 @@ namespace RocketContentAPI.API
             articleData.ModuleId = _dataObject.ModuleSettings.ModuleId;
             articleData.UpdateRow(_rowKey, _postInfo, _dataObject.ModuleSettings.SecureSave);
             articleData.ClearCache();
-            CacheUtils.ClearAllCache(_dataObject.ModuleSettings.ModuleRef);
+            CacheFileUtils.ClearAllCache(_dataObject.ModuleSettings.ModuleRef);
             DNNrocketUtils.SynchronizeModule(articleData.ModuleId); // module search
             _dataObject.SetDataObject("articledata", articleData);
             return AdminDetailDisplay();
         }
         public void DeleteArticle()
         {
-            CacheUtils.ClearAllCache("article");
+            CacheFileUtils.ClearAllCache("article");
             _dataObject.ArticleData.Delete();
         }
         public string AddArticleImage(bool singleImage = false)
