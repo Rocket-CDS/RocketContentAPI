@@ -28,7 +28,7 @@
     @ButtonText(ButtonTypes.add)
 </div>
 
-<div class="w3-hide simplisity_click" id="rowsort" s-cmd="article_sortrows" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'></div>
+<div class="w3-hide simplisity_click" id="rowsort" s-cmd="article_sortrows" s-fields='{"selectkey":"@(articleRowData.RowKey)","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'></div>
 
 <ul id="rowselectdata" class="w3-ul">
 
@@ -57,16 +57,16 @@
                 <hr />
                 <div class="w3-left">
                     <span class="w3-button w3-circle w3-theme-action simplisity_click" style="width:40px;height:40px;padding:8px 0;" rowkey="@articleRow.RowKey" s-cmd="article_editrow" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.edit)</span>
-                    <span class="w3-button w3-circle w3-theme-action simplisity_confirmclick" style="width:40px;height:40px;padding:8px 0;" s-confirm="@ResourceKey("DNNrocket.removerow")" s-cmd="article_removerow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.delete)</span>
+                    <span class="w3-button w3-circle w3-theme-action simplisity_confirmclick" style="width:40px;height:40px;padding:8px 0;" s-confirm="@ResourceKey("DNNrocket.delete")" s-cmd="article_removerow" s-fields='{"selectkey":"@articleRow.RowKey","moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId"}'>@ButtonIcon(ButtonTypes.delete)</span>
                 </div>
                 <div class="w3-right">
                     @if (articleRow.Info.GetXmlPropertyBool("genxml/checkbox/hiderow"))
                     {
-                        <span class="w3-button w3-circle" style="width:40px;height:40px;padding:8px 0;"><span class="material-icons">visibility_off</span></span>
+                        <span class="w3-circle" style="width:40px;height:40px;padding:8px 0;"><span class="material-icons">visibility_off</span></span>
                     }
                     else
                     {
-                        <span class="w3-button w3-circle" style="width:40px;height:40px;padding:8px 0;"><span class="material-icons">visibility</span></span>
+                        <span class="w3-circle" style="width:40px;height:40px;padding:8px 0;"><span class="material-icons">visibility</span></span>
                     }
                 </div>
             </div>
@@ -80,6 +80,9 @@
         $('#' + $('#rowkey').val()).addClass('w3-theme-l3');
 
         $("#rowselectdata").sortable({
+            sort: function (event, ui) {
+                ui.helper.css({ 'top': ui.position.top + $(window).scrollTop() + 'px' });
+            },
             stop: function (event, ui) { saverowselectsort(); }
         });
         $("#rowselectdata").disableSelection();

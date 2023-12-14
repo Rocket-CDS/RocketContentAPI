@@ -19,7 +19,7 @@
         externaldisplay = "";
     }
 }
-<div class="w3-display-container w3-padding w3-card">
+    <div class="w3-display-container w3-padding w3-card w3-light-grey">
     <div class="w3-row">
         <div class="w3-col m3 w3-padding">
             @RadioButtonList(linkInfo, "genxml/radio/linktypearticlelink", "1,2", ResourceKey("DNNrocket.newspaperlinkrbl").ToString(), " class='linktypeclick' linkrow='" + articlelinksLP + "' ", "1", "", false, articlelinksLP)
@@ -60,7 +60,7 @@
     </div>
     @if (!moduleData.GetSettingBool("singlelink"))
     {
-        <div class="simplisity_removelistitem w3-display-topright" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
+        <div class="simplisity_removelistitem w3-button  w3-display-topright w3-theme-action" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
             @ButtonIcon(ButtonTypes.remove)
         </div>
     }

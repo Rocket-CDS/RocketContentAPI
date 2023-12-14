@@ -19,8 +19,8 @@
             <li class="documentlist w3-display-container w3-border-0" style="list-style-type:none;">
                 @SortableListIndex(docInfo, articledocumentsLP)
 
-                <div class="w3-display-container w3-card">
-                    <span onclick="" class="w3-button w3-display-topright simplisity_removelistitem" s-removelist=".documentlist" s-recylebin="documentlistbin">
+                <div class="w3-display-container w3-card w3-light-grey">
+                    <span onclick="" class="w3-button w3-display-topright w3-theme-action simplisity_removelistitem" s-removelist=".documentlist" s-recylebin="documentlistbin">
                         @ButtonIcon(ButtonTypes.remove)
                     </span>
                     <div class="w3-row">
@@ -48,7 +48,11 @@
 
 <script>
     $(document).ready(function () {
-        $("#documentlistdata").sortable();
+        $("#documentlistdata").sortable({
+            sort: function (event, ui) {
+                ui.helper.css({ 'top': ui.position.top + $(window).scrollTop() + 'px' });
+            },
+        });
         $("#documentlistdata").disableSelection();
     });
 </script>

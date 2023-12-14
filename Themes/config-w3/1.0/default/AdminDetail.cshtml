@@ -13,6 +13,7 @@
     sFieldDict.Add("moduleref", moduleData.ModuleRef);
     sFieldDict.Add("moduleid", moduleData.ModuleId.ToString());
     sFieldDict.Add("tabid", moduleData.TabId.ToString());
+    sFieldDict.Add("selectkey", articleRowData.RowKey);
 }
 @RenderLanguageSelector("article_admindetail", sFieldDict, appThemeSystem, Model)
 

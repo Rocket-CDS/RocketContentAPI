@@ -47,7 +47,11 @@
 
 <script>
     $(document).ready(function () {
-        $("#imagelistdata").sortable();
+        $("#imagelistdata").sortable({
+            sort: function (event, ui) {
+                ui.helper.css({ 'top': ui.position.top + $(window).scrollTop() + 'px' });
+            },
+        });
         $("#imagelistdata").disableSelection();
     });
 </script>

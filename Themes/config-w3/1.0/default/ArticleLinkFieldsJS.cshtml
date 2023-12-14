@@ -5,7 +5,11 @@
 
 <script>
     $(document).ready(function () {
-        $("#linklistdata").sortable();
+        $("#linklistdata").sortable({
+            sort: function (event, ui) {
+                ui.helper.css({ 'top': ui.position.top + $(window).scrollTop() + 'px' });
+            },
+        });
         $("#linklistdata").disableSelection();
 
         $('.linktypeclick').unbind('click');
