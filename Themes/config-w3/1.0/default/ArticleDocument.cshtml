@@ -8,17 +8,17 @@
 }
 <div class="w3-row">
 
-    <div class=" documentlist w3-display-container w3-padding w3-card">
+    <div class=" documentlist w3-display-container w3-padding w3-card w3-light-grey">
 
         @if (docData.Exists)
         {
-            <div class="w3-button w3-display-topright  simplisity_confirmclick" s-confirm="@ResourceKey("RCT.removedoc") ?" s-cmd="article_removedoc" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId", "rowkey":"@(articleRowData.RowKey)"}'>
+            <div class="w3-button w3-display-topright w3-theme-action  simplisity_confirmclick" s-confirm="@ResourceKey("RCT.removedoc") ?" s-cmd="article_removedoc" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId", "rowkey":"@(articleRowData.RowKey)"}'>
                 @ButtonIcon(ButtonTypes.remove)
             </div>
         }
         else
         {
-            <div class="w3-button w3-display-topright" onclick="$('#articledocumentselect').show();">
+            <div class="w3-button w3-display-topright w3-theme-action" onclick="$('#articledocumentselect').show();">
                 @ButtonIcon(ButtonTypes.add)
             </div>
         }

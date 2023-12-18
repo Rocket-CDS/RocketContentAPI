@@ -45,7 +45,7 @@ namespace RocketContentAPI.Components
         public static string DisplayView(int portalId, string systemkey, string moduleRef, string rowKey, SessionParams sessionParam, string template = "view.cshtml", string noAppThemeReturn= "", bool disableCache = false, bool useCache = true)
         {
             var cacheKey = moduleRef + sessionParam.CultureCode + template + rowKey + sessionParam.Get("eid");
-            var rtnString = CacheFileUtils.GetCache(cacheKey, moduleRef);
+            var rtnString = CacheFileUtils.GetCache(portalId, cacheKey, moduleRef);
             if (!useCache || disableCache || String.IsNullOrEmpty(rtnString))
             {
                 var dataObject = new DataObjectLimpet(portalId, moduleRef, rowKey, sessionParam, false);
@@ -54,7 +54,7 @@ namespace RocketContentAPI.Components
                 var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
                 if (pr.StatusCode == "00")
                 {
-                    if (useCache) CacheFileUtils.SetCache(cacheKey, pr.RenderedText, moduleRef);
+                    if (useCache) CacheFileUtils.SetCache(portalId, cacheKey, pr.RenderedText, moduleRef);
                     rtnString = pr.RenderedText;
                 }
                 else
@@ -74,7 +74,7 @@ namespace RocketContentAPI.Components
         public static string DisplaySystemView(int portalId, string moduleRef, SessionParams sessionParam, string template, bool editMode = true, bool useCache = true)
         {
             var cacheKey = moduleRef + sessionParam.CultureCode + template + "DisplaySystemView" + sessionParam.Get("eid");
-            var rtnString = CacheFileUtils.GetCache(cacheKey, moduleRef);
+            var rtnString = CacheFileUtils.GetCache(portalId, cacheKey, moduleRef);
             if (!useCache || String.IsNullOrEmpty(rtnString))
             {
                 var dataObject = new DataObjectLimpet(portalId, moduleRef, "", sessionParam, editMode);
@@ -83,7 +83,7 @@ namespace RocketContentAPI.Components
                 var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
                 if (pr.StatusCode == "00")
                 {
-                    if (useCache) CacheFileUtils.SetCache(cacheKey, pr.RenderedText, moduleRef);
+                    if (useCache) CacheFileUtils.SetCache(portalId, cacheKey, pr.RenderedText, moduleRef);
                     rtnString = pr.RenderedText;
                 }
                 else

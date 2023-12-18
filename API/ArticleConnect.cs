@@ -85,14 +85,14 @@ namespace RocketContentAPI.API
             articleData.ModuleId = _dataObject.ModuleSettings.ModuleId;
             articleData.UpdateRow(_rowKey, _postInfo, _dataObject.ModuleSettings.SecureSave);
             articleData.ClearCache();
-            CacheFileUtils.ClearAllCache(_dataObject.ModuleSettings.ModuleRef);
+            CacheFileUtils.ClearAllCache(_dataObject.PortalId, _dataObject.ModuleSettings.ModuleRef);
             DNNrocketUtils.SynchronizeModule(articleData.ModuleId); // module search
             _dataObject.SetDataObject("articledata", articleData);
             return AdminDetailDisplay();
         }
         public void DeleteArticle()
         {
-            CacheFileUtils.ClearAllCache("article");
+            CacheFileUtils.ClearAllCache(_dataObject.PortalId, "article");
             _dataObject.ArticleData.Delete();
         }
         public string AddArticleImage(bool singleImage = false)
@@ -243,44 +243,44 @@ namespace RocketContentAPI.API
         }
         public Dictionary<string, object> ArticleSearch()
         {
-            var bodyXpathList = _dataObject.ModuleSettings.GetSetting("searchbody").Split(',');
-            var descriptionXpathList = _dataObject.ModuleSettings.GetSetting("searchdescription").Split(',');
-            var titleXpathList = _dataObject.ModuleSettings.GetSetting("searchtitle").Split(',');
             var rtn = new Dictionary<string, object>();
+            var rtnList = new List<Dictionary<string, object>>();
 
-            var infoDict = _dataObject.ArticleData.Info.ToDictionary();
+            if (_dataObject.AppThemeAdmin == null) return rtn; //Possible on website import 
+
+            var searchIndexFields = _dataObject.AppThemeAdmin.GetSeachIndexFieldNames(_moduleRef);
+            var bodyFieldNameList = searchIndexFields.GetXmlProperty("genxml/searchbody").Split(',');
+            var descriptionFieldNameList = searchIndexFields.GetXmlProperty("genxml/searchdescription").Split(',');
+            var titleFieldNameList = searchIndexFields.GetXmlProperty("genxml/searchtitle").Split(',');
+
             foreach (var articleRowInfo in _dataObject.ArticleData.GetRowList())
             {
-                var rowDict = articleRowInfo.ToDictionary();
+                var rtn2 = new Dictionary<string, object>();
                 var bodydata = "";
                 var descriptiondata = "";
                 var titledata = "";
-                foreach (var fname in bodyXpathList)
+                foreach (var fname in bodyFieldNameList)
                 {
-                    if (infoDict.ContainsKey(fname))
-                        bodydata += infoDict[fname] + " ";
-                    else
-                        if (rowDict.ContainsKey(fname)) bodydata += rowDict[fname] + " ";
+                     bodydata += articleRowInfo.GetXmlProperty(fname) + " ";
                 }
-                foreach (var fname in descriptionXpathList)
+                foreach (var fname in descriptionFieldNameList)
                 {
-                    if (infoDict.ContainsKey(fname))
-                        descriptiondata += infoDict[fname] + " ";
-                    else
-                        if (rowDict.ContainsKey(fname)) descriptiondata += rowDict[fname] + " ";
+                    descriptiondata += articleRowInfo.GetXmlProperty(fname) + " ";
                 }
-                foreach (var fname in titleXpathList)
+                foreach (var fname in titleFieldNameList)
                 {
-                    if (infoDict.ContainsKey(fname))
-                        titledata += infoDict[fname] + " ";
-                    else
-                        if (rowDict.ContainsKey(fname)) titledata += rowDict[fname] + " ";
+                    titledata += articleRowInfo.GetXmlProperty(fname) + " ";
                 }
-                rtn.Add("body", bodydata.TrimEnd(' '));
-                rtn.Add("description", descriptiondata);
-                rtn.Add("modifieddate", _dataObject.ArticleData.Info.ModifiedDate.ToString("O"));
-                rtn.Add("title", titledata);                
+                rtn2.Add("body", bodydata.TrimEnd(' '));
+                rtn2.Add("description", descriptiondata);
+                rtn2.Add("modifieddate", _dataObject.ArticleData.Info.ModifiedDate.ToString("O"));
+                if (String.IsNullOrWhiteSpace(titledata)) titledata = _dataObject.ArticleData.Info.GetXmlProperty("genxml/lang/genxml/header/headertitle");
+                rtn2.Add("title", titledata);
+                var uniquekey = _dataObject.ArticleData.ArticleId + "_" + articleRowInfo.GetXmlProperty("genxml/config/rowkey");
+                rtn2.Add("uniquekey", uniquekey);                
+                rtnList.Add(rtn2);
             }
+            rtn.Add("searchindex", rtnList);
             return rtn;
         }
         public String AdminDetailDisplay()
