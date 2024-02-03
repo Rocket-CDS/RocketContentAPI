@@ -19,6 +19,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\DNNrocket\API\_external\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RazorEngine">
+      <HintPath>..\..\DNNrocket\API\_external\RazorEngine.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

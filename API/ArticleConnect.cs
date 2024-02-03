@@ -6,6 +6,7 @@ using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
@@ -253,34 +254,38 @@ namespace RocketContentAPI.API
             var descriptionFieldNameList = searchIndexFields.GetXmlProperty("genxml/searchdescription").Split(',');
             var titleFieldNameList = searchIndexFields.GetXmlProperty("genxml/searchtitle").Split(',');
 
-            foreach (var articleRowInfo in _dataObject.ArticleData.GetRowList())
+            if (titleFieldNameList.Count() > 0 || descriptionFieldNameList.Count() > 0 || bodyFieldNameList.Count() > 0)
             {
-                var rtn2 = new Dictionary<string, object>();
-                var bodydata = "";
-                var descriptiondata = "";
-                var titledata = "";
-                foreach (var fname in bodyFieldNameList)
+                foreach (var articleRowInfo in _dataObject.ArticleData.GetRowList())
                 {
-                     bodydata += articleRowInfo.GetXmlProperty(fname) + " ";
+                    var rtn2 = new Dictionary<string, object>();
+                    var bodydata = "";
+                    var descriptiondata = "";
+                    var titledata = "";
+                    foreach (var fname in bodyFieldNameList)
+                    {
+                        bodydata += articleRowInfo.GetXmlProperty(fname) + " ";
+                    }
+                    foreach (var fname in descriptionFieldNameList)
+                    {
+                        descriptiondata += articleRowInfo.GetXmlProperty(fname) + " ";
+                    }
+                    foreach (var fname in titleFieldNameList)
+                    {
+                        titledata += articleRowInfo.GetXmlProperty(fname) + " ";
+                    }
+                    rtn2.Add("body", bodydata.TrimEnd(' '));
+                    rtn2.Add("description", descriptiondata);
+                    rtn2.Add("modifieddate", _dataObject.ArticleData.Info.ModifiedDate.ToString("O"));
+                    if (String.IsNullOrWhiteSpace(titledata)) titledata = _dataObject.ArticleData.Info.GetXmlProperty("genxml/lang/genxml/header/headertitle");
+                    rtn2.Add("title", titledata);
+                    var uniquekey = _dataObject.ArticleData.ArticleId + "_" + articleRowInfo.GetXmlProperty("genxml/config/rowkey");
+                    rtn2.Add("uniquekey", uniquekey);
+                    rtnList.Add(rtn2);
                 }
-                foreach (var fname in descriptionFieldNameList)
-                {
-                    descriptiondata += articleRowInfo.GetXmlProperty(fname) + " ";
-                }
-                foreach (var fname in titleFieldNameList)
-                {
-                    titledata += articleRowInfo.GetXmlProperty(fname) + " ";
-                }
-                rtn2.Add("body", bodydata.TrimEnd(' '));
-                rtn2.Add("description", descriptiondata);
-                rtn2.Add("modifieddate", _dataObject.ArticleData.Info.ModifiedDate.ToString("O"));
-                if (String.IsNullOrWhiteSpace(titledata)) titledata = _dataObject.ArticleData.Info.GetXmlProperty("genxml/lang/genxml/header/headertitle");
-                rtn2.Add("title", titledata);
-                var uniquekey = _dataObject.ArticleData.ArticleId + "_" + articleRowInfo.GetXmlProperty("genxml/config/rowkey");
-                rtn2.Add("uniquekey", uniquekey);                
-                rtnList.Add(rtn2);
+                rtn.Add("searchindex", rtnList);
             }
-            rtn.Add("searchindex", rtnList);
+
             return rtn;
         }
         public String AdminDetailDisplay()
