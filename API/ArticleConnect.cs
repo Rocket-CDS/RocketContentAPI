@@ -36,7 +36,7 @@ namespace RocketContentAPI.API
             // we need to sort ALL langauges. 
             foreach (var cultureCode in DNNrocketUtils.GetCultureCodeList(_dataObject.PortalId))
             {
-                var articleData = new ArticleLimpet(_dataObject.PortalId, _moduleRef, cultureCode, _moduleId);
+                var articleData = RocketContentAPIUtils.GetArticleData(_dataObject.ModuleSettings, cultureCode);
 
                 // Build new sorted list
                 var rowInfoDict = new Dictionary<string, SimplisityInfo>();
@@ -64,7 +64,7 @@ namespace RocketContentAPI.API
                 //a.RebuildLangIndex(); // rebuild the index record [Essential to get the correct sort order]
             }
 
-            var articleData2 = new ArticleLimpet(_dataObject.PortalId, _moduleRef, _sessionParams.CultureCodeEdit, _moduleId);
+            var articleData2 = RocketContentAPIUtils.GetArticleData(_dataObject.ModuleSettings, _sessionParams.CultureCodeEdit);
             _dataObject.SetDataObject("articledata", articleData2);
             return AdminDetailDisplay();
         }
@@ -74,7 +74,7 @@ namespace RocketContentAPI.API
             articleData.RemoveRow(_rowKey);
 
             // reload so we always have 1 row.
-            var articleData2 = new ArticleLimpet(_dataObject.PortalId, _moduleRef, _sessionParams.CultureCodeEdit, _moduleId);
+            var articleData2 = RocketContentAPIUtils.GetArticleData(_dataObject.ModuleSettings, _sessionParams.CultureCodeEdit);
             _dataObject.SetDataObject("articledata", articleData2);
 
             _rowKey = articleData2.GetRow(0).Info.GetXmlProperty("genxml/config/rowkey");
@@ -86,14 +86,12 @@ namespace RocketContentAPI.API
             articleData.ModuleId = _dataObject.ModuleSettings.ModuleId;
             articleData.UpdateRow(_rowKey, _postInfo, _dataObject.ModuleSettings.SecureSave);
             articleData.ClearCache();
-            CacheFileUtils.ClearAllCache(_dataObject.PortalId, _dataObject.ModuleSettings.ModuleRef);
             DNNrocketUtils.SynchronizeModule(articleData.ModuleId); // module search
             _dataObject.SetDataObject("articledata", articleData);
             return AdminDetailDisplay();
         }
         public void DeleteArticle()
         {
-            CacheFileUtils.ClearAllCache(_dataObject.PortalId, "article");
             _dataObject.ArticleData.Delete();
         }
         public string AddArticleImage(bool singleImage = false)
@@ -238,7 +236,7 @@ namespace RocketContentAPI.API
         {
             var articleData = _dataObject.ArticleData;
             articleData.Delete();
-            var articleData2 = new ArticleLimpet(_dataObject.PortalId, _moduleRef, _sessionParams.CultureCodeEdit, _moduleId);
+            var articleData2 = RocketContentAPIUtils.GetArticleData(_dataObject.ModuleSettings, _sessionParams.CultureCodeEdit);
             _dataObject.SetDataObject("articledata", articleData2);
             return AdminDetailDisplay();
         }

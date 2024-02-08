@@ -75,8 +75,15 @@
 
 </div>
 
+
 <div class="w3-row w3-padding w3-tiny">
-    <span>ModuleRef: @moduleData.ModuleRef TabId: @(Model.SessionParamsData.TabId)</span>
+    <div>ModuleRef: @moduleData.ModuleRef TabId: @(Model.SessionParamsData.TabId)</div>
+    @if (UserUtils.IsAdministrator())
+    {
+        <span>
+            @RenderXml(info)
+        </span>
+    }
 </div>
 
 

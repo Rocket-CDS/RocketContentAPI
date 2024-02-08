@@ -361,7 +361,7 @@ namespace RocketContentAPI.API
                 var destImgFolder = portalContentData.ImageFolderRel + "/" + moduleId;
                 var destImgFolderMapPath = DNNrocketUtils.MapPath(destImgFolder);
                 if (!Directory.Exists(destImgFolderMapPath)) Directory.CreateDirectory(destImgFolderMapPath);
-                var articleData = new ArticleLimpet(portalId, moduleRef, _sessionParams.CultureCodeEdit, moduleId);
+                var articleData = RocketContentAPIUtils.GetArticleData(_dataObject.ModuleSettings, _sessionParams.CultureCodeEdit);
                 foreach (var rowData in articleData.GetRows())
                 {
                     foreach (var i in rowData.GetImages())
@@ -401,7 +401,7 @@ namespace RocketContentAPI.API
                 var destDocFolder = portalContentData.DocFolderRel + "/" + moduleId;
                 var destDocFolderMapPath = DNNrocketUtils.MapPath(destDocFolder);
                 if (!Directory.Exists(destDocFolderMapPath)) Directory.CreateDirectory(destDocFolderMapPath);
-                var articleData2 = new ArticleLimpet(portalId, moduleRef, _sessionParams.CultureCodeEdit, moduleId);
+                var articleData2 = RocketContentAPIUtils.GetArticleData(_dataObject.ModuleSettings, _sessionParams.CultureCodeEdit);
                 foreach (var rowData in articleData2.GetRows())
                 {
                     foreach (var i in rowData.GetDocs())

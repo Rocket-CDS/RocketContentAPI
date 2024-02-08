@@ -25,7 +25,6 @@ namespace RocketContentAPI.Components
         private int _moduleId;
         private SimplisityInfo _info;
         private SimplisityInfo _oldinfo;
-        private string _cacheKey;
         private bool _isDirty;
         private string _moduleRef;
 
@@ -61,27 +60,17 @@ namespace RocketContentAPI.Components
             _isDirty = false;
             _objCtrl = new DNNrocketController();
             CultureCode = cultureCode;
-            if (_cacheKey == "") _cacheKey = PortalId + "_ModuleId_" + _moduleId + "_" + cultureCode;
             if (_moduleRef == "") _moduleRef = PortalId + "_ModuleId_" + _moduleId;
-
-            _info = (SimplisityInfo)CacheUtils.GetCache(_cacheKey);
+            _info = _objCtrl.GetByGuidKey(PortalId, -1, _entityTypeCode, _moduleRef, "", _tableName, cultureCode);
             if (_info == null)
             {
-                _info = _objCtrl.GetByGuidKey(PortalId, -1, _entityTypeCode, _moduleRef, "", _tableName, cultureCode);
-                if (_info == null)
-                {
-                    _info = new SimplisityInfo();
-                    _info.ItemID = -1;
-                    _info.TypeCode = _entityTypeCode;
-                    _info.ModuleId = _moduleId;
-                    _info.UserId = -1;
-                    _info.GUIDKey = _moduleRef;
-                    _info.PortalId = PortalId;
-                }
-                else
-                {
-                    CacheUtils.SetCache(_cacheKey, _info);
-                }
+                _info = new SimplisityInfo();
+                _info.ItemID = -1;
+                _info.TypeCode = _entityTypeCode;
+                _info.ModuleId = _moduleId;
+                _info.UserId = -1;
+                _info.GUIDKey = _moduleRef;
+                _info.PortalId = PortalId;
             }
             _info.Lang = CultureCode;
         }
@@ -92,7 +81,7 @@ namespace RocketContentAPI.Components
         }
         public void ClearCache()
         {
-            CacheFileUtils.ClearAllCache(_info.PortalId, _info.GUIDKey);
+            CacheFileUtils.ClearAllCache(_info.PortalId,_moduleRef);
             // clear cache for satilite modules.
             var filter = " and [XMLdata].value('(genxml/settings/dataref)[1]','nvarchar(max)') = '" + _info.GUIDKey + "' ";
             var l = _objCtrl.GetList(_info.PortalId, -1, "MODSETTINGS", filter);
@@ -226,12 +215,6 @@ namespace RocketContentAPI.Components
             }
             _info.RemoveListItem("rows", "genxml/config/rowkey", rowKey);
             Update();
-        }
-        public ArticleRowLimpet GetRowById(string eId)
-        {
-            var articleRow = _info.GetListItem("rows", "genxml/config/eid", eId);
-            if (articleRow == null) return null;
-            return new ArticleRowLimpet(ArticleId, articleRow.XMLData, _info.GUIDKey);
         }
         public ArticleRowLimpet GetRow(string rowKey)
         {

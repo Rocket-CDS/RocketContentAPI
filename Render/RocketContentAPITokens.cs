@@ -74,30 +74,6 @@ namespace RocketContentAPI.Components
             return new RawString(strOut);
         }
         /// <summary>
-        /// For list and detail this token builds the List URL.
-        /// </summary>
-        /// <param name="listpageid">The listpageid.</param>
-        /// <returns></returns>
-        public IEncodedString ListUrl(int listpageid)
-        {
-            var listurl = DNNrocketUtils.NavigateURL(listpageid);
-            return new RawString(listurl);
-        }
-        /// <summary>
-        /// For list and detail this token builds the Detail URL.
-        /// </summary>
-        /// <param name="detailpageid">The detailpageid.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="eId">The row eId.</param>
-        /// <returns></returns>
-        public IEncodedString DetailUrl(int detailpageid, string title, string eId)
-        {
-            var seotitle = DNNrocketUtils.UrlFriendly(title);
-            string[] urlparams = { "eid", eId, seotitle };
-            var detailurl = DNNrocketUtils.NavigateURL(detailpageid, "", urlparams);
-            return new RawString(detailurl);
-        }
-        /// <summary>
         /// Creates a checkbox for the IsHidden property of a row.
         /// </summary>
         /// <param name="rowData">The row data.</param>

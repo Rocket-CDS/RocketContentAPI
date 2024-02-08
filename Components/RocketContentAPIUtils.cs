@@ -16,6 +16,19 @@ namespace RocketContentAPI.Components
     {
         public const string ControlPath = "/DesktopModules/DNNrocketModules/RocketContentAPI";
         public const string ResourcePath = "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources";
+
+        public static ArticleLimpet GetArticleData(ModuleContentLimpet moduleSettings, string cultureCode)
+        {
+            var cacheKey = moduleSettings.ModuleRef + "_" + cultureCode;
+            LogUtils.LogSystem("GetArticleData: " + cacheKey);
+            var articleData = (ArticleLimpet)CacheUtils.GetCache(cacheKey, moduleSettings.ModuleRef);
+            if (articleData == null)
+            {
+                articleData = new ArticleLimpet(moduleSettings.PortalId, moduleSettings.DataRef, cultureCode, moduleSettings.ModuleId);
+                CacheUtils.SetCache(cacheKey, articleData, moduleSettings.ModuleRef);
+            }
+            return articleData;
+        }
         public static List<SimplisityRecord> DependanciesList(int portalId, string moduleRef, SessionParams sessionParam)
         {
             var rtn = new List<SimplisityRecord>();
@@ -44,7 +57,7 @@ namespace RocketContentAPI.Components
         }
         public static string DisplayView(int portalId, string systemkey, string moduleRef, string rowKey, SessionParams sessionParam, string template = "view.cshtml", string noAppThemeReturn= "", bool disableCache = false, bool useCache = true)
         {
-            var cacheKey = moduleRef + sessionParam.CultureCode + template + rowKey + sessionParam.Get("eid");
+            var cacheKey = moduleRef + sessionParam.CultureCode + template + rowKey;
             var rtnString = CacheFileUtils.GetCache(portalId, cacheKey, moduleRef);
             if (!useCache || disableCache || String.IsNullOrEmpty(rtnString))
             {
@@ -73,7 +86,7 @@ namespace RocketContentAPI.Components
         }
         public static string DisplaySystemView(int portalId, string moduleRef, SessionParams sessionParam, string template, bool editMode = true, bool useCache = true)
         {
-            var cacheKey = moduleRef + sessionParam.CultureCode + template + "DisplaySystemView" + sessionParam.Get("eid");
+            var cacheKey = moduleRef + sessionParam.CultureCode + template + "DisplaySystemView";
             var rtnString = CacheFileUtils.GetCache(portalId, cacheKey, moduleRef);
             if (!useCache || String.IsNullOrEmpty(rtnString))
             {

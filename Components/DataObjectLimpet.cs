@@ -35,7 +35,7 @@ namespace RocketContentAPI.Components
             if (moduleRef == "")  moduleRef = portalid + "_ModuleID_" + moduleId;
 
             var moduleSettings = new ModuleContentLimpet(portalid, moduleRef, SystemKey, moduleId, tabId);
-            var articleData = new ArticleLimpet(portalid, moduleSettings.DataRef, cultureCode, moduleId);
+            var articleData = RocketContentAPIUtils.GetArticleData(moduleSettings, cultureCode);
             SetDataObject("modulesettings", moduleSettings);
             SetDataObject("appthemesystem", AppThemeUtils.AppThemeSystem(portalid, SystemKey));
             SetDataObject("portalcontent", new PortalContentLimpet(portalid, cultureCode));
