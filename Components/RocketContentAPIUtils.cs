@@ -20,12 +20,12 @@ namespace RocketContentAPI.Components
         public static ArticleLimpet GetArticleData(ModuleContentLimpet moduleSettings, string cultureCode)
         {
             var cacheKey = moduleSettings.ModuleRef + "_" + cultureCode;
-            LogUtils.LogSystem("GetArticleData: " + cacheKey);
             var articleData = (ArticleLimpet)CacheUtils.GetCache(cacheKey, moduleSettings.ModuleRef);
             if (articleData == null)
             {
                 articleData = new ArticleLimpet(moduleSettings.PortalId, moduleSettings.DataRef, cultureCode, moduleSettings.ModuleId);
                 CacheUtils.SetCache(cacheKey, articleData, moduleSettings.ModuleRef);
+                LogUtils.LogSystem("RocketContentAPIUtils.GetArticleData: " + cacheKey);
             }
             return articleData;
         }

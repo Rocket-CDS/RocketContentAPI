@@ -43,18 +43,6 @@ namespace RocketContentAPI.Components
             Populate(langRequired);
             _oldinfo = (SimplisityInfo)_info.Clone();
         }
-        /// <summary>
-        /// When we populate with a child article row.
-        /// </summary>
-        /// <param name="articleData"></param>
-        public ArticleLimpet(ArticleLimpet articleData)
-        {
-            _info = articleData.Info;
-            CultureCode = articleData.CultureCode;
-            PortalId = _info.PortalId;
-            _moduleRef = _info.GUIDKey;
-            _oldinfo = (SimplisityInfo)_info.Clone();
-        }
         private void Populate(string cultureCode)
         {
             _isDirty = false;
