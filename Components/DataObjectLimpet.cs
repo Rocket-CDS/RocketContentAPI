@@ -16,6 +16,8 @@ namespace RocketContentAPI.Components
         public const string _tableName = "RocketContentAPI";
         private Dictionary<string, object> _dataObjects;
         private Dictionary<string, string> _passSettings;
+        private string _rowKey;
+        private string _cultureCode;
         public DataObjectLimpet(int portalid, string moduleRef, string rowKey, SessionParams sessionParams, bool editMode = true)
         {
             var cultureCode = sessionParams.CultureCodeEdit;
@@ -30,27 +32,40 @@ namespace RocketContentAPI.Components
         {
             _passSettings = new Dictionary<string, string>();
             _dataObjects = new Dictionary<string, object>();
+            _rowKey = rowKey;
+            _cultureCode = cultureCode;
 
             // could be scheduler with only the moduleid.
             if (moduleRef == "")  moduleRef = portalid + "_ModuleID_" + moduleId;
 
             var moduleSettings = new ModuleContentLimpet(portalid, moduleRef, SystemKey, moduleId, tabId);
-            var articleData = RocketContentAPIUtils.GetArticleData(moduleSettings, cultureCode);
             SetDataObject("modulesettings", moduleSettings);
             SetDataObject("appthemesystem", AppThemeUtils.AppThemeSystem(portalid, SystemKey));
             SetDataObject("portalcontent", new PortalContentLimpet(portalid, cultureCode));
             SetDataObject("portaldata", new PortalLimpet(portalid));
             SetDataObject("systemdata", SystemSingleton.Instance(SystemKey));
             SetDataObject("appthemeprojects", AppThemeUtils.AppThemeProjects());
-            SetDataObject("articledata", articleData);
             SetDataObject("userparams", new UserParams("ModuleID:" + moduleId, true));
-
+            SetArticleDataObject(false);// this must be overwritten by any admin/update to not use cache.
+        }
+        public void SetArticleDataObject(bool useCache)
+        {
+            var articleData = RocketContentAPIUtils.GetArticleData(ModuleSettings, _cultureCode, useCache);
+            SetDataObject("articledata", articleData);
             if (articleData != null)
             {
-                if (rowKey == "")
+                LogUtils.LogSystem("rowKey:" + _rowKey);
+                if (_rowKey == "")
                     SetDataObject("articlerow", articleData.GetRow(0));
                 else
-                    SetDataObject("articlerow", articleData.GetRow(rowKey));
+                {
+                    var rowData = articleData.GetRow(_rowKey);
+                    SetDataObject("articlerow", rowData);
+                    if (rowData == null)
+                        LogUtils.LogSystem("rowKey isValid:");
+                    else
+                        LogUtils.LogSystem("rowKey isValid:");
+                }
             }
         }
         public void SetDataObject(String key, object value)

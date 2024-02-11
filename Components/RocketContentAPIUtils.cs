@@ -17,11 +17,11 @@ namespace RocketContentAPI.Components
         public const string ControlPath = "/DesktopModules/DNNrocketModules/RocketContentAPI";
         public const string ResourcePath = "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources";
 
-        public static ArticleLimpet GetArticleData(ModuleContentLimpet moduleSettings, string cultureCode)
+        public static ArticleLimpet GetArticleData(ModuleContentLimpet moduleSettings, string cultureCode, bool useCache = true)
         {
             var cacheKey = moduleSettings.ModuleRef + "_" + cultureCode;
             var articleData = (ArticleLimpet)CacheUtils.GetCache(cacheKey, moduleSettings.ModuleRef);
-            if (articleData == null)
+            if (articleData == null || !useCache)
             {
                 articleData = new ArticleLimpet(moduleSettings.PortalId, moduleSettings.DataRef, cultureCode, moduleSettings.ModuleId);
                 CacheUtils.SetCache(cacheKey, articleData, moduleSettings.ModuleRef);

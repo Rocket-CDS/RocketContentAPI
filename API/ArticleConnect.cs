@@ -82,12 +82,13 @@ namespace RocketContentAPI.API
         }
         public string SaveArticleRow()
         {
+            _dataObject.SetArticleDataObject(false);
             var articleData = _dataObject.ArticleData;
             articleData.ModuleId = _dataObject.ModuleSettings.ModuleId;
             articleData.UpdateRow(_rowKey, _postInfo, _dataObject.ModuleSettings.SecureSave);
             articleData.ClearCache();
             DNNrocketUtils.SynchronizeModule(articleData.ModuleId); // module search
-            _dataObject.SetDataObject("articledata", articleData);
+            _dataObject.SetArticleDataObject(false);
             return AdminDetailDisplay();
         }
         public void DeleteArticle()
@@ -96,6 +97,7 @@ namespace RocketContentAPI.API
         }
         public string AddArticleImage(bool singleImage = false)
         {
+            _dataObject.SetArticleDataObject(false);
             var articleData = _dataObject.ArticleData;
             articleData.UpdateRow(_rowKey, _postInfo);
 
@@ -124,11 +126,12 @@ namespace RocketContentAPI.API
                     }
                 }
             }
-
+            _dataObject.SetArticleDataObject(false);
             return AdminDetailDisplay();
         }
         public string RemoveArticleImage()
         {
+            _dataObject.SetArticleDataObject(false);
             var articleData = _dataObject.ArticleData;
             articleData.UpdateRow(_rowKey, _postInfo);
             var articleRow = articleData.GetRow(_rowKey);
@@ -137,11 +140,12 @@ namespace RocketContentAPI.API
                 articleRow.Info.RemoveList(articleData.ImageListName);
                 articleData.UpdateRow(_rowKey, articleRow.Info);
             }
-
+            _dataObject.SetArticleDataObject(false);
             return AdminDetailDisplay();
         }
         public string AddArticleDoc(bool singleDoc = false)
         {
+            _dataObject.SetArticleDataObject(false);
             var articleData = _dataObject.ArticleData;
             articleData.UpdateRow(_rowKey, _postInfo);
 
@@ -167,11 +171,12 @@ namespace RocketContentAPI.API
                     }
                 }
             }
-
+            _dataObject.SetArticleDataObject(false);
             return AdminDetailDisplay();
         }
         public string RemoveArticleDoc()
         {
+            _dataObject.SetArticleDataObject(false);
             var articleData = _dataObject.ArticleData;
             articleData.UpdateRow(_rowKey, _postInfo);
             var articleRow = articleData.GetRow(_rowKey);
@@ -180,6 +185,7 @@ namespace RocketContentAPI.API
                 articleRow.Info.RemoveList(articleData.DocumentListName);
                 articleData.UpdateRow(_rowKey, articleRow.Info);
             }
+            _dataObject.SetArticleDataObject(false);
             return AdminDetailDisplay();
         }
 
@@ -189,6 +195,7 @@ namespace RocketContentAPI.API
         /// <returns></returns>
         public string AddArticleListItem()
         {
+            _dataObject.SetArticleDataObject(false);
             var articleData = _dataObject.ArticleData;
             articleData.UpdateRow(_rowKey, _postInfo);
 
@@ -199,6 +206,7 @@ namespace RocketContentAPI.API
                 articleRow.Info.AddListItem(listName, new SimplisityInfo());
                 articleData.UpdateRow(_rowKey, articleRow.Info);
             }
+            _dataObject.SetArticleDataObject(false);
             return AdminDetailDisplay();
         }
         public string RestoreArticle()
@@ -221,6 +229,7 @@ namespace RocketContentAPI.API
         }
         public string AddArticleLink()
         {
+            _dataObject.SetArticleDataObject(false);
             var articleData = _dataObject.ArticleData;
             articleData.UpdateRow(_rowKey, _postInfo);
 
@@ -230,14 +239,14 @@ namespace RocketContentAPI.API
                 articleRow.AddLink();
                 articleData.UpdateRow(_rowKey, articleRow.Info);
             }
+            _dataObject.SetArticleDataObject(false);
             return AdminDetailDisplay();
         }
         public String GetAdminDeleteArticle()
         {
             var articleData = _dataObject.ArticleData;
             articleData.Delete();
-            var articleData2 = RocketContentAPIUtils.GetArticleData(_dataObject.ModuleSettings, _sessionParams.CultureCodeEdit);
-            _dataObject.SetDataObject("articledata", articleData2);
+            _dataObject.SetArticleDataObject(false);
             return AdminDetailDisplay();
         }
         public Dictionary<string, object> ArticleSearch()
