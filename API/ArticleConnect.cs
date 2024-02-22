@@ -263,32 +263,36 @@ namespace RocketContentAPI.API
 
             if (titleFieldNameList.Count() > 0 || descriptionFieldNameList.Count() > 0 || bodyFieldNameList.Count() > 0)
             {
-                foreach (var articleRowInfo in _dataObject.ArticleData.GetRowList())
+                foreach (var l in DNNrocketUtils.GetCultureCodeList(_dataObject.PortalId))
                 {
-                    var rtn2 = new Dictionary<string, object>();
-                    var bodydata = "";
-                    var descriptiondata = "";
-                    var titledata = "";
-                    foreach (var fname in bodyFieldNameList)
+                    var articleData = new ArticleLimpet(_dataObject.PortalId, _dataObject.ArticleData.DataRef, l, _dataObject.ModuleSettings.ModuleId);
+                    foreach (var articleRowInfo in articleData.GetRowList())
                     {
-                        bodydata += articleRowInfo.GetXmlProperty(fname) + " ";
+                        var rtn2 = new Dictionary<string, object>();
+                        var bodydata = "";
+                        var descriptiondata = "";
+                        var titledata = "";
+                        foreach (var fname in bodyFieldNameList)
+                        {
+                            bodydata += articleRowInfo.GetXmlProperty(fname) + " ";
+                        }
+                        foreach (var fname in descriptionFieldNameList)
+                        {
+                            descriptiondata += articleRowInfo.GetXmlProperty(fname) + " ";
+                        }
+                        foreach (var fname in titleFieldNameList)
+                        {
+                            titledata += articleRowInfo.GetXmlProperty(fname) + " ";
+                        }
+                        rtn2.Add("body", bodydata.TrimEnd(' '));
+                        rtn2.Add("description", descriptiondata);
+                        rtn2.Add("modifieddate", _dataObject.ArticleData.Info.ModifiedDate.ToString("O"));
+                        if (String.IsNullOrWhiteSpace(titledata)) titledata = _dataObject.ArticleData.Info.GetXmlProperty("genxml/lang/genxml/header/headertitle");
+                        rtn2.Add("title", titledata);
+                        var uniquekey = _dataObject.ArticleData.ArticleId + "_" + articleRowInfo.GetXmlProperty("genxml/config/rowkey");
+                        rtn2.Add("uniquekey", uniquekey);
+                        rtnList.Add(rtn2);
                     }
-                    foreach (var fname in descriptionFieldNameList)
-                    {
-                        descriptiondata += articleRowInfo.GetXmlProperty(fname) + " ";
-                    }
-                    foreach (var fname in titleFieldNameList)
-                    {
-                        titledata += articleRowInfo.GetXmlProperty(fname) + " ";
-                    }
-                    rtn2.Add("body", bodydata.TrimEnd(' '));
-                    rtn2.Add("description", descriptiondata);
-                    rtn2.Add("modifieddate", _dataObject.ArticleData.Info.ModifiedDate.ToString("O"));
-                    if (String.IsNullOrWhiteSpace(titledata)) titledata = _dataObject.ArticleData.Info.GetXmlProperty("genxml/lang/genxml/header/headertitle");
-                    rtn2.Add("title", titledata);
-                    var uniquekey = _dataObject.ArticleData.ArticleId + "_" + articleRowInfo.GetXmlProperty("genxml/config/rowkey");
-                    rtn2.Add("uniquekey", uniquekey);
-                    rtnList.Add(rtn2);
                 }
                 rtn.Add("searchindex", rtnList);
             }

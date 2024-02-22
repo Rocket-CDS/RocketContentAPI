@@ -67,7 +67,7 @@ namespace RocketContentAPI.Components
                 var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, null, sessionParam, true);
                 if (pr.StatusCode == "00")
                 {
-                    if (useCache) CacheFileUtils.SetCache(portalId, cacheKey, pr.RenderedText, moduleRef);
+                    if (useCache) CacheFileUtils.SetCache(portalId, cacheKey, pr.RenderedText, moduleRef, dataObject.ModuleSettings.Record.GetXmlPropertyInt("genxml/settings/cachehours"));
                     rtnString = pr.RenderedText;
                 }
                 else

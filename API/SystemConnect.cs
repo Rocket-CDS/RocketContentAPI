@@ -222,13 +222,14 @@ namespace RocketContentAPI.API
             var securityKey = DNNrocketUtils.GetTempStorage(_paramInfo.GetXmlProperty("genxml/hidden/securitykey"), true);
             if (securityKey != null) // if it exists in the temp table, it was created by the scheduler.
             {
-
                 var moduleId = _paramInfo.GetXmlPropertyInt("genxml/hidden/moduleid");
                 var tabId = _paramInfo.GetXmlPropertyInt("genxml/hidden/tabid");
                 var systemKey = _paramInfo.GetXmlProperty("genxml/hidden/systemkey");
                 var portalId = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid");
                 var databasetable = _paramInfo.GetXmlProperty("genxml/hidden/databasetable");
                 var moduleRef = portalId + "_ModuleID_" + moduleId;
+
+                PortalUtils.CreateRocketDirectories(portalId);
 
                 var objCtrl = new DNNrocketController();
 

@@ -129,6 +129,9 @@
   <data name="articlesimagelimit.Text" xml:space="preserve">
     <value>Image Limit</value>
   </data>
+  <data name="cachehours.Text" xml:space="preserve">
+    <value>Cache Hours</value>
+  </data>
   <data name="clearcache.Text" xml:space="preserve">
     <value>Clear Cache</value>
   </data>
@@ -198,6 +201,9 @@
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="SideMenu.Designer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SideMenu.Designer.cs;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="unlimited.Text" xml:space="preserve">
+    <value>Unlimited</value>
   </data>
   <data name="viewapptheme.Text" xml:space="preserve">
     <value>Display AppTheme</value>
