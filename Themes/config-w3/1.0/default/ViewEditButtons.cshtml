@@ -33,8 +33,14 @@
         <a href="@userParams.Get("recyclebinurl")" class="viewedit-button" title="@ResourceKey("DNNrocket.recyclebin")">
             <img src="/DesktopModules/DNNrocket/API/images/recycling.svg" alt="@ResourceKey("DNNrocket.recyclebin")" />
         </a>
-
-        <a href="?action=clearcache&moduleid=@(moduleData.ModuleId)" class="viewedit-button" title="@ResourceKey("RCT.clearcache")">
+        @{
+            var disbledCache = "";
+            if (moduleData.DisableCache)
+            {
+                disbledCache = " 	background-color:#FF6347; ";
+            }
+        }
+        <a href="?action=clearcache&moduleid=@(moduleData.ModuleId)" class="viewedit-button" style="@(disbledCache)" title="@ResourceKey("RCT.clearcache")">
             <img src="/DesktopModules/DNNrocket/API/images/clear_cache.svg" alt="@ResourceKey("RCT.clearcache")" />
         </a>
 
