@@ -459,6 +459,11 @@ namespace RocketContentAPI.API
 
         private string ValidateContent()
         {
+            var l = RocketContentAPIUtils.GetAllRecordART(_dataObject.PortalId);
+            foreach (var sRec in l)
+            {
+                if (sRec.ModuleId > 0) DNNrocketUtils.SynchronizeModule(sRec.ModuleId); // module search
+            }
             return "OK";
         }
         private String CopyLanguage()

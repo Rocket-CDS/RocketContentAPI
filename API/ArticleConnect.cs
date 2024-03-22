@@ -284,12 +284,16 @@ namespace RocketContentAPI.API
                         {
                             titledata += articleRowInfo.GetXmlProperty(fname) + " ";
                         }
-                        rtn2.Add("body", bodydata.TrimEnd(' '));
-                        rtn2.Add("description", descriptiondata);
-                        rtn2.Add("modifieddate", _dataObject.ArticleData.Info.ModifiedDate.ToString("O"));
-                        if (String.IsNullOrWhiteSpace(titledata)) titledata = _dataObject.ArticleData.Info.GetXmlProperty("genxml/lang/genxml/header/headertitle");
-                        rtn2.Add("title", titledata);
-                        var uniquekey = _dataObject.ArticleData.ArticleId + "_" + articleRowInfo.GetXmlProperty("genxml/config/rowkey");
+
+                        rtn2.Add("body", bodydata.Trim(' '));
+                        rtn2.Add("description", descriptiondata.Trim(' '));
+                        rtn2.Add("modifieddate", articleData.Info.ModifiedDate.ToString("O"));
+                        if (String.IsNullOrWhiteSpace(titledata)) titledata = articleData.Info.GetXmlProperty("genxml/lang/genxml/header/headertitle");
+                        rtn2.Add("title", titledata.Trim(' '));
+                        rtn2.Add("culturecode", articleData.CultureCode);
+                        rtn2.Add("querystring", "");
+                        rtn2.Add("removesearchrecord", "false");
+                        var uniquekey = articleData.ArticleId + "_" + articleRowInfo.GetXmlProperty("genxml/config/rowkey");
                         rtn2.Add("uniquekey", uniquekey);
                         rtnList.Add(rtn2);
                     }
