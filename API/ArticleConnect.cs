@@ -249,6 +249,17 @@ namespace RocketContentAPI.API
             _dataObject.SetArticleDataObject(false);
             return AdminDetailDisplay();
         }
+        public string ChatGptReturn()
+        {
+            var chatGPT = new DNNrocketAPI.Components.ChatGPT();
+            var sQuestion = _postInfo.GetXmlProperty("genxml/textbox/chatgptquestion");
+            var chatgpttext = chatGPT.SendMsg(sQuestion);
+            _sessionParams.Set("chatgptreturn", chatgpttext);
+            var razorTempl = AppThemeUtils.AppThemeRocketApi(_dataObject.PortalId).GetTemplate("ChatGptReturn.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
         public Dictionary<string, object> ArticleSearch()
         {
             var rtn = new Dictionary<string, object>();

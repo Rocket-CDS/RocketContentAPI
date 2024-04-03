@@ -59,6 +59,10 @@ namespace RocketContentAPI.Components
             if (articleRowData != null && articleRowData.Info != null) info = articleRowData.Info;
             rowData = info;
             headerData = infoArticle;
+
+            AddProcessDataResx(appThemeView, true);
+            AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/");
+
             return "";
         }
         /// <summary>
@@ -90,6 +94,10 @@ namespace RocketContentAPI.Components
         public IEncodedString TextBoxRowTitle(SimplisityInfo rowData)
         {
             return TextBox(rowData, "genxml/lang/genxml/textbox/title", " id='title' class='w3-input w3-border' autocomplete='off' ", "", true, 0);
+        }
+        public IEncodedString ChatGPT(string textId, string sourceTextId = "")
+        {
+            return new RawString("<span class=\"material-icons\" title=\"AI\" style=\"cursor:pointer;\" onclick=\"$('#chatgptmodal').show();simplisity_setSessionField('chatgpttextid','" + textId + "');$('#chatgptquestion').val($('#" + sourceTextId + "').val());\">comment</span>");
         }
 
     }

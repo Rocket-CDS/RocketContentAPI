@@ -116,6 +116,9 @@ namespace RocketContentAPI.API
                 case "article_emptyrecyclebin":
                     strOut = EmptyRecycleBin();
                     break;
+                case "article_chatgpt":
+                    strOut = ChatGptReturn();
+                    break;
                 case "article_search":
                     rtnDic = ArticleSearch();
                     break;

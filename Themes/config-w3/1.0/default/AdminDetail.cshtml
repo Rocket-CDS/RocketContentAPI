@@ -3,8 +3,6 @@
 @{
     AssigDataModel(Model);
     var rtnUrl = userParams.Get("viewurl");
-    AddProcessDataResx(appThemeView, true);
-    AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/");
 }
 
 @{
@@ -69,6 +67,8 @@
     <span>Ref: @articleData.DataRef</span>
 </div>
 
+[INJECT:appthemednnrocket,ChatGptForm.cshtml]
+
 <script>
     $(document).ready(function () {
         $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketcontentapi', debug: false });
@@ -84,3 +84,5 @@
         });
     });
 </script>
+
+
