@@ -46,7 +46,7 @@ namespace RocketContentAPI.Components
             SetDataObject("systemdata", SystemSingleton.Instance(SystemKey));
             SetDataObject("appthemeprojects", AppThemeUtils.AppThemeProjects());
             SetDataObject("userparams", new UserParams("ModuleID:" + moduleId, true));
-            SetDataObject("appthemednnrocket", AppThemeUtils.AppThemeRocketApi(portalid));
+            SetDataObject("appthemerocketapi", AppThemeUtils.AppThemeRocketApi(portalid));
             SetArticleDataObject(false);// this must be overwritten by any admin/update to not use cache.
         }
         public void SetArticleDataObject(bool useCache)

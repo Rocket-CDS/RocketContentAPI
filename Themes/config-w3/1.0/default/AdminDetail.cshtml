@@ -67,7 +67,11 @@
     <span>Ref: @articleData.DataRef</span>
 </div>
 
-[INJECT:appthemednnrocket,ChatGptForm.cshtml]
+
+@{
+    Model.SetSetting("chatgptcmd", "article_chatgpt");
+}
+@RenderTemplate("ChatGptForm.cshtml", appThemeRocketApi, Model, true)
 
 <script>
     $(document).ready(function () {

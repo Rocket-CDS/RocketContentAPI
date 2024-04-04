@@ -32,6 +32,8 @@ namespace RocketContentAPI.Components
         public SimplisityInfo infoArticle;
         public SimplisityInfo rowData;
         public SimplisityInfo headerData;
+        public AppThemeRocketApiLimpet appThemeRocketApi;
+
         /// <summary>
         /// Assigns the data model for razor, this makes the template easier to build.
         /// </summary>
@@ -51,6 +53,7 @@ namespace RocketContentAPI.Components
             portalData = (PortalLimpet)sModel.GetDataObject("portaldata");
             sessionParams = sModel.SessionParamsData;
             userParams = (UserParams)sModel.GetDataObject("userparams");
+            appThemeRocketApi = (AppThemeRocketApiLimpet)sModel.GetDataObject("appthemerocketapi");
 
             if (sessionParams == null) sessionParams = new SessionParams(new SimplisityInfo());
             infoArticle = new SimplisityInfo();
@@ -97,7 +100,9 @@ namespace RocketContentAPI.Components
         }
         public IEncodedString ChatGPT(string textId, string sourceTextId = "")
         {
-            return new RawString("<span class=\"material-icons\" title=\"AI\" style=\"cursor:pointer;\" onclick=\"$('#chatgptmodal').show();simplisity_setSessionField('chatgpttextid','" + textId + "');$('#chatgptquestion').val($('#" + sourceTextId + "').val());\">comment</span>");
+            var globalData = new SystemGlobalData();
+            if (String.IsNullOrEmpty(globalData.ChatGptKey)) return new RawString("");
+            return new RawString("<span class=\"material-icons\" title=\"AI\" style=\"cursor:pointer;\" onclick=\"$('#chatgptmodal').show();simplisity_setSessionField('chatgpttextid','" + textId + "');simplisity_setSessionField('chatgptcmd','article_chatgpt');$('#chatgptquestion').val($('#" + sourceTextId + "').val());\">comment</span>");
         }
 
     }
