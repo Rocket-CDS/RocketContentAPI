@@ -33,17 +33,6 @@
         <a href="@userParams.Get("recyclebinurl")" class="viewedit-button" title="@ResourceKey("DNNrocket.recyclebin")">
             <img src="/DesktopModules/DNNrocket/API/images/recycling.svg" alt="@ResourceKey("DNNrocket.recyclebin")" />
         </a>
-        @{
-            var disbledCache = "";
-            if (moduleData.DisableCache)
-            {
-                disbledCache = " 	background-color:#FF6347; ";
-            }
-        }
-        <a href="?action=clearcache&moduleid=@(moduleData.ModuleId)" class="viewedit-button" style="@(disbledCache)" title="@ResourceKey("RCT.clearcache")">
-            <img src="/DesktopModules/DNNrocket/API/images/clear_cache.svg" alt="@ResourceKey("RCT.clearcache")" />
-        </a>
-
         @if (UserUtils.IsAdministrator())
         {
             <a href="@userParams.Get("settingsurl")" class="viewedit-button" title="@ResourceKey("DNNrocket.settings")">
@@ -59,7 +48,14 @@
 
         }
 
-        <span onclick="$('#a-editbuttons-@(moduleData.ModuleId)').hide();$('#a-editbuttons-@(moduleData.ModuleId)').addClass('w3-hide');" class="viewedit-button">
+        @{
+            var disbledCache = "";
+            if (moduleData.DisableCache)
+            {
+                disbledCache = " 	background-color:#FF6347; ";
+            }
+        }
+        <span onclick="$('#a-editbuttons-@(moduleData.ModuleId)').hide();$('#a-editbuttons-@(moduleData.ModuleId)').addClass('w3-hide');" style="@(disbledCache)" class="viewedit-button">
             <img src="/DesktopModules/DNNrocket/API/images/close.svg" alt="close" />
         </span>
 

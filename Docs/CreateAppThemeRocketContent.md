@@ -100,10 +100,7 @@ This template is injected into the admin page header before any other template. 
 **AdminLastHeader.cshtml**  
 This template is injected into the admin page header after any other template.
 
-**ViewFirstHeader.cshtml**  
-This template is injected into the view page header before any other template.  
-
-**ViewLastHeader.cshtml**  
+**ViewHeader.cshtml**  
 This template is injected into the view page header after any other template.  
 
 **ThemeSettings.cshtml**  
