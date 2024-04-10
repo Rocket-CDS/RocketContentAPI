@@ -108,6 +108,10 @@
 	  <command>
 		  <cmd>article_chatgpt</cmd>
 		  <action>false</action>
+	  </command>
+	  <command>
+		  <cmd>article_translate</cmd>
+		  <action>false</action>
 	  </command>	  
 
 

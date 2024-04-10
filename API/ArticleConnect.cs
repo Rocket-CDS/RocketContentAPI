@@ -2,6 +2,7 @@
 using DNNrocketAPI.Components;
 using Rocket.AppThemes.Components;
 using RocketContentAPI.Components;
+using RocketPortal.Components;
 using Simplisity;
 using System;
 using System.Collections.Generic;
@@ -256,6 +257,17 @@ namespace RocketContentAPI.API
             var chatgpttext = chatGPT.SendMsg(sQuestion);
             _sessionParams.Set("chatgptreturn", chatgpttext);
             var razorTempl = AppThemeUtils.AppThemeRocketApi(_dataObject.PortalId).GetTemplate("ChatGptReturn.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.StatusCode != "00") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
+        public string TranslateReturn()
+        {
+            var sQuestion = _postInfo.GetXmlProperty("genxml/textbox/deeplquestion");
+            var globalData = new SystemGlobalData();
+            var deepltext = DeepLUtils.TranslateText(globalData.DeepLurl,globalData.DeepLauthKey, sQuestion, _sessionParams.CultureCodeEdit).Result;
+            _sessionParams.Set("deeplreturn", deepltext);
+            var razorTempl = AppThemeUtils.AppThemeRocketApi(_dataObject.PortalId).GetTemplate("DeepLReturn.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;

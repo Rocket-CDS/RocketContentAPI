@@ -119,6 +119,9 @@ namespace RocketContentAPI.API
                 case "article_chatgpt":
                     strOut = ChatGptReturn();
                     break;
+                case "article_translate":
+                    strOut = TranslateReturn();
+                    break;
                 case "article_search":
                     rtnDic = ArticleSearch();
                     break;

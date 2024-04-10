@@ -73,6 +73,11 @@
 }
 @RenderTemplate("ChatGptForm.cshtml", appThemeRocketApi, Model, true)
 
+@{
+    Model.SetSetting("deeplcmd", "article_translate");
+}
+@RenderTemplate("DeepLForm.cshtml", appThemeRocketApi, Model, true)
+
 <script>
     $(document).ready(function () {
         $(document).simplisityStartUp('/Desktopmodules/dnnrocket/api/rocket/action', { systemkey: 'rocketcontentapi', debug: false });
