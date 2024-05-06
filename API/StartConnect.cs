@@ -164,6 +164,9 @@ namespace RocketContentAPI.API
                 case "rocketcontentapi_validate":
                     strOut = ValidateContent();
                     break;
+                case "rocketcontentapi_index":
+                    strOut = IndexContent();
+                    break;
 
 
 

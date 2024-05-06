@@ -459,6 +459,10 @@ namespace RocketContentAPI.API
 
         private string ValidateContent()
         {
+            return "OK";
+        }
+        private string IndexContent()
+        {
             var l = RocketContentAPIUtils.GetAllRecordART(_dataObject.PortalId);
             foreach (var sRec in l)
             {

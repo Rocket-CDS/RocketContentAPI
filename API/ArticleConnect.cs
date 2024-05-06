@@ -252,14 +252,22 @@ namespace RocketContentAPI.API
         }
         public string ChatGptReturn()
         {
-            var chatGPT = new DNNrocketAPI.Components.ChatGPT();
-            var sQuestion = _postInfo.GetXmlProperty("genxml/textbox/chatgptquestion");
-            var chatgpttext = chatGPT.SendMsg(sQuestion);
-            _sessionParams.Set("chatgptreturn", chatgpttext);
-            var razorTempl = AppThemeUtils.AppThemeRocketApi(_dataObject.PortalId).GetTemplate("ChatGptReturn.cshtml");
-            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
-            if (pr.StatusCode != "00") return pr.ErrorMsg;
-            return pr.RenderedText;
+            try
+            {
+                var chatGPT = new DNNrocketAPI.Components.ChatGPT();
+                var sQuestion = _postInfo.GetXmlProperty("genxml/textbox/chatgptquestion");
+                var chatgpttext = chatGPT.SendMsg(sQuestion);
+                _sessionParams.Set("chatgptreturn", chatgpttext);
+                var razorTempl = AppThemeUtils.AppThemeRocketApi(_dataObject.PortalId).GetTemplate("ChatGptReturn.cshtml");
+                var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+                if (pr.StatusCode != "00") return pr.ErrorMsg;
+                return pr.RenderedText;
+            }
+            catch (Exception ex)
+            {
+                LogUtils.LogException(ex);
+                return "No responce from Chat GPT - please check you API key.";
+            }
         }
         public string TranslateReturn()
         {

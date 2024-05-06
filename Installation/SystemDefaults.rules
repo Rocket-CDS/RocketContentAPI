@@ -154,6 +154,10 @@
 	  <command>
 		  <cmd>rocketcontentapi_validate</cmd>
 		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rocketcontentapi_index</cmd>
+		  <action>true</action>
 	  </command>	  
 
 
