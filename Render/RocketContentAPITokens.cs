@@ -107,6 +107,7 @@ namespace RocketContentAPI.Components
         }
         public IEncodedString DeepL(string textId, string sourceTextId = "", string cultureCode = "")
         {
+            if (DNNrocketUtils.GetPortalLanguageList().Count <= 1) return new RawString("");
             var globalData = new SystemGlobalData();
             if (String.IsNullOrEmpty(globalData.DeepLauthKey )) return new RawString("");
             var apiResx = "/DesktopModules/DNNrocket/api/App_LocalResources/";
