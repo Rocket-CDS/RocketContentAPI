@@ -39,7 +39,7 @@ namespace RocketContentAPI.Components
         /// </summary>
         /// <param name="sModel">The s model.</param>
         /// <returns></returns>
-        public string AssigDataModel(SimplisityRazor sModel)
+        public string AssignDataModel(SimplisityRazor sModel)
         {
             // use return of "string", so we don;t get error with converting void to object.
             articleData = (ArticleLimpet)sModel.GetDataObject("articledata");
@@ -68,6 +68,13 @@ namespace RocketContentAPI.Components
 
             return "";
         }
+        [Obsolete]
+        public string AssigDataModel(SimplisityRazor sModel)
+        {
+            AssignDataModel(sModel);
+            return "";
+        }
+
         /// <summary>
         /// A row MUST have a rowkey to be saved to the DB.  This generates the rowkey.
         /// </summary>
