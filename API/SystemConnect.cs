@@ -240,6 +240,7 @@ namespace RocketContentAPI.API
                 LogUtils.LogSystem("IMPORT XML _postInfo: " + _postInfo.XMLData);
 
                 //import Settings (Saved in DNNrocket table)
+                var importGuidKey = _postInfo.GetXmlProperty("export/modulesettings/item/guidkey");
                 var settingsNod = xmlDoc.SelectSingleNode("export/modulesettings");
                 if (settingsNod != null)
                 {
@@ -294,6 +295,11 @@ namespace RocketContentAPI.API
                 }
 
                 //import ART
+
+                // remove all module records to tidy any possible import errors.
+                objCtrl.ExecSql("delete {databaseOwner}[{objectQualifier}RocketContentAPI]  where ModuleId = " + moduleId);
+                objCtrl.ExecSql("delete {databaseOwner}[{objectQualifier}RocketContentAPI] where TypeCode = 'ARTLANGIDX' and ParentItemId not in (select itemid FROM {databaseOwner}[{objectQualifier}RocketContentAPI])");
+
                 var parentItemId = -1;
                 var artNod = xmlDoc.SelectSingleNode("export/art/item[1]");
                 if (artNod != null)
@@ -362,7 +368,7 @@ namespace RocketContentAPI.API
                 var destImgFolder = portalContentData.ImageFolderRel + "/" + moduleId;
                 var destImgFolderMapPath = DNNrocketUtils.MapPath(destImgFolder);
                 if (!Directory.Exists(destImgFolderMapPath)) Directory.CreateDirectory(destImgFolderMapPath);
-                var articleData = RocketContentAPIUtils.GetArticleData(_dataObject.ModuleSettings, _sessionParams.CultureCodeEdit);
+                var articleData = RocketContentAPIUtils.GetArticleData(_dataObject.ModuleSettings, _sessionParams.CultureCodeEdit, false); // do NOT use cache
                 foreach (var rowData in articleData.GetRows())
                 {
                     foreach (var i in rowData.GetImages())
@@ -402,7 +408,7 @@ namespace RocketContentAPI.API
                 var destDocFolder = portalContentData.DocFolderRel + "/" + moduleId;
                 var destDocFolderMapPath = DNNrocketUtils.MapPath(destDocFolder);
                 if (!Directory.Exists(destDocFolderMapPath)) Directory.CreateDirectory(destDocFolderMapPath);
-                var articleData2 = RocketContentAPIUtils.GetArticleData(_dataObject.ModuleSettings, _sessionParams.CultureCodeEdit);
+                var articleData2 = RocketContentAPIUtils.GetArticleData(_dataObject.ModuleSettings, _sessionParams.CultureCodeEdit, false); // do NOT use cache;
                 foreach (var rowData in articleData2.GetRows())
                 {
                     foreach (var i in rowData.GetDocs())
