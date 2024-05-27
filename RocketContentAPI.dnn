@@ -3,6 +3,7 @@
     
 		<package name="RocketContentAPI" type="Library" version="1.1.2">
 			<friendlyName>RocketContentAPI Nevoweb</friendlyName>
+			<DefinitionName>RocketContentAPI</DefinitionName>
 			<description>RocketContentAPI</description>
       <iconFile></iconFile>
       <owner>
