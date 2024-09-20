@@ -1,8 +1,8 @@
 @inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
 @using DNNrocketAPI.Components;
 @{
-    AssigDataModel(Model);
-    var rtnUrl = userParams.Get("viewurl");
+    AssignDataModel(Model);
+    var rtnUrl = @DNNrocketUtils.NavigateURL(userParams.GetInt("viewtabid"));
 }
 
 @{
