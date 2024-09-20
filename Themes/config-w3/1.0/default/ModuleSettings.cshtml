@@ -51,14 +51,10 @@
             <label>@ResourceKey("DNNrocket.name")</label>
             @TextBox(info, "genxml/settings/name"," class='w3-input w3-border' ", "RocketContent: " + moduleData.ModuleRef)
         </div>
-        <div class="w3-third w3-padding">
+        <div class="w3-twothird w3-padding">
             <label>@ResourceKey("RCT.datasource")</label>
             @ModSelectList(info, "genxml/settings/dataref", info.PortalId, " class='w3-input w3-border' ")
         </div>        
-        <div class="w3-third w3-padding">
-            <label>@ResourceKey("RCT.cachehours")</label>
-            @DropDownList(info, "genxml/settings/cachehours", "0,1,2,8,24,48", ResourceKey("RCT.unlimited").ToString() + ",1,2,8,24,48"," class='w3-input w3-border'")
-        </div>
     </div>
 
 
