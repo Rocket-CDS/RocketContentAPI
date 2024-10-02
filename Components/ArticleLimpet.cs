@@ -229,6 +229,35 @@ namespace RocketContentAPI.Components
             }
             return rtn;
         }
+
+        /// <summary>
+        /// Get Article Rows in a set of columns.
+        /// </summary>
+        /// <param name="columns"></param>
+        /// <returns></returns>
+        public List<List<ArticleRowLimpet>> GetArticleRows(int columns)
+        {
+            var rtnList = new List<List<ArticleRowLimpet>>();
+            var rowList = new List<ArticleRowLimpet>();
+            var lp = 0;
+            foreach (var o in _info.GetList("rows"))
+            {
+                var articleRow = new ArticleRowLimpet(ArticleId, o.XMLData, _info.GUIDKey);
+                rowList.Add(articleRow);
+
+                if ((lp % columns) == (columns - 1))
+                {
+                    rtnList.Add(rowList);
+                    rowList = new List<ArticleRowLimpet>();
+                }
+                lp += 1;
+            }
+            if (rowList.Count > 0) rtnList.Add(rowList);
+
+            return rtnList;
+        }
+
+
         #endregion
 
         #region "recycle bin"

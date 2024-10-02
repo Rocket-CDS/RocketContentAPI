@@ -58,11 +58,25 @@
         </div>
 
     </div>
-    @if (!moduleData.GetSettingBool("singlelink"))
-    {
-        <div class="simplisity_removelistitem w3-button  w3-display-topright w3-theme-action" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
-            @ButtonIcon(ButtonTypes.remove)
-        </div>
-    }
+
+        @if (docData.Exists)
+        {
+            <div class="w3-button w3-display-topright w3-theme-action  simplisity_confirmclick" s-confirm="@ResourceKey("RCT.removedoc") ?" s-cmd="article_removedoc" s-post="#a-articledata" s-list=".@articleData.ImageListName,.@articleData.DocumentListName,.@articleData.LinkListName" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@moduleData.TabId", "rowkey":"@(articleRowData.RowKey)"}'>
+                @ButtonIcon(ButtonTypes.remove)
+            </div>
+        }
+        else
+        {
+            <div class="w3-button w3-display-topright w3-theme-action" onclick="$('#articledocumentselect').show();">
+                @ButtonIcon(ButtonTypes.add)
+            </div>
+        }
+
+        @if (!singlelink)
+        {
+            <div class="simplisity_removelistitem w3-button  w3-display-topright w3-theme-action" s-removelist=".linklist" s-recylebin="linklistbin" style="cursor: pointer;">
+                @ButtonIcon(ButtonTypes.remove)
+            </div>
+        }
 </div>
 </div>
