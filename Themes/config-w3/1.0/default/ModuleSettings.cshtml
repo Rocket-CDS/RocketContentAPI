@@ -6,22 +6,13 @@
 @using Rocket.AppThemes.Components;
 @using RocketPortal.Components;
 
+@AssignDataModel(Model)
+@{
+    var info = moduleDataInfo;
+}
+
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
-
-@{
-    var sessionParams = Model.SessionParamsData;
-    var appThemeList = (AppThemeDataList)Model.GetDataObject("appthemedatalist");
-    var articleData = (ArticleLimpet)Model.GetDataObject("articledata");
-    var appThemeView = (AppThemeLimpet)Model.GetDataObject("appthemeview");
-    var appThemeAdmin = (AppThemeLimpet)Model.GetDataObject("appthemeadmin");
-    var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
-    var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
-    var portalContent = (PortalContentLimpet)Model.GetDataObject("portalcontent");
-    var info = new SimplisityInfo(moduleData.Record);
-    var projectAppThemeData = new AppThemeProjectLimpet();
-    var cmdappendix = Model.GetSetting("cmdappendix");
-}
 
 <div id="a-datasection" class="w3-container w3-margin w3-padding">
 
