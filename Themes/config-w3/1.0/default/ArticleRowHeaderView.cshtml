@@ -4,16 +4,16 @@
 <!--inject-->
 @{  
     var headingHide = rowData.GetXmlPropertyBool("genxml/checkbox/hideheading");
+    var title = rowData.GetXmlProperty("genxml/lang/genxml/textbox/title");
 }
 
-@if (!headingHide)
+@if (!headingHide && !String.IsNullOrEmpty(title))
 {
     var headerStyle = rowData.GetXmlProperty("genxml/select/headingstyle");
     if (headerStyle == "")
     {
         headerStyle = "h2";
     }
-    var title = rowData.GetXmlProperty("genxml/lang/genxml/textbox/title");
     var headerAlignText = rowData.GetXmlProperty("genxml/select/headingalign");
     if (headerAlignText == "")
     {
