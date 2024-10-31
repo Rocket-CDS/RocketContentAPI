@@ -15,12 +15,16 @@
     var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
     var userParams = new UserParams("ModuleID:" + moduleData.ModuleId, true);
     var appTheme = (AppThemeLimpet)Model.GetDataObject("apptheme");
-    var hasModuleTemplates = appTheme.HasModuleLevel(moduleData.ModuleRef);
-    var hasPortalTemplates = appTheme.HasPortalLevel();
+
     var localTemplate = "";
-    if (hasModuleTemplates || hasPortalTemplates)
+    if (appTheme != null)
     {
-        localTemplate = "background-color: lightblue;";
+        var hasModuleTemplates = appTheme.HasModuleLevel(moduleData.ModuleRef);
+        var hasPortalTemplates = appTheme.HasPortalLevel();
+        if (hasModuleTemplates || hasPortalTemplates)
+        {
+            localTemplate = "background-color: lightblue;";
+        }
     }
 
 }
