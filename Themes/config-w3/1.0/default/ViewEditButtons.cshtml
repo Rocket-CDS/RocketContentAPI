@@ -14,12 +14,21 @@
     var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
     var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
     var userParams = new UserParams("ModuleID:" + moduleData.ModuleId, true);
+    var appTheme = (AppThemeLimpet)Model.GetDataObject("apptheme");
+    var hasModuleTemplates = appTheme.HasModuleLevel(moduleData.ModuleRef);
+    var hasPortalTemplates = appTheme.HasPortalLevel();
+    var localTemplate = "";
+    if (hasModuleTemplates || hasPortalTemplates)
+    {
+        localTemplate = "background-color: lightblue;";
+    }
+
 }
 
 <style>
     .w3-hide { display: none !important }
-    .viewedit-button { border-radius: 2px; border: 1px solid #ccc; color: #000; background-color: #fff; display: inline-block; padding: 2px 4px; vertical-align: baseline; overflow: hidden; text-decoration: none; color: inherit; text-align: center; cursor: pointer; white-space: nowrap }
-    .rocketactionmenu { display: none; position: absolute; top: 0px; left: 0px; z-index: 9999; }
+    .viewedit-button { border-radius: 8px; border: 1px solid #ccc; color: #000; background-color: #fff; display: inline-block; padding: 2px 4px; vertical-align: baseline; overflow: hidden; text-decoration: none; color: inherit; text-align: center; cursor: pointer; white-space: nowrap }
+    .rocketactionmenu { display: none; position: absolute; top: -14px; left: 0px; z-index: 9999; }
 </style>
 
 <div id="a-editbuttons-@(moduleData.ModuleId)" class="rocketactionmenu" style="">
@@ -42,7 +51,7 @@
 
             if (UserUtils.IsSuperUser())
             {
-                <a href="@userParams.Get("appthemeurl")" class="viewedit-button " title="@ResourceKey("RCT.editapptheme")">
+                <a href="@userParams.Get("appthemeurl")" class="viewedit-button " style="@(localTemplate) background-color:light; " title="@ResourceKey("RCT.editapptheme")">
                     <img src="/DesktopModules/DNNrocket/API/images/movie_edit.svg" alt="@ResourceKey("RCT.editapptheme")" />
                 </a>
             }
@@ -53,7 +62,7 @@
             var disbledCache = "";
             if (moduleData.DisableCache)
             {
-                disbledCache = " 	background-color:#FF6347; ";
+                disbledCache = " background-color:lightcoral ";
             }
         }
         <span onclick="$('#a-editbuttons-@(moduleData.ModuleId)').hide();$('#a-editbuttons-@(moduleData.ModuleId)').addClass('w3-hide');" style="@(disbledCache)" class="viewedit-button">
