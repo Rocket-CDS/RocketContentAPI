@@ -120,6 +120,34 @@ namespace RocketContentAPI.Components
             var apiResx = "/DesktopModules/DNNrocket/api/App_LocalResources/";
             return new RawString("<span class=\"w3-button w3-text-theme\" style=\"width:40px;height:40px;padding:8px 0;\"><span class=\"material-icons\" title=\"" + DNNrocketUtils.GetResourceString(apiResx, "DNNrocket.translate", "Text", cultureCode) + "\" style=\"cursor:pointer;\" onclick=\"$('#deeplmodal').show();simplisity_setSessionField('deepltextid','" + textId + "');simplisity_setSessionField('deeplcmd','article_deepl');$('#deeplquestion').val(stripHTML($('#" + sourceTextId + "').val()));\">translate</span></span>");
         }
+        /// <summary>
+        /// Standardized method and names to craete top,bottom,left,right padding on an element.
+        /// Allows potion adjustment from module settings without change CSS files.
+        /// field Id: leftpadding,rightpadding,toppadding,bottompadding
+        /// </summary>
+        /// <param name="sModel"></param>
+        /// <returns>The padding CSS for an inline style on an element.</returns>
+        public string StylePadding()
+        {
+            var strOut = "";
+            if (moduleData.GetSettingInt("leftpadding") > 0)
+            {
+                strOut += "padding-left:" + moduleData.GetSettingInt("leftpadding") + "px;" ;
+            }
+            if (moduleData.GetSettingInt("rightpadding") > 0)
+            {
+                strOut += "padding-right:" + moduleData.GetSettingInt("rightpadding") + "px;";
+            }
+            if (moduleData.GetSettingInt("toppadding") > 0)
+            {
+                strOut += "padding-top:" + moduleData.GetSettingInt("toppadding") + "px;";
+            }
+            if (moduleData.GetSettingInt("bottompadding") > 0)
+            {
+                strOut += "padding-bottom:" + moduleData.GetSettingInt("bottompadding") + "px;";
+            }
+            return strOut;
+        }
 
     }
 }
