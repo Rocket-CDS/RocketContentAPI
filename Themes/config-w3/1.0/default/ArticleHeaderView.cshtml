@@ -2,7 +2,8 @@
 @AssigDataModel(Model)
 @AddProcessDataResx(appThemeView, true)
 <!--inject-->
-@{
+<div style="text-align:@headerData.GetXmlProperty("genxml/header/headeralign");">
+    @{
     var moduleTitle = headerData.GetXmlProperty("genxml/lang/genxml/header/headertitle");
     var moduleText = headerData.GetXmlProperty("genxml/lang/genxml/header/headertext");
     var headerStyle = headerData.GetXmlProperty("genxml/header/headerstyle");
@@ -20,7 +21,7 @@
     {
         headerAnchor = " id=" + headerData.GetXmlProperty("genxml/lang/genxml/header/headeranchor");
     }
-    var headerElement = "<" + headerStyle + " " + headerAnchor + " style='text-align:" + headerAlignText + ";'>" + moduleTitle + "</" + headerStyle + ">";
+    var headerElement = "<" + headerStyle + " " + headerAnchor + ">" + moduleTitle + "</" + headerStyle + ">";
 
 }
 @if (moduleTitle != "")
@@ -31,4 +32,4 @@
 {
     <p>@moduleText</p>
 }
-
+</div>
