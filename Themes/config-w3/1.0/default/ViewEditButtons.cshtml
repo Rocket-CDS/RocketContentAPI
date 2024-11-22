@@ -16,6 +16,7 @@
     var userParams = new UserParams("ModuleID:" + moduleData.ModuleId, true);
     var appTheme = (AppThemeLimpet)Model.GetDataObject("apptheme");
 
+    var settingsTitle = ResourceKey("DNNrocket.settings").ToString();
     var localTemplate = "";
     if (appTheme != null)
     {
@@ -25,6 +26,7 @@
         {
             localTemplate = "background-color: lightblue;";
         }
+        settingsTitle = appTheme.Name;
     }
 
 }
@@ -35,7 +37,7 @@
     .rocketactionmenu { display: none; position: absolute; top: -14px; left: 0px; z-index: 9999; }
 </style>
 
-<div id="a-editbuttons-@(moduleData.ModuleId)" class="rocketactionmenu" style="">
+<div id="a-editbuttons-@(moduleData.ModuleId)" class="rocketactionmenu">
     <div style="padding: 0px 4px;">
 
         @if (!moduleData.IsSatellite)
@@ -49,7 +51,7 @@
         </a>
         @if (UserUtils.IsAdministrator())
         {
-            <a href="@userParams.Get("settingsurl")" class="viewedit-button" title="@ResourceKey("DNNrocket.settings")">
+            <a href="@userParams.Get("settingsurl")" class="viewedit-button" title="@settingsTitle">
                 <img src="/DesktopModules/DNNrocket/API/images/action_settings.svg" alt="@ResourceKey("DNNrocket.settings")" />
             </a>
 
