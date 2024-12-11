@@ -54,6 +54,14 @@
 		  <action>true</action>
 	  </command>
 	  <command>
+		  <cmd>article_addchatgptimage</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>article_addchatgptimage1</cmd>
+		  <action>true</action>
+	  </command>	  
+	  <command>
 		  <cmd>article_removeimage</cmd>
 		  <action>true</action>
 	  </command>	  

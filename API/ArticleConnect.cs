@@ -1,5 +1,6 @@
 ﻿using DNNrocketAPI;
 using DNNrocketAPI.Components;
+using Newtonsoft.Json;
 using Rocket.AppThemes.Components;
 using RocketContentAPI.Components;
 using RocketPortal.Components;
@@ -9,8 +10,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace RocketContentAPI.API
@@ -96,6 +100,35 @@ namespace RocketContentAPI.API
         {
             _dataObject.ArticleData.Delete();
         }
+        public string AddArticleChatGptImageAsync(bool singleImage = false)
+        {
+            _dataObject.SetArticleDataObject(false);
+            var articleData = _dataObject.ArticleData;
+            var articleRow = articleData.GetRow(_rowKey);
+            if (articleRow != null)
+            {
+                if (singleImage) articleRow.Info.RemoveList(articleData.ImageListName);
+
+                //call ChatGptimage
+                var prompt = GeneralUtils.DeCode(_postInfo.GetXmlProperty("genxml/hidden/chatgptimagetext"));
+                if (!String.IsNullOrEmpty(prompt))
+                {
+                    var chatGpt = new ChatGPT();
+                    var iUrl = chatGpt.GenerateImageAsync(prompt).Result;
+                    if (!String.IsNullOrEmpty(iUrl))
+                    {
+                        var imgFileMapPath = _dataObject.PortalContent.ImageFolderMapPath + "\\" + articleData.ModuleId + "\\" + GeneralUtils.GetGuidKey() + ".webp";
+                        ImgUtils.DownloadAndSaveImage(iUrl, imgFileMapPath);
+ 
+                        articleRow.AddImage(Path.GetFileName(imgFileMapPath), articleData.ModuleId);
+                        articleData.UpdateRow(_rowKey, articleRow.Info);
+                        _dataObject.SetArticleDataObject(false);
+                    }
+                }
+            }
+            return AdminDetailDisplay();
+        }
+
         public string AddArticleImage(bool singleImage = false)
         {
             _dataObject.SetArticleDataObject(false);

@@ -76,6 +76,29 @@ namespace RocketContentAPI.Components
             }
             return rtn;
         }
+        public List<List<ArticleImage>> GetImageRows(int columns)
+        {
+            var rtnList = new List<List<ArticleImage>>();
+            var rowList = new List<ArticleImage>();
+            var lp = 0;
+            foreach (var o in GetImageList())
+            {
+                var articleImg = new ArticleImage(o, "articleimage");
+                rowList.Add(articleImg);
+
+                if ((lp % columns) == (columns - 1))
+                {
+                    rtnList.Add(rowList);
+                    rowList = new List<ArticleImage>();
+                }
+                lp += 1;
+            }
+            if (rowList.Count > 0) rtnList.Add(rowList);
+
+            return rtnList;
+        }
+
+
         #endregion
 
         #region "docs"
