@@ -113,16 +113,29 @@ namespace RocketContentAPI.API
                 var prompt = GeneralUtils.DeCode(_postInfo.GetXmlProperty("genxml/hidden/chatgptimagetext"));
                 if (!String.IsNullOrEmpty(prompt))
                 {
-                    var chatGpt = new ChatGPT();
-                    var iUrl = chatGpt.GenerateImageAsync(prompt).Result;
-                    if (!String.IsNullOrEmpty(iUrl))
+                    try
                     {
-                        var imgFileMapPath = _dataObject.PortalContent.ImageFolderMapPath + "\\" + articleData.ModuleId + "\\" + GeneralUtils.GetGuidKey() + ".webp";
-                        ImgUtils.DownloadAndSaveImage(iUrl, imgFileMapPath);
- 
-                        articleRow.AddImage(Path.GetFileName(imgFileMapPath), articleData.ModuleId);
-                        articleData.UpdateRow(_rowKey, articleRow.Info);
-                        _dataObject.SetArticleDataObject(false);
+                        _dataObject.PortalData.AiImageCount();
+                        var chatGpt = new ChatGPT();
+                        var iUrl = chatGpt.GenerateImageAsync(prompt).Result;
+                        if (GeneralUtils.IsUriValid(iUrl))
+                        {
+                            var imgFileMapPath = _dataObject.PortalContent.ImageFolderMapPath + "\\" + articleData.ModuleId + "\\" + GeneralUtils.GetGuidKey() + ".webp";
+                            ImgUtils.DownloadAndSaveImage(iUrl, imgFileMapPath);
+
+                            articleRow.AddImage(Path.GetFileName(imgFileMapPath), articleData.ModuleId);
+                            articleData.UpdateRow(_rowKey, articleRow.Info);
+                            _dataObject.SetArticleDataObject(false);
+                        }
+                        else
+                        {
+                            return iUrl;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        LogUtils.LogException(ex);
+                        return ex.ToString();
                     }
                 }
             }
