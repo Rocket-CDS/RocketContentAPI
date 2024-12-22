@@ -120,7 +120,9 @@ namespace RocketContentAPI.API
                         var iUrl = chatGpt.GenerateImageAsync(prompt).Result;
                         if (GeneralUtils.IsUriValid(iUrl))
                         {
-                            var imgFileMapPath = _dataObject.PortalContent.ImageFolderMapPath + "\\" + articleData.ModuleId + "\\" + GeneralUtils.GetGuidKey() + ".webp";
+                            var moduleImgFolder = _dataObject.PortalContent.ImageFolderMapPath + "\\" + articleData.ModuleId;
+                            if (!Directory.Exists(moduleImgFolder)) Directory.CreateDirectory(moduleImgFolder); 
+                            var imgFileMapPath = moduleImgFolder + "\\" + GeneralUtils.GetGuidKey() + ".webp";
                             ImgUtils.DownloadAndSaveImage(iUrl, imgFileMapPath);
 
                             articleRow.AddImage(Path.GetFileName(imgFileMapPath), articleData.ModuleId);
