@@ -146,6 +146,12 @@ namespace RocketContentAPI.Components
             }
             return rtn;
         }
+        public static List<SimplisityInfo> GetAllRecordMODSETTINGS(int portalId)
+        {
+            var objCtrl = new DNNrocketController();
+            var sqlSearchFilter = " select * from [dbo].[DNNrocket]  where portalid = " + portalId + " and typecode = 'MODSETTINGS' and [XMLData].value('(genxml/systemkey)[1]','nvarchar(max)') = 'rocketcontentapi' ";
+            return objCtrl.ExecSqlList(sqlSearchFilter);
+        }
 
     }
 

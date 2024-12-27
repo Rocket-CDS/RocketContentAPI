@@ -174,6 +174,12 @@ namespace RocketContentAPI.API
                     strOut = IndexContent();
                     break;
 
+                case "rocketcontentapi_turnonallcache":
+                    strOut = EnableAllModuleCache();
+                    break;
+                case "rocketcontentapi_turnoffallcache":
+                    strOut = DisableAllModuleCache();
+                    break;                    
 
 
 

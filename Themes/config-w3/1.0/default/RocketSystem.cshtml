@@ -21,14 +21,32 @@
     AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/");
 }
 <div id="" class="w3-bar">
-    <button class="w3-padding w3-button w3-theme-action simplisity_click"  s-return="#setupdata" s-cmd="rocketsystem_save" s-list=".sqlorderbyproduct,.settingsdata,.linklist" s-post="#servicesettings" s-fields='{"systemkey":"@systemData.SystemKey","portalid":"@portalContent.PortalId"}'>@ButtonText(ButtonTypes.save)</button>
+    <div class="w3-padding w3-button w3-theme-action simplisity_click" s-return="#setupdata" s-cmd="rocketsystem_save" s-list=".sqlorderbyproduct,.settingsdata,.linklist" s-post="#servicesettings" s-fields='{"systemkey":"@systemData.SystemKey","portalid":"@portalContent.PortalId"}'>@ButtonText(ButtonTypes.save)</div>
 </div>
 
 <div id="servicesettings" class="w3-row w3-margin-top">
+
+
 </div>
 
+<div id="rtnresult" class="w3-panel w3-leftbar w3-pale-green w3-xxlarge"></div>
 
-<div>
+<div class="w3-row">
+    <div class="w3-quarter w3-padding">
+        <div class="w3-padding w3-block w3-button w3-theme-action simplisity_click" s-return="#rtnresult" s-cmd="rocketcontentapi_turnoffallcache" s-fields='{"systemkey":"@systemData.SystemKey","portalid":"@portalContent.PortalId"}'>Turn OFF all module cache</div>
+    </div>
+    <div class="w3-quarter w3-padding">
+        <div class="w3-padding w3-block w3-button w3-theme-action simplisity_click" s-return="#rtnresult" s-cmd="rocketcontentapi_turnonallcache" s-fields='{"systemkey":"@systemData.SystemKey","portalid":"@portalContent.PortalId"}'>Turn ON all module cache</div>
+    </div>
+    <div class="w3-quarter w3-padding">
+        <div class="w3-padding w3-block w3-button w3-theme-action simplisity_click" s-return="#rtnresult" s-cmd="rocketcontentapi_validate" s-fields='{"systemkey":"@systemData.SystemKey","portalid":"@portalContent.PortalId"}'>Validate All Modules</div>
+    </div>
+    <div class="w3-quarter w3-padding">
+        <div class="w3-padding w3-block w3-button w3-theme-action simplisity_click" s-return="#rtnresult" s-cmd="rocketcontentapi_validate" s-fields='{"systemkey":"@systemData.SystemKey","portalid":"@portalContent.PortalId"}'>Delete Unused Images</div>
+    </div>
+</div>
+
+<div class="w3-margin">
     @if (UserUtils.IsInRole("Administrator"))
     {
         <div class="w3-container">

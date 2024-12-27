@@ -462,10 +462,42 @@ namespace RocketContentAPI.API
             }
 
         }
+        
+        private string DisableAllModuleCache()
+        {
+            var objCtrl = new DNNrocketController();
+            var l = RocketContentAPIUtils.GetAllRecordMODSETTINGS(_dataObject.PortalId);
+            foreach (var sRec in l)
+            {
+                sRec.SetXmlProperty("genxml/settings/disablecache", "true");
+                objCtrl.Update(sRec);
+            }
+            DNNrocketUtils.ClearAllCache();
+            return "All Module Cache is OFF.";
+        }
+        private string EnableAllModuleCache()
+        {
+            var objCtrl = new DNNrocketController();
+            var l = RocketContentAPIUtils.GetAllRecordMODSETTINGS(_dataObject.PortalId);
+            foreach (var sRec in l)
+            {
+                sRec.SetXmlProperty("genxml/settings/disablecache", "false");
+                objCtrl.Update(sRec);
+            }
+            DNNrocketUtils.ClearAllCache();
+            return "All Module Cache is ON.";
+        }
 
         private string ValidateContent()
         {
-            return "OK";
+            var l = RocketContentAPIUtils.GetAllRecordMODSETTINGS(_dataObject.PortalId);
+            foreach (var sRec in l)
+            {
+                var moduelData = new ModuleContentLimpet(sRec.PortalId, sRec.GUIDKey, "rocketcontentapi");
+                var articleData = RocketContentAPIUtils.GetArticleData(moduelData, DNNrocketUtils.GetCurrentCulture());
+                articleData.Validate();
+            }
+            return "All Modules validated and unused images removed.";
         }
         private string IndexContent()
         {

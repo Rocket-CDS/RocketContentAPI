@@ -14,6 +14,7 @@ using System.Xml.XPath;
 using System.Xml.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
+using System.IO;
 
 namespace RocketContentAPI.Components
 {
@@ -123,6 +124,35 @@ namespace RocketContentAPI.Components
         }
         public void Validate()
         {
+            // Removed unused images
+
+            // Get images in DB
+            var imgDbList = new List<string>();
+            foreach (ArticleRowLimpet rowData in GetRows())
+            {
+                foreach (ArticleImage img in rowData.GetImages())
+                {
+                    imgDbList.Add(Path.GetFileNameWithoutExtension(img.MapPath));
+                }
+            }
+            // Get images on File
+            var portalContent = new PortalContentLimpet(PortalId, CultureCode);
+            var imgDir = portalContent.ImageFolderMapPath + "\\" + ModuleId;
+            foreach (var imgF in Directory.GetFiles(imgDir))
+            {
+                if (!imgDbList.Contains(Path.GetFileNameWithoutExtension(imgF)))
+                {
+                    try
+                    {
+                        File.Delete(imgF);
+                    }
+                    catch (Exception)
+                    {
+                        // ignore
+                    }
+                }
+            }
+
         }
 
         #region "rows"

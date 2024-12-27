@@ -165,8 +165,17 @@
 	  </command>
 	  <command>
 		  <cmd>rocketcontentapi_index</cmd>
+		  <action>true</action>	  
+	  </command>
+	  <command>
+		  <cmd>rocketcontentapi_turnoffallcache</cmd>
+		  <action>true</action>
+	  </command>
+	  <command>
+		  <cmd>rocketcontentapi_turnonallcache</cmd>
 		  <action>true</action>
 	  </command>	  
+
 
 
 	  <command>

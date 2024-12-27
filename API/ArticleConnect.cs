@@ -91,6 +91,7 @@ namespace RocketContentAPI.API
             var articleData = _dataObject.ArticleData;
             articleData.ModuleId = _dataObject.ModuleSettings.ModuleId;
             articleData.UpdateRow(_rowKey, _postInfo, _dataObject.ModuleSettings.SecureSave);
+            articleData.Validate();
             articleData.ClearCache();
             DNNrocketUtils.SynchronizeModule(articleData.ModuleId); // module search
             _dataObject.SetArticleDataObject(false);
