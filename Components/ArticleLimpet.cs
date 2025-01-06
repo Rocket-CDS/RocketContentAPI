@@ -65,6 +65,9 @@ namespace RocketContentAPI.Components
         }
         public void Delete()
         {
+            var portalContent = new PortalContentLimpet(PortalId, CultureCode);
+            var imgDir = portalContent.ImageFolderMapPath + "\\" + ModuleId;
+            if (Directory.Exists(imgDir)) Directory.Delete(imgDir, true);
             _objCtrl.Delete(_info.ItemID, _tableName);
             ClearCache();
         }
@@ -125,6 +128,7 @@ namespace RocketContentAPI.Components
         public void Validate()
         {
             // Removed unused images
+            DNNrocketUtils.ClearThumbnailLock();
 
             // Get images in DB
             var imgDbList = new List<string>();
@@ -138,21 +142,23 @@ namespace RocketContentAPI.Components
             // Get images on File
             var portalContent = new PortalContentLimpet(PortalId, CultureCode);
             var imgDir = portalContent.ImageFolderMapPath + "\\" + ModuleId;
-            foreach (var imgF in Directory.GetFiles(imgDir))
+            if (Directory.Exists(imgDir))
             {
-                if (!imgDbList.Contains(Path.GetFileNameWithoutExtension(imgF)))
+                foreach (var imgF in Directory.GetFiles(imgDir))
                 {
-                    try
+                    if (!imgDbList.Contains(Path.GetFileNameWithoutExtension(imgF)))
                     {
-                        File.Delete(imgF);
-                    }
-                    catch (Exception)
-                    {
-                        // ignore
+                        try
+                        {
+                            File.Delete(imgF);
+                        }
+                        catch (Exception)
+                        {
+                            // ignore
+                        }
                     }
                 }
             }
-
         }
 
         #region "rows"
