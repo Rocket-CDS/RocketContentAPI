@@ -2,37 +2,38 @@
 @AssigDataModel(Model)
 @AddProcessDataResx(appThemeView, true)
 <!--inject-->
-@if (moduleTitle != "" && moduleText != "")
-{
-<div style="text-align:@headerData.GetXmlProperty("genxml/header/headeralign");">
-    @{
+@{
     var moduleTitle = headerData.GetXmlProperty("genxml/lang/genxml/header/headertitle");
     var moduleText = headerData.GetXmlProperty("genxml/lang/genxml/header/headertext");
-    var headerStyle = headerData.GetXmlProperty("genxml/header/headerstyle");
-    if (headerStyle == "")
+    if (moduleTitle != "" && moduleText != "")
     {
-        headerStyle = "h2";
-    }
-    var headerAlignText = headerData.GetXmlProperty("genxml/header/headeralign");
-    if (headerAlignText == "")
-    {
-        headerAlignText = "start";
-    }
-    var headerAnchor = "";
-    if (headerData.GetXmlProperty("genxml/lang/genxml/header/headeranchor") != "")
-    {
-        headerAnchor = " id=" + headerData.GetXmlProperty("genxml/lang/genxml/header/headeranchor");
-    }
-    var headerElement = "<" + headerStyle + " " + headerAnchor + ">" + moduleTitle + "</" + headerStyle + ">";
+        var headerAlignText = headerData.GetXmlProperty("genxml/header/headeralign");
+        if (headerAlignText == "")
+        {
+            headerAlignText = "start";
+        }
+        var headerStyle = headerData.GetXmlProperty("genxml/header/headerstyle");
+        if (headerStyle == "")
+        {
+            headerStyle = "h2";
+        }
+        var headerAnchor = "";
+        if (headerData.GetXmlProperty("genxml/lang/genxml/header/headeranchor") != "")
+        {
+            headerAnchor = " id=" + headerData.GetXmlProperty("genxml/lang/genxml/header/headeranchor");
+        }
+        var headerElement = "<" + headerStyle + " " + headerAnchor + ">" + moduleTitle + "</" + headerStyle + ">";
 
-}
-@if (moduleTitle != "")
-{
-    @HtmlOf(headerElement)
-}
-@if (moduleText != "")
-{
-    <p>@moduleText</p>
-}
-</div>
+        <div style="text-align:@headerAlignText;">
+            @if (moduleTitle != "")
+            {
+                @HtmlOf(headerElement)
+            }
+            @if (moduleText != "")
+            {
+                <p>@BreakOf(moduleText)</p>
+            }
+        </div>
+
+    }
 }
