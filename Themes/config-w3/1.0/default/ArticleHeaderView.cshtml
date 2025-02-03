@@ -2,6 +2,8 @@
 @AssigDataModel(Model)
 @AddProcessDataResx(appThemeView, true)
 <!--inject-->
+@if (moduleTitle != "" && moduleText != "")
+{
 <div style="text-align:@headerData.GetXmlProperty("genxml/header/headeralign");">
     @{
     var moduleTitle = headerData.GetXmlProperty("genxml/lang/genxml/header/headertitle");
@@ -33,3 +35,4 @@
     <p>@moduleText</p>
 }
 </div>
+}
