@@ -63,6 +63,19 @@ namespace RocketContentAPI.Components
             }
             _info.Lang = CultureCode;
         }
+        public bool LangRecordRowExists(string cultureCode, string rowKey)
+        {
+            var rowRec = _objCtrl.GetRecordLang(ArticleId, cultureCode, _tableName);
+            if (rowRec == null)
+                return false;
+            else
+            {
+                if (rowRec.GetRecordListItem("rows", "genxml/config/rowkeylang", rowKey) == null)
+                    return false;
+                else
+                    return true;
+            }
+        }
         public void Delete()
         {
             var portalContent = new PortalContentLimpet(PortalId, CultureCode);

@@ -392,6 +392,34 @@ namespace RocketContentAPI.API
             if (_rowKey != "") articleRow = _dataObject.ArticleData.GetRow(_rowKey);
             if (articleRow == null) articleRow = _dataObject.ArticleData.GetRow(0);  // row removed and still in sessionparams
 
+            // check if we have data in the record, take default langauge if not.
+            if (!_dataObject.ArticleData.LangRecordRowExists(_dataObject.ArticleData.CultureCode, articleRow.RowKey))
+            {
+                var langArticle = new ArticleLimpet(_dataObject.ArticleData.PortalId, _dataObject.ArticleData.DataRef, PortalUtils.GetDefaultLanguage(_dataObject.PortalId), _dataObject.ArticleData.ModuleId);
+                if (_dataObject.ArticleData.LangRecordRowExists(langArticle.CultureCode, articleRow.RowKey))
+                {
+                    var langRow = langArticle.GetRow(articleRow.RowKey);
+                    articleRow.Info = langRow.Info;
+                }
+                else
+                {
+                    //default langauge has not been populated, loop on other langauges and take the first. 
+                    foreach (var cultureCode in DNNrocketUtils.GetCultureCodeList(_dataObject.ArticleData.PortalId))
+                    {
+                        if (_dataObject.ArticleData.LangRecordRowExists(cultureCode, articleRow.RowKey))
+                        {
+                            var langArticle2 = new ArticleLimpet(_dataObject.ArticleData.PortalId, _dataObject.ArticleData.DataRef, cultureCode, _dataObject.ArticleData.ModuleId);
+                            if (_dataObject.ArticleData.LangRecordRowExists(langArticle2.CultureCode, articleRow.RowKey))
+                            {
+                                var langRow2 = langArticle2.GetRow(articleRow.RowKey);
+                                articleRow.Info = langRow2.Info;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("admindetail.cshtml");
             _dataObject.SetDataObject("articlerow", articleRow);
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, _dataObject.ArticleData, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
