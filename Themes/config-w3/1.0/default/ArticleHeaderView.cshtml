@@ -5,7 +5,7 @@
 @{
     var moduleTitle = headerData.GetXmlProperty("genxml/lang/genxml/header/headertitle");
     var moduleText = headerData.GetXmlProperty("genxml/lang/genxml/header/headertext");
-    if (moduleTitle != "" && moduleText != "")
+    if (moduleTitle != "" || moduleText != "")
     {
         var headerAlignText = headerData.GetXmlProperty("genxml/header/headeralign");
         if (headerAlignText == "")
