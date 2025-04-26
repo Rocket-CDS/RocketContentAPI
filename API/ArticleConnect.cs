@@ -1,21 +1,13 @@
-﻿using DNNrocketAPI;
-using DNNrocketAPI.Components;
-using Newtonsoft.Json;
+﻿using DNNrocketAPI.Components;
 using Rocket.AppThemes.Components;
 using RocketContentAPI.Components;
 using RocketPortal.Components;
+using RocketUtils;
 using Simplisity;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Net.Http;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace RocketContentAPI.API
 {
@@ -124,7 +116,7 @@ namespace RocketContentAPI.API
                             var moduleImgFolder = _dataObject.PortalContent.ImageFolderMapPath + "\\" + articleData.ModuleId;
                             if (!Directory.Exists(moduleImgFolder)) Directory.CreateDirectory(moduleImgFolder); 
                             var imgFileMapPath = moduleImgFolder + "\\" + GeneralUtils.GetGuidKey() + ".webp";
-                            ImgUtils.DownloadAndSaveImage(iUrl, imgFileMapPath);
+                            RocketUtils.ImgUtils.DownloadAndSaveImage(iUrl, imgFileMapPath);
 
                             articleRow.AddImage(Path.GetFileName(imgFileMapPath), articleData.ModuleId);
                             articleData.UpdateRow(_rowKey, articleRow.Info);
@@ -164,7 +156,7 @@ namespace RocketContentAPI.API
                 if (imgsize == 0) imgsize = 640;
                 var destDir = _dataObject.PortalContent.ImageFolderMapPath + "\\" + _dataObject.ModuleSettings.ModuleId;
                 if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
-                var imgList = ImgUtils.UploadBase64Image(filenameList, filebase64List, baseFileMapPath, destDir, imgsize);
+                var imgList = RocketUtils.ImgUtils.UploadBase64Image(filenameList, filebase64List, baseFileMapPath, destDir, imgsize);
                 foreach (var imgFileMapPath in imgList)
                 {
                     var articleRow = articleData.GetRow(_rowKey);
