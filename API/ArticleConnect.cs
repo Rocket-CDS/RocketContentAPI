@@ -326,9 +326,9 @@ namespace RocketContentAPI.API
             var rtn = new Dictionary<string, object>();
             var rtnList = new List<Dictionary<string, object>>();
 
-            if (_dataObject.AppThemeAdmin == null) return rtn; //Possible on website import 
+            if (_dataObject.AppTheme == null) return rtn; //Possible on website import 
 
-            var searchIndexFields = _dataObject.AppThemeAdmin.GetSeachIndexFieldNames(_moduleRef);
+            var searchIndexFields = _dataObject.AppTheme.GetSeachIndexFieldNames(_moduleRef);
             var bodyFieldNameList = searchIndexFields.GetXmlProperty("genxml/searchbody").Split(',');
             var descriptionFieldNameList = searchIndexFields.GetXmlProperty("genxml/searchdescription").Split(',');
             var titleFieldNameList = searchIndexFields.GetXmlProperty("genxml/searchtitle").Split(',');

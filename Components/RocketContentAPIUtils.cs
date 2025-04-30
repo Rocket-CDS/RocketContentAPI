@@ -81,7 +81,7 @@ namespace RocketContentAPI.Components
         {
             var dataObject = new DataObjectLimpet(portalId, moduleRef, rowKey, sessionParam, true);
             if (!dataObject.ModuleSettings.HasAppThemeAdmin) return noAppThemeReturn;
-            var razorTempl = dataObject.AppThemeAdmin.GetTemplate(template, moduleRef);
+            var razorTempl = dataObject.AppTheme.GetTemplate(template, moduleRef);
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, dataObject.DataObjects, new Dictionary<string, string>(), sessionParam, true);
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;

@@ -47,7 +47,8 @@ namespace RocketContentAPI.Components
             SetDataObject("appthemeprojects", AppThemeUtils.AppThemeProjects());
             SetDataObject("userparams", new UserParams("ModuleID:" + moduleId, true));
             SetDataObject("appthemerocketapi", AppThemeUtils.AppThemeRocketApi(portalid));
-            SetDataObject("apptheme", AppThemeView);
+            var appThemeShared = new AppThemeLimpet(ModuleSettings.PortalId, "rocketcontentapi.01shared", "1.0", ModuleSettings.ProjectName);
+            SetDataObject("appthemeshared", appThemeShared);
             SetArticleDataObject(false);// this must be overwritten by any admin/update to not use cache.
         }
         public void SetArticleDataObject(bool useCache)
@@ -75,16 +76,19 @@ namespace RocketContentAPI.Components
             if (_dataObjects.ContainsKey(key)) _dataObjects.Remove(key);
             _dataObjects.Add(key, value);
 
-            if (key == "modulesettings") // load appTheme if we has settings in ModuleSettings
+            if (key == "modulesettings") // load appTheme if we have settings in ModuleSettings
             {
                 if (ModuleSettings.HasProject)
                 {
-                    SetDataObject("appthemedatalist", new AppThemeDataList(ModuleSettings.PortalId, ModuleSettings.ProjectName, SystemKey));
-                    if (ModuleSettings.HasAppThemeAdmin)
+                    if (!_dataObjects.ContainsKey("appthemedatalist")) _dataObjects.Add("appthemedatalist", new AppThemeDataList(ModuleSettings.PortalId, ModuleSettings.ProjectName, SystemKey));
+                    if (ModuleSettings.HasAppThemeAdmin && !_dataObjects.ContainsKey("apptheme") && !_dataObjects.ContainsKey("appthemeview"))
                     {
-                        SetDataObject("appthemeadmin", new AppThemeLimpet(ModuleSettings.PortalId, ModuleSettings.AppThemeAdminFolder, ModuleSettings.AppThemeAdminVersion, ModuleSettings.ProjectName));
-                        //appthemeview is Legacy
-                        SetDataObject("appthemeview", new AppThemeLimpet(ModuleSettings.PortalId, ModuleSettings.AppThemeAdminFolder, ModuleSettings.AppThemeAdminVersion, ModuleSettings.ProjectName));
+                        var appTheme = new AppThemeLimpet(ModuleSettings.PortalId, ModuleSettings.AppThemeAdminFolder, ModuleSettings.AppThemeAdminVersion, ModuleSettings.ProjectName);
+                        _dataObjects.Add("apptheme", appTheme);
+                        // the AppTheme were once split, now RocketContent uses the same "apptheme" AppTheme.
+                        // "appthemeview" && "appthemeadmin" is legacy but still used in templates.
+                        _dataObjects.Add("appthemeview", appTheme);
+                        _dataObjects.Add("appthemeadmin", appTheme);
                     }
                 }
             }
@@ -114,8 +118,9 @@ namespace RocketContentAPI.Components
         public ModuleContentLimpet ModuleSettings { get { return (ModuleContentLimpet)GetDataObject("modulesettings"); } }
         public AppThemeSystemLimpet AppThemeSystem { get { return (AppThemeSystemLimpet)GetDataObject("appthemesystem"); } }
         public PortalContentLimpet PortalContent { get { return (PortalContentLimpet)GetDataObject("portalcontent"); } }
+        public AppThemeLimpet AppThemeShared { get { return (AppThemeLimpet)GetDataObject("appthemeshared"); } set { SetDataObject("appthemeshared", value); } }
         public AppThemeLimpet AppThemeView { get { return (AppThemeLimpet)GetDataObject("appthemeview"); } set { SetDataObject("appthemeview", value); } }
-        public AppThemeLimpet AppThemeAdmin { get { return (AppThemeLimpet)GetDataObject("appthemeadmin"); } set { SetDataObject("appthemeadmin", value); } }
+        public AppThemeLimpet AppTheme { get { return (AppThemeLimpet)GetDataObject("apptheme"); } set { SetDataObject("apptheme", value); } }
         public PortalLimpet PortalData { get { return (PortalLimpet)GetDataObject("portaldata"); } }
         public SystemLimpet SystemData { get { return (SystemLimpet)GetDataObject("systemdata"); } }
         public AppThemeProjectLimpet AppThemeProjects { get { return (AppThemeProjectLimpet)GetDataObject("appthemeprojects"); } }
