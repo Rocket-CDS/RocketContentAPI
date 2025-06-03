@@ -153,7 +153,7 @@ namespace RocketContentAPI.API
                 var baseFileMapPath = PortalUtils.TempDirectoryMapPath() + "\\" + GeneralUtils.GetGuidKey();
                 var imgsize = _postInfo.GetXmlPropertyInt("genxml/hidden/imageresize");
                 if (imgsize == 0) imgsize = _dataObject.ModuleSettings.Record.GetXmlPropertyInt("genxml/settings/imageresize");
-                if (imgsize == 0) imgsize = 640;
+                if (imgsize == 0) imgsize = 1024;
                 var destDir = _dataObject.PortalContent.ImageFolderMapPath + "\\" + _dataObject.ModuleSettings.ModuleId;
                 if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
                 var imgList = RocketUtils.ImgUtils.UploadBase64Image(filenameList, filebase64List, baseFileMapPath, destDir, imgsize);

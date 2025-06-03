@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="&#xD;&#xA;DNNpackager.exe $(ProjectDir) $(ProjectDir)$(OutDir) $(ConfigurationName)" />
+    <Exec Command="DNNpackager.exe $(ProjectDir) $(ProjectDir)$(OutDir) $(ConfigurationName)&#xD;&#xA;&#xD;&#xA;REM ** Copy to dnnrocket bin folder, so install RocketCDS package can be built **&#xD;&#xA;copy &quot;$(ProjectDir)$(OutDir)$(TargetFileName)&quot; &quot;$(ProjectDir)..\..\DNNrocket\bin\$(TargetFileName)&quot;&#xD;&#xA;" />
   </Target>
 
 </Project>
