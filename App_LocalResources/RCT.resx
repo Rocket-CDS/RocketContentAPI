@@ -154,10 +154,10 @@
     <value>Empty Recycle Bin</value>
   </data>
   <data name="generateimage.Label" xml:space="preserve">
-    <value>Description of the image to generate...</value>
+    <value>Description of the AI image to generate.</value>
   </data>
   <data name="generateimage.Text" xml:space="preserve">
-    <value>Generate Image</value>
+    <value>Generate AI Image</value>
   </data>
   <data name="invalidcatalog.Text" xml:space="preserve">
     <value>Setup has not been completed.  </value>

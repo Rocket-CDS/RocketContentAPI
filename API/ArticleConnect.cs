@@ -200,7 +200,7 @@ namespace RocketContentAPI.API
                 var filebase64List = fileuploadbase64.Split('*');
                 var destDir = _dataObject.PortalContent.DocFolderMapPath + "\\" + _dataObject.ModuleSettings.ModuleId;
                 if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
-                var fileList = DocUtils.UploadBase64file(filenameList, filebase64List, destDir);
+                var fileList = DocUtils.UploadBase64fileDict(filenameList, filebase64List, destDir);
                 if (fileList.Count == 0) return MessageDisplay("RCT.invalidfile");
                 foreach (var docFileMapPath in fileList)
                 {
@@ -208,7 +208,7 @@ namespace RocketContentAPI.API
                     if (articleRow != null)
                     {
                         if (singleDoc) articleRow.Info.RemoveList(articleData.DocumentListName);
-                        articleRow.AddDoc(Path.GetFileName(docFileMapPath), articleData.ModuleId);
+                        articleRow.AddDoc(Path.GetFileName(docFileMapPath.Key), articleData.ModuleId);
                         articleData.UpdateRow(_rowKey, articleRow.Info);
                     }
                 }
