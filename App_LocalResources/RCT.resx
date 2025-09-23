@@ -135,6 +135,9 @@
   <data name="clearcache.Text" xml:space="preserve">
     <value>Clear Cache</value>
   </data>
+  <data name="countdownloads.Text" xml:space="preserve">
+    <value>Document Download Count</value>
+  </data>
   <data name="datasource.Text" xml:space="preserve">
     <value>Data Source</value>
   </data>

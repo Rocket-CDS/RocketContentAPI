@@ -1,0 +1,44 @@
+﻿@inherits RocketContentAPI.Components.RocketContentAPITokens<Simplisity.SimplisityRazor>
+@using Simplisity;
+@using DNNrocketAPI.Components;
+@using RocketDirectoryAPI.Components;
+@AssignDataModel(Model)
+@AddProcessDataResx(appThemeView, true)
+<!--inject-->
+@{
+    var articledocumentsLP = 1;
+    var downloadlist = (List<SimplisityRecord>)Model.GetDataObject("downloadlist");
+}
+<div class="w3-row documentlistdatasection">
+
+    <div class="w3-bar w3-padding-small">
+        <div class="w3-bar-item w3-blue w3-button w3-margin-right" onclick="$('.a-reloadpage').trigger('click');">@ButtonIcon(ButtonTypes.back)</div>
+        <span class="w3-bar-item w3-tag w3-green w3-round">
+            <i class="material-icons ">cloud_download</i>&nbsp;
+            <strong>@Model.GetSettingInt("totaldownloads")</strong>
+        </span>
+    </div>
+    
+
+    <ul id="documentlistdata" class="w3-ul">
+
+        @foreach (var docInfo in downloadlist)
+        {
+            <li class="documentlist w3-padding w3-hover-light-grey w3-border-bottom" style="list-style-type: none;">
+                <div class="w3-row">
+                    <div class="w3-col s12 m4 l3 w3-padding-small">
+                        @docInfo.GetXmlPropertyDate("genxml/data/downloaddate").ToString("g")
+                    </div>
+                    <div class="w3-col s12 m4 l6 w3-padding-small">
+                        @docInfo.GetXmlProperty("genxml/data/displayname")
+                    </div>
+                    <div class="w3-col s12 m4 l3 w3-padding-small">
+                        @docInfo.GetXmlProperty("genxml/data/email")
+                    </div>
+                </div>
+            </li>
+            articledocumentsLP += 1;
+        }
+    </ul>
+
+</div>

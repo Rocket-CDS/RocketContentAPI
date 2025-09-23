@@ -110,6 +110,11 @@
 		  <action>true</action>
 	  </command>
 	  <command>
+		  <cmd>article_documentdownloadlist</cmd>
+		  <action>true</action>
+	  </command>
+	  
+	  <command>
 		  <cmd>article_search</cmd>
 		  <action>false</action>
 	  </command>
@@ -120,7 +125,9 @@
 	  <command>
 		  <cmd>article_translate</cmd>
 		  <action>false</action>
-	  </command>	  
+	  </command>
+	  
+
 
 
 	  <command>
@@ -200,7 +207,11 @@
       <cmd>remote_publicseo</cmd>
       <action>false</action>
     </command>
-
+	<command>
+		<cmd>remote_publicdownload</cmd>
+		<action>false</action>
+	</command>
+	  
 
 	  <command>
 		  <cmd>rocketcontentapi_exportmodule</cmd>

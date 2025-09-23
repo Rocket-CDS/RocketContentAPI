@@ -133,6 +133,10 @@ namespace RocketContentAPI.Components
         {
             return new ArticleDoc(Info.GetListItem(DocumentListName, idx), "articledoc");
         }
+        public ArticleDoc GetDoc(string docKey)
+        {
+            return new ArticleDoc(Info.GetListItem(DocumentListName, "genxml/hidden/dockey", docKey), "articledoc");
+        }
         public List<ArticleDoc> GetDocs()
         {
             var rtn = new List<ArticleDoc>();
@@ -142,6 +146,70 @@ namespace RocketContentAPI.Components
             }
             return rtn;
         }
+        public void DocumentDownloadAdd(string docKey, UserData userData)
+        {
+            var objCtrl = new DNNrocketController();
+
+            var dRec = objCtrl.GetRecordByGuidKey(PortalUtils.GetCurrentPortalId(), -1, "DOCUMENTDOWNLOAD", docKey, "");
+            if (dRec == null)
+            {
+                dRec = new SimplisityRecord();
+                dRec.TypeCode = "DOCUMENTDOWNLOAD";
+                dRec.GUIDKey = docKey;
+                dRec.ParentItemId = ArticleId;
+            }
+            var sRec = new SimplisityRecord();
+            sRec.SetXmlProperty("genxml/data/downloadkey", GeneralUtils.GetUniqueString());
+            sRec.SetXmlProperty("genxml/data/email", userData.Email);
+            sRec.SetXmlProperty("genxml/data/username", userData.Username);
+            sRec.SetXmlProperty("genxml/data/displayname", userData.DisplayName);
+            sRec.SetXmlProperty("genxml/data/userid", userData.UserId.ToString());
+            sRec.SetXmlProperty("genxml/data/downloaddate", DateTime.Now.ToString("O"), TypeCode.DateTime);
+            dRec.AddRecordListItem("downloads", sRec);
+
+            dRec.SetXmlPropertyInt("genxml/data/totaldownloads", dRec.GetXmlPropertyInt("genxml/data/totaldownloads") + 1);
+            objCtrl.Update(dRec);
+            DocumentDownloadClear(docKey, 20); // only save last 20
+        }
+        public void DocumentDownloadClear(string docKey, int limit)
+        {
+            var objCtrl = new DNNrocketController();
+            var dRec = objCtrl.GetRecordByGuidKey(PortalUtils.GetCurrentPortalId(), -1, "DOCUMENTDOWNLOAD", docKey, "");
+            var dList = dRec.GetRecordList("downloads");
+            dList.Reverse();
+            var lp = 1;
+            foreach (var rec in dList)
+            {
+                if (lp > limit) dRec.RemoveRecordListItem("downloads", "genxml/data/downloadkey", rec.GetXmlProperty("genxml/data/downloadkey"));
+            }
+            objCtrl.Update(dRec);
+        }
+        public void DocumentDownloadClear(string docKey, DateTime keepFromDate)
+        {
+            var objCtrl = new DNNrocketController();
+            var dRec = objCtrl.GetRecordByGuidKey(PortalUtils.GetCurrentPortalId(), - 1, "DOCUMENTDOWNLOAD", docKey, "");
+            var dList = dRec.GetRecordList("downloads");
+            foreach (var rec in dList)
+            {
+                if (rec.GetXmlPropertyDate("genxml/data/downloaddate") < keepFromDate) dRec.RemoveRecordListItem("downloads", "genxml/data/downloadkey", rec.GetXmlProperty("genxml/data/downloadkey"));
+            }
+            objCtrl.Update(dRec);
+        }
+        public List<SimplisityRecord> DocumentDownloadGet(string docKey)
+        {
+            var objCtrl = new DNNrocketController();
+            var dRec = objCtrl.GetRecordByGuidKey(PortalUtils.GetCurrentPortalId(), -1, "DOCUMENTDOWNLOAD", docKey, "");
+            if (dRec == null) dRec = new SimplisityRecord();
+            return dRec.GetRecordList("downloads");
+        }
+        public SimplisityRecord DocumentDownloadData(string docKey)
+        {
+            var objCtrl = new DNNrocketController();
+            var dRec = objCtrl.GetRecordByGuidKey(PortalUtils.GetCurrentPortalId(), -1, "DOCUMENTDOWNLOAD", docKey, "");
+            if (dRec == null) dRec = new SimplisityRecord();
+            return dRec;
+        }
+
         #endregion
 
         #region "links"

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace RocketContentAPI.API
 {
@@ -321,6 +322,28 @@ namespace RocketContentAPI.API
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
+        public String DownloadHistory()
+        {
+            var rowKey = _paramInfo.GetXmlProperty("genxml/hidden/rowkey");
+            var docKey = _paramInfo.GetXmlProperty("genxml/hidden/dockey");
+            var articleId = _paramInfo.GetXmlPropertyInt("genxml/hidden/articleid");
+            var articleData = _dataObject.ArticleData;
+            var articleRowData = articleData.GetRow(rowKey);
+            var downloadlist = articleRowData.DocumentDownloadGet(docKey);
+            downloadlist.Reverse();
+
+            var docCountData = articleRowData.DocumentDownloadData(docKey);
+            var docCount = docCountData.GetXmlProperty("genxml/data/totaldownloads");
+
+            _dataObject.SetSetting("totaldownloads", docCount);
+            _dataObject.SetDataObject("articledata", articleData);
+            _dataObject.SetDataObject("downloadlist", downloadlist);
+
+            var razorTempl = _dataObject.AppThemeSystem.GetTemplate("DownloadHistory.cshtml");
+            var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
+            if (pr.ErrorMsg != "") return pr.ErrorMsg;
+            return pr.RenderedText;
+        }
         public Dictionary<string, object> ArticleSearch()
         {
             var rtn = new Dictionary<string, object>();
@@ -527,6 +550,32 @@ namespace RocketContentAPI.API
             if (pr.StatusCode != "00") return pr.ErrorMsg;
             return pr.RenderedText;
         }
+        private Dictionary<string, object> DownloadArticleFile()
+        {
+            var rtnDic = new Dictionary<string, object>();
+            var portalid = PortalUtils.GetCurrentPortalId();
+            var tabId = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/tabid"));
+            var moduleId = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/moduleid"));
+            var rowkey = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/rowkey"));
+            var dockey = GeneralUtils.DeCode(_paramInfo.GetXmlProperty("genxml/urlparams/dockey"));
+            var moduleRef = portalid + "_ModuleID_" + moduleId;
+            if (UserUtils.HasModuleAccess(portalid,UserUtils.GetCurrentUserId(), Convert.ToInt32(moduleId), "VIEW"))
+            {
+                var moduleSettings = new ModuleContentLimpet(portalid, moduleRef, _dataObject.SystemKey, Convert.ToInt32(moduleId), Convert.ToInt32(tabId));
+                var articleData = RocketContentAPIUtils.GetArticleData(moduleSettings, _sessionParams.CultureCode, false);
+
+                var articleRowData = articleData.GetRow(rowkey);
+                var articleDoc = articleRowData.GetDoc(dockey);
+                rtnDic.Add("filenamepath", DNNrocketUtils.MapPath(articleDoc.RelPath));
+                rtnDic.Add("downloadname", articleDoc.DownloadName);
+
+                // Add to download count
+                if (_dataObject.ModuleSettings.DocumentDownloadCount) articleRowData.DocumentDownloadAdd(dockey, UserUtils.GetUserData(articleData.PortalId, UserUtils.GetCurrentUserId()));
+
+            }
+            return rtnDic;
+        }
+
 
     }
 }

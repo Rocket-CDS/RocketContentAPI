@@ -131,6 +131,9 @@ namespace RocketContentAPI.API
                 case "article_search":
                     rtnDic = ArticleSearch();
                     break;
+                case "article_documentdownloadlist":
+                    strOut = DownloadHistory();
+                    break;
 
 
                 case "rocketcontentapi_settings":
@@ -197,6 +200,10 @@ namespace RocketContentAPI.API
                     break;
                 case "remote_publicseo":
                     strOut = ""; // not used for rocketcontentapi
+                    break;
+                case "remote_publicdownload":
+                    rtnDic = DownloadArticleFile();
+                    strOut = "";
                     break;
 
                 case "invalidcommand":
