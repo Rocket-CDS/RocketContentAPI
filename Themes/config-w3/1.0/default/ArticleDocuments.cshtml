@@ -52,7 +52,7 @@
                                     </span>
                                 </div>
                                 <div class="w3-col m3">
-                                    <span class="w3-button w3-blue w3-round w3-tiny w3-padding-small simplisity_click" s-cmd="article_documentdownloadlist" s-return="#a-articledata" @SFields("dockey", docKey, "articleid", articleData.ArticleId.ToString(), "rowkey", articleRowData.RowKey)>
+                                    <span class="w3-button w3-blue w3-round w3-tiny w3-padding-small simplisity_click" s-cmd="article_documentdownloadlist" s-return="#a-articledata" @SFields("dockey", docKey, "articleid", articleData.ArticleId.ToString(), "rowkey", articleRowData.RowKey, "moduleid", sessionParams.ModuleId.ToString(), "tabid", sessionParams.TabId.ToString())>
                                         @ButtonIconText(ButtonTypes.history)
                                     </span>
                                 </div>

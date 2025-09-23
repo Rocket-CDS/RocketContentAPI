@@ -333,11 +333,18 @@ namespace RocketContentAPI.API
             downloadlist.Reverse();
 
             var docCountData = articleRowData.DocumentDownloadData(docKey);
-            var docCount = docCountData.GetXmlProperty("genxml/data/totaldownloads");
+            var docCount = docCountData.GetXmlPropertyInt("genxml/data/totaldownloads");
 
-            _dataObject.SetSetting("totaldownloads", docCount);
+            _dataObject.SetSetting("totaldownloads", docCount.ToString());
             _dataObject.SetDataObject("articledata", articleData);
             _dataObject.SetDataObject("downloadlist", downloadlist);
+
+            string[] parameters;
+            parameters = new string[1];
+            parameters[0] = string.Format("{0}={1}", "mid", _sessionParams.ModuleId.ToString());
+            var editUrl = DNNrocketUtils.NavigateURL(_sessionParams.TabId, "Edit", _sessionParams.CultureCode, parameters).ToString();
+            _dataObject.SetSetting("editurl", editUrl);
+
 
             var razorTempl = _dataObject.AppThemeSystem.GetTemplate("DownloadHistory.cshtml");
             var pr = RenderRazorUtils.RazorProcessData(razorTempl, null, _dataObject.DataObjects, _dataObject.Settings, _sessionParams, true);
@@ -570,7 +577,7 @@ namespace RocketContentAPI.API
                 rtnDic.Add("downloadname", articleDoc.DownloadName);
 
                 // Add to download count
-                if (_dataObject.ModuleSettings.DocumentDownloadCount) articleRowData.DocumentDownloadAdd(dockey, UserUtils.GetUserData(articleData.PortalId, UserUtils.GetCurrentUserId()));
+                if (moduleSettings.DocumentDownloadCount) articleRowData.DocumentDownloadAdd(dockey, UserUtils.GetUserData(articleData.PortalId, UserUtils.GetCurrentUserId()));
 
             }
             return rtnDic;
