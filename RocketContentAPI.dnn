@@ -1,7 +1,7 @@
 ﻿<dotnetnuke type="Package" version="5.0">
 	<packages>
     
-		<package name="RocketContentAPI" type="Library" version="1.1.6">
+		<package name="RocketContentAPI" type="Library" version="1.1.7">
 			<friendlyName>RocketContentAPI by Nevoweb</friendlyName>
 			<DefinitionName>RocketContentAPI</DefinitionName>
 			<description>RocketContentAPI</description>
@@ -20,7 +20,7 @@
       </license>
 			<releaseNotes>
 				RocketContentAPI uses the DNNRocket framework
-				v1.1.6.0
+				v1.1.7.0
 			</releaseNotes>
 
       <dependencies>

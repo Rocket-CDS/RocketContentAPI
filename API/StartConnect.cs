@@ -224,6 +224,7 @@ namespace RocketContentAPI.API
             _paramInfo = paramInfo;
 
             var portalid = PortalUtils.GetCurrentPortalId();
+            if (_paramInfo.GetXmlProperty("genxml/hidden/portalid") != "") portalid = _paramInfo.GetXmlPropertyInt("genxml/hidden/portalid"); // scheudler.
             if (portalid < 0 && systemInfo.PortalId >= 0) portalid = systemInfo.PortalId;
 
             _rocketInterface = new RocketInterface(interfaceInfo);
