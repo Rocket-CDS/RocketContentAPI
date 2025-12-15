@@ -2,7 +2,7 @@
 @using DNNrocketAPI.Components;
 @using RocketContentAPI.Components;
 @using Simplisity;
-@using RazorEngine.Text;
+@using RocketRazorEngine.Text;
 @using Rocket.AppThemes.Components;
 @using RocketPortal.Components;
 @using System.IO;
@@ -10,7 +10,6 @@
 @{
     var moduleData = (ModuleContentLimpet)Model.GetDataObject("modulesettings");
     var portalData = (PortalLimpet)Model.GetDataObject("portaldata");
-    var portalShop = (PortalLimpet)Model.GetDataObject("portalshop");
     var systemAppTheme = new AppThemeDNNrocketLimpet("rocketapptheme");
     var appThemeView = new AppThemeLimpet(moduleData.PortalId, moduleData.AppThemeViewFolder, moduleData.AppThemeViewVersion, moduleData.ProjectName);
     var appThemeAdmin = new AppThemeLimpet(moduleData.PortalId, moduleData.AppThemeAdminFolder, moduleData.AppThemeAdminVersion, moduleData.ProjectName);
