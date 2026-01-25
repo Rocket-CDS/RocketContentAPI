@@ -392,6 +392,7 @@ namespace RocketContentAPI.Components
             var recyleInfo = _objCtrl.GetByGuidKey(PortalId, ModuleId, "ARTHISTORY", ModuleId.ToString() + "_" + CultureCode, "", _tableName, CultureCode);
             recyleInfo.RemoveRecordList("history");
             _objCtrl.Update(recyleInfo, _tableName);
+            ClearCache();
         }
         #endregion
 

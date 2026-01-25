@@ -22,7 +22,11 @@
     {
         var hasModuleTemplates = appTheme.HasModuleLevel(moduleData.ModuleRef);
         var hasPortalTemplates = appTheme.HasPortalLevel();
-        if (hasModuleTemplates || hasPortalTemplates)
+        if (hasPortalTemplates)
+        {
+            localTemplate = "background-color: palegoldenrod;";
+        }
+        if (hasModuleTemplates)
         {
             localTemplate = "background-color: lightblue;";
         }
