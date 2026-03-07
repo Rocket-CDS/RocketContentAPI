@@ -8,19 +8,36 @@
 
 @AssignDataModel(Model)
 @{
+    var rtnUrl = @DNNrocketUtils.NavigateURL(sessionParams.TabId);
     var info = moduleDataInfo;
 }
 
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocket/api/App_LocalResources/")
 @AddProcessData("resourcepath", "/DesktopModules/DNNrocketModules/RocketContentAPI/App_LocalResources/")
 
-<div id="a-datasection" class="w3-container w3-margin w3-padding">
-
-    <div class="w3-row w3-padding">
-        <div id="postsettings" class="w3-right w3-button w3-round w3-theme-action w3-padding a-savebutton simplisity_click" s-cmd="rocketcontentapi_savesettings" s-post="#a-datasection" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@(Model.SessionParamsData.TabId)"}'>
-            @ButtonIcon(ButtonTypes.save)
+    <div class=" w3-margin-bottom w3-border-bottom">
+        <div class="w3-bar w3-padding">
+            <a href="@rtnUrl" class="w3-padding w3-button w3-black " style="text-decoration:none;" onclick="$('.simplisity_loader').show();">
+                <span class="w3-hide-small">
+                    @ButtonText(ButtonTypes.back)
+                </span>
+                <span class="w3-hide-medium w3-hide-large">
+                    @ButtonIcon(ButtonTypes.back)
+                </span>
+            </a>
+            <span id="postsettings" class="w3-right w3-button w3-round w3-theme-action w3-padding a-savebutton simplisity_click" s-cmd="rocketcontentapi_savesettings" s-post="#a-datasection" s-fields='{"moduleref":"@moduleData.ModuleRef","moduleid":"@moduleData.ModuleId","tabid":"@(Model.SessionParamsData.TabId)"}'>
+                <span class="w3-hide-small">
+                    @ButtonText(ButtonTypes.save)
+                </span>
+                <span class="w3-hide-medium w3-hide-large">
+                    @ButtonIcon(ButtonTypes.save)
+                </span>
+            </span>
         </div>
     </div>
+
+
+<div id="a-datasection" class="w3-container w3-margin w3-padding">
 
 
     <div class="w3-row w3-padding">

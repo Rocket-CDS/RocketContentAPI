@@ -20,7 +20,7 @@
       </license>
 			<releaseNotes>
 				RocketContentAPI uses the DNNRocket framework
-				v1.1.7.0
+				v1.1.7.2
 			</releaseNotes>
 
       <dependencies>

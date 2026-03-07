@@ -58,6 +58,12 @@
             <a href="@userParams.Get("settingsurl")" class="viewedit-button" title="@settingsTitle">
                 <img src="/DesktopModules/DNNrocket/API/images/action_settings.svg" alt="@ResourceKey("DNNrocket.settings")" />
             </a>
+            if (userParams.Get("rocketconfigurl") != "")
+            {
+            <a href="@userParams.Get("rocketconfigurl")" class="viewedit-button" title="Rocket @settingsTitle">
+                <img src="/DesktopModules/DNNrocket/API/images/action_settingsdisplay.svg" alt="Rocket @ResourceKey("DNNrocket.settings")" />
+            </a>
+            }
 
             if (UserUtils.IsSuperUser())
             {
