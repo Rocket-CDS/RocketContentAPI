@@ -357,29 +357,6 @@ namespace RocketContentAPI.API
                     ms.ModuleId = moduleId;
                     ms.GUIDKey = moduleRef;
 
-                    // TadId for links (standard link name)
-                    var rows = ms.GetRecordList("rows");
-                    var rowlp = 1;
-                    foreach (var row in rows)
-                    {
-                        var l = row.GetRecordList("linklist");
-                        var lklp = 1;
-                        foreach (var lk in l)
-                        {
-                            var oldTabId = lk.GetXmlPropertyInt("genxml/select/internallinkarticlelink");
-                            if (oldTabId > 0)
-                            {
-                                var oldTabPath = xmlDoc.SelectSingleNode("export/tabinfo/genxml[tabid=" + oldTabId + "]/tabpath");
-                                if (oldTabPath != null)
-                                {
-                                    var newTabId = GetTabIdByTabPath(portalId, oldTabPath.InnerText);
-                                    ms.SetXmlPropertyInt("genxml/rows/genxml[" + rowlp + "]/linklist/genxml[" + lklp + "]/select/internallinkarticlelink", newTabId);
-                                }
-                            }
-                            lklp += 1;
-                        }
-                        rowlp += 1;
-                    }
                     parentItemId = objCtrl.Update(ms, "RocketContentAPI");
                 }
 
@@ -518,17 +495,6 @@ namespace RocketContentAPI.API
             }
 
         }
-        private static int GetTabIdByTabPath(int portalId, string tabpath)
-        {
-            var l = DNNrocketUtils.GetTabList(portalId);
-            foreach (var t in l)
-            {
-                if (t.GetXmlProperty("genxml/tabpath") == tabpath) return t.GetXmlPropertyInt("genxml/tabid");
-            }
-            return -1;
-        }
-
-
         private string DisableAllModuleCache()
         {
             var objCtrl = new DNNrocketController();
