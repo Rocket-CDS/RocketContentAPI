@@ -268,8 +268,8 @@ namespace RocketContentAPI.API
                 var xmlDoc = new XmlDocument();
                 xmlDoc.LoadXml(_postInfo.XMLData);
 
-                LogUtils.LogSystem("IMPORT XML _paramInfo: " + _paramInfo.XMLData);
-                LogUtils.LogSystem("IMPORT XML _postInfo: " + _postInfo.XMLData);
+                //LogUtils.OutputDebugFile("RocketContentImport","IMPORT XML _paramInfo: " + _paramInfo.XMLData, portalId);
+                //LogUtils.OutputDebugFile("RocketContentImport", "IMPORT XML _postInfo: " + _postInfo.XMLData, portalId);
 
                 //import Settings (Saved in DNNrocket table)
                 var importGuidKey = _postInfo.GetXmlProperty("export/modulesettings/item/guidkey");
