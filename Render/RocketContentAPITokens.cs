@@ -39,6 +39,9 @@ namespace RocketContentAPI.Components
         /// </summary>
         /// <param name="sModel">The s model.</param>
         /// <returns></returns>
+        /// <summary>
+        /// Assigns the data model for Razor, making the template easier to build by populating various data properties like articleData, appTheme, moduleData, etc., from the SimplisityRazor model.
+        /// </summary>
         public string AssignDataModel(SimplisityRazor sModel)
         {
             // use return of "string", so we don;t get error with converting void to object.
@@ -80,6 +83,9 @@ namespace RocketContentAPI.Components
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns></returns>
+        /// <summary>
+        /// Generates the necessary hidden fields for a row's unique key ('rowkey' and 'rowkeylang') and a unique entity ID ('eid'). A row MUST have a rowkey to be saved to the database.
+        /// </summary>
         public IEncodedString RowKey(SimplisityInfo info)
         {
             var strOut = HiddenField(info, "genxml/config/rowkey").ToString();
@@ -92,6 +98,9 @@ namespace RocketContentAPI.Components
         /// </summary>
         /// <param name="rowData">The row data.</param>
         /// <returns></returns>
+        /// <summary>
+        /// Creates a checkbox for the 'IsHidden' property of a row, allowing a row to be marked as hidden.
+        /// </summary>
         public IEncodedString CheckBoxRowIsHidden(SimplisityInfo rowData)
         {
             return CheckBox(rowData, "genxml/checkbox/hiderow", "", "class='w3-check' ", false, false, 0);
@@ -101,10 +110,16 @@ namespace RocketContentAPI.Components
         /// </summary>
         /// <param name="rowData">The row data.</param>
         /// <returns></returns>
+        /// <summary>
+        /// Creates a standard textbox for a row's title using the XPath 'genxml/lang/genxml/textbox/title'.
+        /// </summary>
         public IEncodedString TextBoxRowTitle(SimplisityInfo rowData)
         {
             return TextBox(rowData, "genxml/lang/genxml/textbox/title", " id='title' class='w3-input w3-border' autocomplete='off' ", "", true, 0);
         }
+        /// <summary>
+        /// Renders a button to open a ChatGPT modal for generating text. Requires a ChatGPT API key in the global settings. The generated text will populate the field specified by 'textId'.
+        /// </summary>
         public IEncodedString ChatGPT(string textId, string sourceTextId = "")
         {
             var globalData = new SystemGlobalData();
@@ -112,6 +127,9 @@ namespace RocketContentAPI.Components
             var apiResx = "/DesktopModules/DNNrocket/api/App_LocalResources/";
             return new RawString("<span class=\"w3-button w3-text-theme\" style=\"width:40px;height:40px;padding:8px 0;\"><span class=\"material-icons\" title=\"" + DNNrocketUtils.GetResourceString(apiResx, "DNNrocket.chatgpt", "Text") + "\" style=\"cursor:pointer;\" onclick=\"$('#chatgptmodal').show();simplisity_setSessionField('chatgpttextid','" + textId + "');simplisity_setSessionField('chatgptcmd','article_chatgpt');$('#chatgptquestion').val($('#" + sourceTextId + "').val());\">sms</span></span>");
         }
+        /// <summary>
+        /// Renders a button to open a DeepL translation modal. Requires a DeepL API key in the global settings and more than one portal language to be enabled. The translated text will populate the field specified by 'textId'.
+        /// </summary>
         public IEncodedString DeepL(string textId, string sourceTextId = "", string cultureCode = "")
         {
             if (DNNrocketUtils.GetPortalLanguageList().Count <= 1) return new RawString("");
@@ -127,6 +145,9 @@ namespace RocketContentAPI.Components
         /// </summary>
         /// <param name="sModel"></param>
         /// <returns>The padding CSS for an inline style on an element.</returns>
+        /// <summary>
+        /// Generates an inline CSS padding style string based on module settings. It reads 'leftpadding', 'rightpadding', 'toppadding', and 'bottompadding' settings and creates corresponding CSS properties.
+        /// </summary>
         public string StylePadding()
         {
             var strOut = "";
