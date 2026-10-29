@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.8.34330.188
+# Visual Studio Version 18
+VisualStudioVersion = 18.10.12217.157 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketContentAPI", "RocketContentAPI.csproj", "{EE09C1D1-A776-46D3-928B-51EBD4D694C2}"
 EndProject
@@ -24,8 +24,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RocketTools", "..\..\DNNrocket\RocketTools\RocketTools.csproj", "{BAF39844-52C0-42D4-B404-65DD009EA212}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketUtils", "..\..\DNNrocket\RocketUtils\RocketUtils.csproj", "{E4C1450D-3470-911A-1377-2A1157FDEF3F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RocketContentMVC", "..\..\MVC\Rocket\RocketModulesMVC\RocketContentMVC\RocketContentMVC.csproj", "{515CDFDB-002B-4A38-82A4-659D41C3FEE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,16 +101,6 @@ Global
 		{E4C1450D-3470-911A-1377-2A1157FDEF3F}.Razor|Any CPU.Build.0 = Debug|Any CPU
 		{E4C1450D-3470-911A-1377-2A1157FDEF3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4C1450D-3470-911A-1377-2A1157FDEF3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{515CDFDB-002B-4A38-82A4-659D41C3FEE8}.Comp All|Any CPU.ActiveCfg = Release|Any CPU
-		{515CDFDB-002B-4A38-82A4-659D41C3FEE8}.Comp All|Any CPU.Build.0 = Release|Any CPU
-		{515CDFDB-002B-4A38-82A4-659D41C3FEE8}.CompAll|Any CPU.ActiveCfg = Debug|Any CPU
-		{515CDFDB-002B-4A38-82A4-659D41C3FEE8}.CompAll|Any CPU.Build.0 = Debug|Any CPU
-		{515CDFDB-002B-4A38-82A4-659D41C3FEE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{515CDFDB-002B-4A38-82A4-659D41C3FEE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{515CDFDB-002B-4A38-82A4-659D41C3FEE8}.Razor|Any CPU.ActiveCfg = Debug|Any CPU
-		{515CDFDB-002B-4A38-82A4-659D41C3FEE8}.Razor|Any CPU.Build.0 = Debug|Any CPU
-		{515CDFDB-002B-4A38-82A4-659D41C3FEE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{515CDFDB-002B-4A38-82A4-659D41C3FEE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
